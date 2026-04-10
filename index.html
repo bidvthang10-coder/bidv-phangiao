@@ -6,71 +6,71 @@
 <title>Phân Giao Chỉ Tiêu KPI &amp; BSC</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#EAF2FB;color:#003F7A;font-size:13.5px;line-height:1.5;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#E8F5F4;color:#005452;font-size:13.5px;line-height:1.5;}
 .app{display:flex;height:100vh;overflow:hidden;}
 /* SIDEBAR */
-.sb{width:215px;background:linear-gradient(180deg,#003F7A 0%,#002558 100%);display:flex;flex-direction:column;flex-shrink:0;}
+.sb{width:215px;background:linear-gradient(180deg,#005452 0%,#004440 100%);display:flex;flex-direction:column;flex-shrink:0;}
 .sb-logo{padding:15px 16px 12px;border-bottom:1px solid rgba(255,255,255,.08);}
 .sb-brand{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,200,200,.5);font-weight:700;}
 .sb-name{font-size:15px;font-weight:800;color:#fff;margin-top:4px;line-height:1.25;}
-.sb-name b{color:#FF4D6B;}
+.sb-name b{color:#FFC62F;}
 .sb-nav{flex:1;overflow-y:auto;padding:6px 0;}
 .sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.25);padding:12px 14px 4px;font-weight:700;}
 .sb-a{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;color:rgba(255,255,255,.58);font-size:12.5px;font-weight:500;border-left:3px solid transparent;user-select:none;transition:background .12s;}
 .sb-a:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);}
-.sb-a.on{background:rgba(255,255,255,.15);color:#fff;border-left-color:#E31837;}
+.sb-a.on{background:rgba(255,255,255,.15);color:#fff;border-left-color:#FFC62F;}
 .sb-ic{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
-.sb-bx{margin-left:auto;background:rgba(227,24,55,.18);color:#FF6B7A;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;min-width:20px;text-align:center;}
+.sb-bx{margin-left:auto;background:rgba(255,198,47,.22);color:#C09500;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;min-width:20px;text-align:center;}
 .sb-ft{padding:9px 14px;border-top:1px solid rgba(255,255,255,.07);font-size:9px;color:rgba(200,220,255,.3);text-align:center;}
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.topbar{height:52px;background:#fff;border-bottom:1px solid #C8D8E8;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.top-t{font-size:16px;font-weight:800;color:#003F7A;}
-.top-s{font-size:10.5px;color:#8096A7;background:#EAF2FB;padding:2px 9px;border-radius:20px;border:1px solid #C8D8E8;margin-left:10px;}
+.topbar{height:52px;background:#fff;border-bottom:1px solid #B8D8D6;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.top-t{font-size:16px;font-weight:800;color:#005452;}
+.top-s{font-size:10.5px;color:#8096A7;background:#E8F5F4;padding:2px 9px;border-radius:20px;border:1px solid #B8D8D6;margin-left:10px;}
 .top-r{display:flex;align-items:center;gap:7px;flex-shrink:0;}
 .content{flex:1;overflow-y:auto;padding:18px 20px;}
 /* BUTTONS */
 .btn{padding:7px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;transition:filter .12s;}
-.btn-blue{background:#005BAA;color:#fff;}.btn-blue:hover{background:#002D5A;}
-.btn-green{background:#1B7A3E;color:#fff;}.btn-green:hover{background:#145F30;}
-.btn-gold{background:#E08000;color:#fff;}.btn-gold:hover{background:#C07000;filter:none;}
-.btn-gray{background:#D8E6F0;color:#4A5568;border:1.5px solid #C8D8E8;}.btn-gray:hover{background:#C0D0E0;}
+.btn-blue{background:#006B68;color:#fff;}.btn-blue:hover{background:#004440;}
+.btn-green{background:#0A7A6E;color:#fff;}.btn-green:hover{background:#0A7A6E;}
+.btn-gold{background:#D4A800;color:#fff;}.btn-gold:hover{background:#B89000;filter:none;}
+.btn-gray{background:#C8E4E2;color:#4A5568;border:1.5px solid #B8D8D6;}.btn-gray:hover{background:#B0CCC8;}
 .btn-red{background:#c0392b;color:#fff;}.btn-red:hover{filter:brightness(.88);}
 .btn-sm{padding:5px 10px;font-size:11.5px;} .btn-xs{padding:3px 7px;font-size:11px;}
 /* CARD */
-.card{background:#fff;border-radius:12px;border:1px solid #C8D8E8;box-shadow:0 1px 6px rgba(15,31,48,.07);margin-bottom:14px;}
-.card-h{padding:12px 16px;border-bottom:1px solid #C8D8E8;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
-.card-t{font-size:13.5px;font-weight:700;color:#003F7A;}
+.card{background:#fff;border-radius:12px;border:1px solid #B8D8D6;box-shadow:0 1px 6px rgba(15,31,48,.07);margin-bottom:14px;}
+.card-h{padding:12px 16px;border-bottom:1px solid #B8D8D6;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.card-t{font-size:13.5px;font-weight:700;color:#005452;}
 .card-b{padding:16px;}
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-.stat{background:#fff;border-radius:12px;padding:14px 16px;border:1px solid #C8D8E8;box-shadow:0 1px 6px rgba(15,31,48,.07);}
+.stat{background:#fff;border-radius:12px;padding:14px 16px;border:1px solid #B8D8D6;box-shadow:0 1px 6px rgba(15,31,48,.07);}
 .stat-v{font-size:28px;font-weight:800;line-height:1;}
 .stat-l{font-size:11px;color:#4A5568;margin-top:4px;}
 /* TABLE */
 .tw{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{background:#F0F6FC;padding:8px 11px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#8096A7;border-bottom:1px solid #C8D8E8;white-space:nowrap;}
-td{padding:8px 11px;border-bottom:1px solid #E8F0F8;font-size:12.5px;vertical-align:middle;}
+th{background:#EDF7F6;padding:8px 11px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#8096A7;border-bottom:1px solid #B8D8D6;white-space:nowrap;}
+td{padding:8px 11px;border-bottom:1px solid #E8F5F4;font-size:12.5px;vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 .row-c{cursor:pointer;}.row-c:hover td{background:#f6f9fd;}
 /* BADGE / TAGS */
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
-.bk{background:#EAF2FB;color:#005BAA;} .bb{background:#E4F5EC;color:#0D6B3A;}
-.vt{background:#EAF2FB;color:#005BAA;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
-.ph{background:#E4F5EC;color:#0D6B3A;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
+.bk{background:#E8F5F4;color:#006B68;} .bb{background:#E0F4F0;color:#087A70;}
+.vt{background:#E8F5F4;color:#006B68;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
+.ph{background:#E0F4F0;color:#087A70;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
 /* FILTER */
 .fbar{display:flex;gap:7px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
 .srch{position:relative;flex:1;min-width:180px;}
-.srch input{width:100%;padding:7px 10px 7px 30px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;outline:none;}
-.srch input:focus{border-color:#0068C5;}
+.srch input{width:100%;padding:7px 10px 7px 30px;border:1.5px solid #B8D8D6;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;outline:none;}
+.srch input:focus{border-color:#007B78;}
 .srch-ic{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
-.fsel{padding:7px 9px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;color:#003F7A;cursor:pointer;outline:none;}
+.fsel{padding:7px 9px;border:1.5px solid #B8D8D6;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;color:#005452;cursor:pointer;outline:none;}
 /* FORM */
 .fg{margin-bottom:12px;}
 .fl{display:block;font-size:10.5px;font-weight:700;color:#4A5568;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px;}
-.fc{width:100%;padding:8px 10px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:13px;color:#003F7A;background:#fff;outline:none;}
-.fc:focus{border-color:#0068C5;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid #B8D8D6;border-radius:7px;font-family:inherit;font-size:13px;color:#005452;background:#fff;outline:none;}
+.fc:focus{border-color:#007B78;}
 textarea.fc{resize:vertical;min-height:60px;}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .req{color:#c0392b;}
@@ -79,90 +79,90 @@ textarea.fc{resize:vertical;min-height:60px;}
 .ov.show{opacity:1;pointer-events:all;}
 .modal{background:#fff;border-radius:12px;width:100%;max-width:900px;max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(10,20,40,.22);transform:translateY(12px);transition:transform .18s;}
 .ov.show .modal{transform:translateY(0);}
-.mhd{padding:16px 20px 12px;border-bottom:1px solid #C8D8E8;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:5;}
+.mhd{padding:16px 20px 12px;border-bottom:1px solid #B8D8D6;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:5;}
 .mtt{font-size:14.5px;font-weight:800;}
-.mxb{width:28px;height:28px;border:none;background:#EAF2FB;border-radius:50%;cursor:pointer;font-size:17px;color:#4A5568;display:flex;align-items:center;justify-content:center;}
-.mxb:hover{background:#C8D8E8;}
+.mxb{width:28px;height:28px;border:none;background:#E8F5F4;border-radius:50%;cursor:pointer;font-size:17px;color:#4A5568;display:flex;align-items:center;justify-content:center;}
+.mxb:hover{background:#B8D8D6;}
 .mbd{padding:16px 20px;}
-.mft{padding:11px 20px;border-top:1px solid #C8D8E8;display:flex;justify-content:flex-end;gap:7px;position:sticky;bottom:0;background:#fff;}
+.mft{padding:11px 20px;border-top:1px solid #B8D8D6;display:flex;justify-content:flex-end;gap:7px;position:sticky;bottom:0;background:#fff;}
 /* SECTION */
 .sec{display:none;}.sec.show{display:block;}
 /* ALERTS */
 .alert{padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12.5px;}
-.a-ok{background:#E4F5EC;color:#0D6B3A;border:1px solid #80CCA0;}
+.a-ok{background:#E0F4F0;color:#087A70;border:1px solid #6BBFB8;}
 .a-err{background:#fdecea;color:#c0392b;border:1px solid #f5b7b1;}
-.a-inf{background:#EAF2FB;color:#005BAA;border:1px solid #7DB3E0;}
-.a-warn{background:#FEF3E2;color:#C8860A;border:1px solid #F5C066;}
+.a-inf{background:#E8F5F4;color:#006B68;border:1px solid #5BBDB8;}
+.a-warn{background:#FFFBEC;color:#C09500;border:1px solid #FFDB7A;}
 /* GS STATUS BAR */
 #gsBar{padding:8px 14px;border-radius:8px;border:1px solid transparent;font-size:12px;margin-bottom:12px;display:none;align-items:center;gap:8px;}
 /* EMPTY */
 .empty{text-align:center;padding:32px;color:#8096A7;}
 /* PAG */
 .pag{display:flex;align-items:center;gap:4px;padding:8px 12px;justify-content:flex-end;flex-wrap:wrap;}
-.pb{min-width:28px;height:28px;border:1.5px solid #C8D8E8;border-radius:6px;background:#fff;cursor:pointer;font-size:11.5px;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;}
-.pb:hover{background:#EAF2FB;} .pb.on{background:#005BAA;color:#fff;border-color:#005BAA;}
+.pb{min-width:28px;height:28px;border:1.5px solid #B8D8D6;border-radius:6px;background:#fff;cursor:pointer;font-size:11.5px;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;}
+.pb:hover{background:#E8F5F4;} .pb.on{background:#006B68;color:#fff;border-color:#006B68;}
 /* WIZARD */
 .steps{display:flex;align-items:center;margin-bottom:20px;}
 .wst{display:flex;align-items:center;gap:7px;flex:1;}
-.wsn{width:28px;height:28px;border-radius:50%;border:2px solid #C8D8E8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#8096A7;background:#fff;flex-shrink:0;}
-.wst.done .wsn{background:#005BAA;border-color:#005BAA;color:#fff;}
-.wst.cur .wsn{background:#005BAA;border-color:#005BAA;color:#fff;}
+.wsn{width:28px;height:28px;border-radius:50%;border:2px solid #B8D8D6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#8096A7;background:#fff;flex-shrink:0;}
+.wst.done .wsn{background:#006B68;border-color:#006B68;color:#fff;}
+.wst.cur .wsn{background:#006B68;border-color:#006B68;color:#fff;}
 .wsl{font-size:11.5px;font-weight:600;color:#8096A7;}
-.wst.done .wsl,.wst.cur .wsl{color:#003F7A;}
-.wln{flex:1;height:2px;background:#C8D8E8;margin:0 8px;}
-.wln.done{background:#005BAA;}
+.wst.done .wsl,.wst.cur .wsl{color:#005452;}
+.wln{flex:1;height:2px;background:#B8D8D6;margin:0 8px;}
+.wln.done{background:#006B68;}
 /* BOCO */
 .boco-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.boco{border:2px solid #C8D8E8;border-radius:12px;padding:18px;cursor:pointer;position:relative;background:#fff;}
-.boco:hover{border-color:#0068C5;}
-.boco.sk{border-color:#005BAA;background:#EAF2FB;} .boco.sb{border-color:#1B7A3E;background:#E4F5EC;}
+.boco{border:2px solid #B8D8D6;border-radius:12px;padding:18px;cursor:pointer;position:relative;background:#fff;}
+.boco:hover{border-color:#007B78;}
+.boco.sk{border-color:#006B68;background:#E8F5F4;} .boco.sb{border-color:#0A7A6E;background:#E0F4F0;}
 .boco-ic{font-size:32px;margin-bottom:8px;} .boco-nm{font-size:14px;font-weight:800;} .boco-sb{font-size:11.5px;color:#4A5568;margin-top:3px;}
-.boco-ck{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;border:2px solid #C8D8E8;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
-.boco.sk .boco-ck{background:#005BAA;border-color:#005BAA;color:#fff;} .boco.sb .boco-ck{background:#1B7A3E;border-color:#1B7A3E;color:#fff;}
+.boco-ck{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;border:2px solid #B8D8D6;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.boco.sk .boco-ck{background:#006B68;border-color:#006B68;color:#fff;} .boco.sb .boco-ck{background:#0A7A6E;border-color:#0A7A6E;color:#fff;}
 /* TARGET */
-.tp{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #E8F0F8;cursor:pointer;}
+.tp{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #E8F5F4;cursor:pointer;}
 .tp:hover{background:#f0f5ff;} .tp.sel{background:#D8EAFA;}
 .tp-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;}
 .tp-nm{font-size:13px;font-weight:700;} .tp-sb{font-size:11px;color:#8096A7;margin-top:1px;}
 /* SUMBOX */
-.sumbox{background:linear-gradient(135deg,#001F4D,#005BAA);border-radius:12px;padding:16px;color:#fff;margin-bottom:14px;}
+.sumbox{background:linear-gradient(135deg,#003836,#006B68);border-radius:12px;padding:16px;color:#fff;margin-bottom:14px;}
 .sumbox h4{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px;}
 .sum-r{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);}
 .sum-r:last-child{border:none;} .sum-l{font-size:11.5px;color:rgba(255,255,255,.6);} .sum-v{font-size:12px;font-weight:700;color:#fff;}
 /* ASSIGN TABLE */
 .at{width:100%;border-collapse:collapse;}
-.at th{background:#F0F6FC;padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#8096A7;border-bottom:1px solid #C8D8E8;white-space:nowrap;}
-.at td{padding:5px 8px;border-bottom:1px solid #EBF2F8;vertical-align:middle;}
+.at th{background:#EDF7F6;padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#8096A7;border-bottom:1px solid #B8D8D6;white-space:nowrap;}
+.at td{padding:5px 8px;border-bottom:1px solid #E8F5F4;vertical-align:middle;}
 .at tr:last-child td{border-bottom:none;}
-.vi{width:130px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12.5px;text-align:right;outline:none;background:#fff;}
-.vi:focus{border-color:#0068C5;background:#EAF2FB;}
-.ui{width:90px;padding:5px 7px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12px;outline:none;background:#fff;}
-.ni{width:100%;padding:4px 7px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:11.5px;outline:none;background:#fff;}
+.vi{width:130px;padding:5px 8px;border:1.5px solid #B8D8D6;border-radius:6px;font-family:inherit;font-size:12.5px;text-align:right;outline:none;background:#fff;}
+.vi:focus{border-color:#007B78;background:#E8F5F4;}
+.ui{width:90px;padding:5px 7px;border:1.5px solid #B8D8D6;border-radius:6px;font-family:inherit;font-size:12px;outline:none;background:#fff;}
+.ni{width:100%;padding:4px 7px;border:1.5px solid #B8D8D6;border-radius:6px;font-family:inherit;font-size:11.5px;outline:none;background:#fff;}
 /* IMPORT ZONE */
-.iz{border:2px dashed #C8D8E8;border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:#EAF2FB;}
-.iz:hover{border-color:#0068C5;background:#EAF2FB;}
+.iz{border:2px dashed #B8D8D6;border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:#E8F5F4;}
+.iz:hover{border-color:#007B78;background:#E8F5F4;}
 /* SPINNER */
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:4px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.suggest{background:#FFF3E0;color:#B87100;padding:3px 8px;border-radius:5px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;border:1.5px solid #F5C066;display:inline-block;}
+.suggest{background:#FFFBEC;color:#C09500;padding:3px 8px;border-radius:5px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;border:1.5px solid #FFDB7A;display:inline-block;}
 .suggest:hover{background:#FEF0CC;border-color:#e0b800;}
-.suggest.ok{background:#E4F5EC;color:#1B7A3E;border-color:#80CCA0;}
+.suggest.ok{background:#E0F4F0;color:#0A7A6E;border-color:#6BBFB8;}
 .suggest.high{background:#fdecea;color:#c0392b;border-color:#f5b7b1;}
-.ratio-bar{height:5px;border-radius:3px;background:#D8E6F0;margin-top:3px;overflow:hidden;}
+.ratio-bar{height:5px;border-radius:3px;background:#C8E4E2;margin-top:3px;overflow:hidden;}
 .ratio-fill{height:100%;border-radius:3px;transition:width .3s;}
-.param-box{background:#EAF2FB;border:1.5px solid #C8D9F0;border-radius:10px;padding:14px;margin-bottom:14px;}
-.param-box h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#005BAA;margin-bottom:10px;}
+.param-box{background:#E8F5F4;border:1.5px solid #B8E0DC;border-radius:10px;padding:14px;margin-bottom:14px;}
+.param-box h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#006B68;margin-bottom:10px;}
 .param-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
 .param-lbl{font-size:12px;color:#4A5568;min-width:160px;}
-.param-inp{width:90px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12px;text-align:right;outline:none;}
-.param-inp:focus{border-color:#0068C5;}
+.param-inp{width:90px;padding:5px 8px;border:1.5px solid #B8D8D6;border-radius:6px;font-family:inherit;font-size:12px;text-align:right;outline:none;}
+.param-inp:focus{border-color:#007B78;}
 .hint{font-size:10.5px;color:#8096A7;font-style:italic;}
 /* GS CONFIG STEPS */
-.gs-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #E8F0F8;}
+.gs-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #E8F5F4;}
 .gs-step:last-child{border:none;}
-.gs-num{width:24px;height:24px;border-radius:50%;background:#005BAA;color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.gs-step-t{font-size:12.5px;color:#003F7A;line-height:1.6;}
-.gs-step-t b{color:#005BAA;}
+.gs-num{width:24px;height:24px;border-radius:50%;background:#006B68;color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.gs-step-t{font-size:12.5px;color:#005452;line-height:1.6;}
+.gs-step-t b{color:#006B68;}
 </style>
 </head>
 <body>
@@ -185,7 +185,8 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="sb-a" data-s="ds" onclick="go(this)"><span class="sb-ic">📋</span>Danh sách PG<span class="sb-bx" id="bPG">0</span></div>
     <div class="sb-sec">Quản lý</div>
     <div class="sb-a" data-s="cb" onclick="go(this)"><span class="sb-ic">👥</span>Cán bộ</div>
-    <div class="sb-a" data-s="imp" onclick="go(this)"><span class="sb-ic">📥</span>Import Excel</div>
+    <div class="sb-a" data-s="imp" onclick="go(this)"><span class="sb-ic">📥</span>Import bộ CT</div>
+    <div class="sb-a" data-s="impkh" onclick="go(this)"><span class="sb-ic">📊</span>Import kế hoạch<span class="sb-bx" id="bImpKH">Mới</span></div>
     <div class="sb-a" data-s="exp" onclick="go(this)"><span class="sb-ic">📤</span>Xuất dữ liệu</div>
     <div class="sb-a" data-s="gscfg" onclick="go(this)"><span class="sb-ic">🔗</span>Google Sheets<span id="gsStatusDot" style="margin-left:auto;font-size:10px">⚪</span></div>
   </nav>
@@ -200,6 +201,7 @@ textarea.fc{resize:vertical;min-height:60px;}
       <div class="top-s" id="topS">Tổng quan</div>
     </div>
     <div class="top-r">
+      <span id="todayTxt" style="font-size:11px;color:#8096A7;margin-right:6px"></span>
       <div id="gsBar" style="font-size:11.5px;padding:4px 10px;border-radius:6px;border:1px solid transparent;max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
       <button class="btn btn-gray btn-sm" onclick="loadFromGSheet()" title="Tải lại từ Google Sheets">🔄 Đồng bộ</button>
       <button class="btn btn-blue btn-sm" onclick="go(document.querySelector('[data-s=tao]'))">📨 Phân giao mới</button>
@@ -307,13 +309,13 @@ textarea.fc{resize:vertical;min-height:60px;}
             <button class="btn btn-blue btn-sm" onclick="fillAllSuggest()">↙ Điền tất cả gợi ý</button>
             <span style="font-size:11.5px;color:#4A5568">|</span>
             <span style="font-size:11.5px;color:#4A5568">Đơn vị mặc định:</span>
-            <input type="text" id="defUnit" placeholder="vd: Triệu đồng" style="width:130px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-size:12px;font-family:inherit;outline:none">
+            <input type="text" id="defUnit" placeholder="vd: Triệu đồng" style="width:130px;padding:5px 8px;border:1.5px solid #B8D8D6;border-radius:6px;font-size:12px;font-family:inherit;outline:none">
             <button class="btn btn-gray btn-sm" onclick="applyUnit()">Áp dụng</button>
             <button class="btn btn-gray btn-sm" onclick="clearVals()">Xóa trắng</button>
           </div>
         </div>
         <!-- PARAM BOX PP2 -->
-        <div id="paramBox" style="display:none;padding:14px 16px;background:#f8fbff;border-bottom:1.5px solid #C8D8E8">
+        <div id="paramBox" style="display:none;padding:14px 16px;background:#f8fbff;border-bottom:1.5px solid #B8D8D6">
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
             <!-- Cột 1: KH Chi nhánh -->
             <div class="param-box">
@@ -329,8 +331,8 @@ textarea.fc{resize:vertical;min-height:60px;}
                 <input type="text" class="param-inp" id="pp_thCN" placeholder="0" oninput="calcSuggest()">
               </div>
               <div class="param-row">
-                <span class="param-lbl" style="color:#C8860A;font-weight:700">→ KH tăng ròng CN</span>
-                <span id="pp_tangRongCN" style="font-weight:700;color:#C8860A;font-size:13px">—</span>
+                <span class="param-lbl" style="color:#C09500;font-weight:700">→ KH tăng ròng CN</span>
+                <span id="pp_tangRongCN" style="font-weight:700;color:#C09500;font-size:13px">—</span>
               </div>
             </div>
             <!-- Cột 2: Thông số Phòng -->
@@ -354,8 +356,8 @@ textarea.fc{resize:vertical;min-height:60px;}
                 <span class="hint">0.5 / 0.8 / 1.0 / 1.2 / 1.5</span>
               </div>
               <div class="param-row">
-                <span class="param-lbl" style="color:#1B7A3E;font-weight:700">→ KH Phòng (PP2)</span>
-                <span id="pp_khPhong" style="font-weight:700;color:#1B7A3E;font-size:13px">—</span>
+                <span class="param-lbl" style="color:#0A7A6E;font-weight:700">→ KH Phòng (PP2)</span>
+                <span id="pp_khPhong" style="font-weight:700;color:#0A7A6E;font-size:13px">—</span>
               </div>
             </div>
             <!-- Cột 3: Thông số cán bộ -->
@@ -379,7 +381,7 @@ textarea.fc{resize:vertical;min-height:60px;}
                 <input type="text" class="param-inp" id="pp_h2" placeholder="1.0" value="1.0" oninput="calcSuggest()">
                 <span class="hint">0.5 / 0.8 / 1.0 / 1.2 / 1.5</span>
               </div>
-              <div style="background:#fff;border:1px solid #C8D8E8;border-radius:7px;padding:8px 10px;margin-top:6px;font-size:11px;color:#4A5568">
+              <div style="background:#fff;border:1px solid #B8D8D6;border-radius:7px;padding:8px 10px;margin-top:6px;font-size:11px;color:#4A5568">
                 <b>Công thức PP2:</b><br>
                 KH(CB) = TH(CB) + KH_tăng_ròng(P) × PCđc(CB)/Σ PCđc(P)<br>
                 KH_tăng_ròng(P) = KH(P) - TH(P)<br>
@@ -394,7 +396,7 @@ textarea.fc{resize:vertical;min-height:60px;}
               <span onclick="setH2(0.5)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#fdecea;color:#c0392b;font-size:11.5px;font-weight:700;border:1.5px solid #f5b7b1">NSLĐ ≥2× BQ → <b>0.5</b></span>
               <span onclick="setH2(0.8)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#fff3e0;color:#e65100;font-size:11.5px;font-weight:700;border:1.5px solid #FFC266">1.2×÷2× BQ → <b>0.8</b></span>
               <span onclick="setH2(1.0)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#e8f5e9;color:#2e7d32;font-size:11.5px;font-weight:700;border:1.5px solid #a5d6a7">0.75×÷1.2× BQ → <b>1.0</b></span>
-              <span onclick="setH2(1.2)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#EAF2FB;color:#005BAA;font-size:11.5px;font-weight:700;border:1.5px solid #7DB3E0">&lt;0.75× BQ → <b>1.2</b></span>
+              <span onclick="setH2(1.2)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#E8F5F4;color:#006B68;font-size:11.5px;font-weight:700;border:1.5px solid #5BBDB8">&lt;0.75× BQ → <b>1.2</b></span>
               <span onclick="setH2(1.5)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#f3e5f5;color:#6a1b9a;font-size:11.5px;font-weight:700;border:1.5px solid #ce93d8">&lt;0.5× BQ → <b>1.5</b></span>
             </div>
           </div>
@@ -402,12 +404,12 @@ textarea.fc{resize:vertical;min-height:60px;}
         <div style="overflow-y:auto;max-height:480px">
           <table class="at"><thead><tr>
             <th style="width:36px">#</th><th>Tên chỉ tiêu</th>
-            <th style="width:140px;text-align:right;background:#FFF3E0;color:#B87100">💡 Số gợi ý (PP2)</th>
+            <th style="width:140px;text-align:right;background:#FFFBEC;color:#C09500">💡 Số gợi ý (PP2)</th>
             <th style="width:150px;text-align:right">Số KH nhập</th>
             <th style="width:110px">Đơn vị</th><th style="min-width:110px">Ghi chú</th>
           </tr></thead><tbody id="wz3Tb"></tbody></table>
         </div>
-        <div style="padding:8px 14px;background:#f9fbfc;border-top:1px solid #E8F0F8;font-size:11.5px;color:#4A5568">
+        <div style="padding:8px 14px;background:#f9fbfc;border-top:1px solid #E8F5F4;font-size:11.5px;color:#4A5568">
           💡 Nhập số kế hoạch cụ thể. Bỏ trống nếu chưa có giá trị.
         </div>
       </div>
@@ -421,7 +423,7 @@ textarea.fc{resize:vertical;min-height:60px;}
         <div class="card">
           <div class="card-h"><div class="card-t">📑 Xem lại trước khi lưu</div><span id="wz4N" style="font-size:11px;color:#8096A7"></span></div>
           <div class="tw" style="max-height:400px;overflow-y:auto"><table>
-            <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFF3E0;color:#B87100">Số gợi ý</th><th style="text-align:right">Số KH nhập</th><th>Tỷ lệ</th><th>Đơn vị</th><th>Ghi chú</th></tr></thead>
+            <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFFBEC;color:#C09500">Số gợi ý</th><th style="text-align:right">Số KH nhập</th><th>Tỷ lệ</th><th>Đơn vị</th><th>Ghi chú</th></tr></thead>
             <tbody id="wz4Tb"></tbody>
           </table></div>
         </div>
@@ -494,30 +496,30 @@ textarea.fc{resize:vertical;min-height:60px;}
       <div class="card-b">
         <div id="impAlert"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-          <div style="background:#EAF2FB;border-radius:10px;padding:13px">
-            <div style="font-weight:700;font-size:12px;color:#005BAA;margin-bottom:8px">📋 Sheet "KPI"</div>
+          <div style="background:#E8F5F4;border-radius:10px;padding:13px">
+            <div style="font-weight:700;font-size:12px;color:#006B68;margin-bottom:8px">📋 Sheet "KPI"</div>
             <table style="width:100%;font-size:11px;border-collapse:collapse">
-              <tr style="background:#B8D4ED"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">MA_CB</td><td style="padding:2px 6px;color:#4A5568">164245</td></tr>
-              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">MA_AM</td><td style="padding:2px 6px;color:#4A5568">44116008</td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">TEN_CB</td><td style="padding:2px 6px;color:#4A5568">Nguyễn Văn A</td></tr>
-              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">EMAIL</td><td style="padding:2px 6px;color:#4A5568"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f3e1f3d363b29713c3032712931">[email&#160;protected]</a></td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">PHONG</td><td style="padding:2px 6px;color:#4A5568">CẨM BÌNH</td></tr>
-              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">VI_TRI</td><td style="padding:2px 6px;color:#4A5568">QLKH</td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">VAI_TRO</td><td style="padding:2px 6px;color:#4A5568">CAN_BO</td></tr>
-              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">TRANG THAI</td><td style="padding:2px 6px;color:#4A5568">HOAT_DONG</td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">CHI TIEU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ cuối kỳ</td></tr>
+              <tr style="background:#A8D8D4"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#006B68">MA_CB</td><td style="padding:2px 6px;color:#4A5568">164245</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:2px 6px;font-family:monospace;color:#006B68">MA_AM</td><td style="padding:2px 6px;color:#4A5568">44116008</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#006B68">TEN_CB</td><td style="padding:2px 6px;color:#4A5568">Nguyễn Văn A</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:2px 6px;font-family:monospace;color:#006B68">EMAIL</td><td style="padding:2px 6px;color:#4A5568"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f3e1f3d363b29713c3032712931">[email&#160;protected]</a></td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#006B68">PHONG</td><td style="padding:2px 6px;color:#4A5568">CẨM BÌNH</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:2px 6px;font-family:monospace;color:#006B68">VI_TRI</td><td style="padding:2px 6px;color:#4A5568">QLKH</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#006B68">VAI_TRO</td><td style="padding:2px 6px;color:#4A5568">CAN_BO</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:2px 6px;font-family:monospace;color:#006B68">TRANG THAI</td><td style="padding:2px 6px;color:#4A5568">HOAT_DONG</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#006B68">CHI TIEU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ cuối kỳ</td></tr>
             </table>
-            <div style="margin-top:6px;font-size:10.5px;color:#005BAA">⚠ 1 hàng = 1 cán bộ × 1 chỉ tiêu</div>
+            <div style="margin-top:6px;font-size:10.5px;color:#006B68">⚠ 1 hàng = 1 cán bộ × 1 chỉ tiêu</div>
           </div>
-          <div style="background:#E4F5EC;border-radius:10px;padding:13px">
-            <div style="font-weight:700;font-size:12px;color:#0D6B3A;margin-bottom:8px">📋 Sheet "BSC"</div>
+          <div style="background:#E0F4F0;border-radius:10px;padding:13px">
+            <div style="font-weight:700;font-size:12px;color:#087A70;margin-bottom:8px">📋 Sheet "BSC"</div>
             <table style="width:100%;font-size:11px;border-collapse:collapse">
-              <tr style="background:#9DD6B8"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
-              <tr><td style="padding:2px 6px;font-family:monospace;color:#0D6B3A">MÃ BCT</td><td style="padding:2px 6px;color:#4A5568">PGD / KHCN / KHDN / KHƯT</td></tr>
-              <tr style="background:#f0faf5"><td style="padding:2px 6px;font-family:monospace;color:#0D6B3A">CHỈ TIÊU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ tín dụng cuối kỳ</td></tr>
+              <tr style="background:#8DD8D0"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#087A70">MÃ BCT</td><td style="padding:2px 6px;color:#4A5568">PGD / KHCN / KHDN / KHƯT</td></tr>
+              <tr style="background:#f0faf5"><td style="padding:2px 6px;font-family:monospace;color:#087A70">CHỈ TIÊU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ tín dụng cuối kỳ</td></tr>
             </table>
-            <div style="margin-top:10px;font-size:11px;color:#1B7A3E;line-height:1.8">
+            <div style="margin-top:10px;font-size:11px;color:#0A7A6E;line-height:1.8">
               <b>Phòng → Mã BCT:</b><br>
               CẨM BÌNH, CẨM PHÚ, CẨM THỦY,<br>MÔNG DƯƠNG, QUANG HANH, VÂN ĐỒN → <b>PGD</b><br>
               KHCN → <b>KHCN</b> · KHDN → <b>KHDN</b> · KHƯT → <b>KHƯT</b>
@@ -540,6 +542,89 @@ textarea.fc{resize:vertical;min-height:60px;}
         <button class="btn btn-gray btn-sm" onclick="resetDef()">↩ Khôi phục mặc định</button>
         <button class="btn btn-red btn-sm" onclick="clearAllPG()">🗑 Xóa tất cả phân giao</button>
       </div>
+    </div>
+  </div>
+
+  <!-- IMPORT KẾ HOẠCH HÀNG LOẠT -->
+  <div class="sec" id="sec-impkh">
+    <div class="card">
+      <div class="card-h">
+        <div>
+          <div class="card-t">📊 Import kế hoạch hàng loạt</div>
+          <div style="font-size:11.5px;color:#8096A7;margin-top:3px">Nhập số kế hoạch cho nhiều cán bộ / đơn vị cùng lúc từ file Excel</div>
+        </div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-gold btn-sm" onclick="downloadKHSample('KPI')">⬇ File mẫu KPI</button>
+          <button class="btn btn-green btn-sm" onclick="downloadKHSample('BSC')">⬇ File mẫu BSC</button>
+        </div>
+      </div>
+      <div class="card-b">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div style="background:#E8F5F4;border-radius:10px;padding:14px">
+            <div style="font-weight:700;font-size:12px;color:#006B68;margin-bottom:8px">📋 Cấu trúc file KPI (giao cho cán bộ)</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse">
+              <tr style="background:#A8D8D4"><td style="padding:3px 7px;font-weight:700">Cột</td><td style="padding:3px 7px;font-weight:700">Nội dung</td><td style="padding:3px 7px;font-weight:700">Ví dụ</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#006B68;font-weight:700">MA_CB ✅</td><td style="padding:3px 7px">Mã cán bộ</td><td style="padding:3px 7px;color:#4A5568">164245</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#006B68;font-weight:700">CHI_TIEU ✅</td><td style="padding:3px 7px">Tên chỉ tiêu <span style="color:#E31837">(khớp chính xác)</span></td><td style="padding:3px 7px;color:#4A5568">Dư nợ cuối kỳ</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#006B68;font-weight:700">SO_KH ✅</td><td style="padding:3px 7px">Số kế hoạch</td><td style="padding:3px 7px;color:#4A5568">1500</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">DON_VI</td><td style="padding:3px 7px">Đơn vị tính</td><td style="padding:3px 7px;color:#4A5568">Triệu đồng</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">GHI_CHU</td><td style="padding:3px 7px">Ghi chú CT</td><td style="padding:3px 7px;color:#4A5568"></td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">NGUOI_GIAO</td><td style="padding:3px 7px">Người giao</td><td style="padding:3px 7px;color:#4A5568">Nguyễn Văn A</td></tr>
+              <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">KY</td><td style="padding:3px 7px">Kỳ đánh giá</td><td style="padding:3px 7px;color:#4A5568">Quý 1/2025</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2025-03-31</td></tr>
+            </table>
+            <div style="margin-top:7px;font-size:10.5px;color:#006B68">⚠ Mỗi hàng = 1 cán bộ × 1 chỉ tiêu. Cùng MA_CB → nhóm thành 1 phân giao.</div>
+          </div>
+          <div style="background:#E0F4F0;border-radius:10px;padding:14px">
+            <div style="font-weight:700;font-size:12px;color:#087A70;margin-bottom:8px">📋 Cấu trúc file BSC (giao cho đơn vị)</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse">
+              <tr style="background:#8DD8D0"><td style="padding:3px 7px;font-weight:700">Cột</td><td style="padding:3px 7px;font-weight:700">Nội dung</td><td style="padding:3px 7px;font-weight:700">Ví dụ</td></tr>
+              <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#087A70;font-weight:700">DON_VI ✅</td><td style="padding:3px 7px">Tên phòng / PGD</td><td style="padding:3px 7px;color:#4A5568">CẨM BÌNH</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#087A70;font-weight:700">CHI_TIEU ✅</td><td style="padding:3px 7px">Tên chỉ tiêu BSC</td><td style="padding:3px 7px;color:#4A5568">Dư nợ tín dụng cuối kỳ</td></tr>
+              <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#087A70;font-weight:700">SO_KH ✅</td><td style="padding:3px 7px">Số kế hoạch</td><td style="padding:3px 7px;color:#4A5568">5000</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">DON_VI_TINH</td><td style="padding:3px 7px">Đơn vị tính</td><td style="padding:3px 7px;color:#4A5568">Triệu đồng</td></tr>
+              <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">GHI_CHU</td><td style="padding:3px 7px">Ghi chú CT</td><td style="padding:3px 7px;color:#4A5568"></td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">NGUOI_GIAO</td><td style="padding:3px 7px">Người giao</td><td style="padding:3px 7px;color:#4A5568">Nguyễn Văn A</td></tr>
+              <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">KY</td><td style="padding:3px 7px">Kỳ đánh giá</td><td style="padding:3px 7px;color:#4A5568">Quý 1/2025</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2025-03-31</td></tr>
+            </table>
+            <div style="margin-top:7px;font-size:10.5px;color:#087A70">⚠ Mỗi hàng = 1 đơn vị × 1 chỉ tiêu. Cùng DON_VI → nhóm thành 1 phân giao.</div>
+          </div>
+        </div>
+        <div id="impKHAlert"></div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <span style="font-size:12.5px;color:#4A5568;font-weight:600">Loại file:</span>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:5px 12px;border:1.5px solid #B8D8D6;border-radius:7px;background:#E8F5F4">
+            <input type="radio" name="impKHType" value="KPI" checked onchange="updateImpKHHint()">
+            <span style="font-weight:700;color:#006B68">🎯 KPI</span> <span style="font-size:11px;color:#8096A7">(cán bộ AM)</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:5px 12px;border:1.5px solid #B8D8D6;border-radius:7px;background:#E0F4F0">
+            <input type="radio" name="impKHType" value="BSC" onchange="updateImpKHHint()">
+            <span style="font-weight:700;color:#087A70">📐 BSC</span> <span style="font-size:11px;color:#8096A7">(phòng / PGD)</span>
+          </label>
+          <div style="flex:1;min-width:200px;font-size:11.5px;color:#8096A7;background:#EDF7F6;padding:6px 10px;border-radius:6px;border:1px solid #B8D8D6" id="impKHHint">Cột bắt buộc: MA_CB, CHI_TIEU, SO_KH</div>
+        </div>
+        <div class="iz" onclick="document.getElementById('fImpKH').click()" ondragover="dze(event)" ondragleave="dze2(event)" ondrop="dropKH(event)">
+          <div style="font-size:36px">📊</div>
+          <p style="font-weight:700;font-size:13px;margin:6px 0">Kéo thả hoặc nhấn để chọn file .xlsx</p>
+          <p style="font-size:11.5px;color:#8096A7" id="impKHDropHint">File KPI: MA_CB · CHI_TIEU · SO_KH · DON_VI · NGUOI_GIAO · KY · HAN</p>
+        </div>
+        <input type="file" id="fImpKH" accept=".xlsx" style="display:none" onchange="doImportKH(this)">
+      </div>
+    </div>
+    <div class="card" id="impKHPreviewCard" style="display:none">
+      <div class="card-h">
+        <div class="card-t">👁 Xem trước — kiểm tra trước khi import</div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <span id="impKHPreviewInfo" style="font-size:11.5px;color:#8096A7"></span>
+          <button class="btn btn-gray btn-sm" onclick="document.getElementById('impKHPreviewCard').style.display='none'">Đóng</button>
+          <button class="btn btn-green" id="btnConfirmImpKH" onclick="confirmImportKH()">✅ Xác nhận import</button>
+        </div>
+      </div>
+      <div class="tw" style="max-height:420px;overflow-y:auto">
+        <table><thead id="impKHPreviewHead"></thead><tbody id="impKHPreviewTb"></tbody></table>
+      </div>
+      <div style="padding:10px 14px;background:#EDF7F6;border-top:1px solid #E8F5F4;font-size:12px" id="impKHPreviewNote"></div>
     </div>
   </div>
 
@@ -610,7 +695,7 @@ textarea.fc{resize:vertical;min-height:60px;}
           <div class="gs-step"><div class="gs-num">4</div><div class="gs-step-t">Nhấn <b>Deploy → New deployment</b><br>• Type: <b>Web App</b><br>• Execute as: <b>Me</b><br>• Who has access: <b>Anyone</b></div></div>
           <div class="gs-step"><div class="gs-num">5</div><div class="gs-step-t">Copy <b>Web app URL</b> → dán vào ô bên trái → <b>Lưu & Kết nối</b></div></div>
           <div class="gs-step"><div class="gs-num">6</div><div class="gs-step-t">Vào <b>Import Excel</b>, import file BO_CHI_TIEU_KH.xlsx → tự động đồng bộ lên GSheet</div></div>
-          <div style="background:#FEF3E2;border-radius:8px;padding:10px;margin-top:10px;font-size:11.5px;color:#C8860A">
+          <div style="background:#FFFBEC;border-radius:8px;padding:10px;margin-top:10px;font-size:11.5px;color:#C09500">
             ⚠ Mỗi lần sửa code Apps Script cần <b>Deploy lại</b> (New deployment hoặc Manage deployments → Edit).
           </div>
         </div>
@@ -733,10 +818,10 @@ async function gsDeletePG(id) {
 function gsBar(type, msg) {
   const el = document.getElementById('gsBar');
   const st = {
-    ok:   'background:#E4F5EC;color:#0D6B3A;border-color:#80CCA0',
+    ok:   'background:#E0F4F0;color:#087A70;border-color:#6BBFB8',
     err:  'background:#fdecea;color:#c0392b;border-color:#f5b7b1',
-    warn: 'background:#FEF3E2;color:#C8860A;border-color:#F5C066',
-    load: 'background:#EAF2FB;color:#005BAA;border-color:#7DB3E0'
+    warn: 'background:#FFFBEC;color:#C09500;border-color:#FFDB7A',
+    load: 'background:#E8F5F4;color:#006B68;border-color:#5BBDB8'
   };
   el.style.cssText = st[type] || st.load;
   el.innerHTML = msg;
@@ -753,7 +838,7 @@ function updGsDot(ok) {
 async function testGS() {
   const url = document.getElementById('gsUrlInp').value.trim();
   if (!url) { document.getElementById('gsTestOut').innerHTML = '<span style="color:#c0392b">⚠ Nhập URL trước!</span>'; return; }
-  document.getElementById('gsTestOut').innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#005BAA"></span> Đang kiểm tra...';
+  document.getElementById('gsTestOut').innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#006B68"></span> Đang kiểm tra...';
   try {
     const r = await fetch(url + '?action=getAll', { redirect: 'follow' });
     const j = await r.json();
@@ -815,7 +900,8 @@ const NT = { dash:'Dashboard', kpi:'Chỉ tiêu KPI', bsc:'Chỉ tiêu BSC',
   imp:'Import Excel', exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
 const NS = { dash:'Tổng quan', kpi:'Theo vị trí', bsc:'Theo mã BCT',
   tao:'Phân giao số kế hoạch cụ thể', ds:'Lịch sử phân giao',
-  cb:'Danh sách cán bộ AM', imp:'Import từ file Excel',
+  cb:'Danh sách cán bộ AM', imp:'Import bộ chỉ tiêu từ file Excel',
+  impkh:'Import số kế hoạch hàng loạt cho nhiều cán bộ / đơn vị',
   exp:'Xuất Excel', gscfg:'Cấu hình kết nối Google Sheets' };
 
 function go(el) {
@@ -827,7 +913,8 @@ function go(el) {
   document.getElementById('topT').textContent = NT[s] || s;
   document.getElementById('topS').textContent = NS[s] || '';
   const fn = { dash:renderDash, kpi:renderKPI, bsc:renderBSC, ds:renderDS,
-               cb:renderCB, exp:renderExpPreview, gscfg:renderGsCfgStatus };
+               cb:renderCB, exp:renderExpPreview, gscfg:renderGsCfgStatus,
+               impkh:updateImpKHHint };
   (fn[s] || function(){})();
 }
 
@@ -851,10 +938,10 @@ function renderDash() {
   const totK = Object.values(VT).reduce((a,v) => a+v.length, 0);
   const totB = Object.values(BSC).reduce((a,v) => a+v.length, 0);
   document.getElementById('statRow').innerHTML = `
-    <div class="stat"><div class="stat-v" style="color:#005BAA">${CB.length}</div><div class="stat-l">👤 Cán bộ AM</div></div>
-    <div class="stat"><div class="stat-v" style="color:#005BAA">${totK}</div><div class="stat-l">🎯 Chỉ tiêu KPI</div></div>
-    <div class="stat"><div class="stat-v" style="color:#1B7A3E">${totB}</div><div class="stat-l">📐 Chỉ tiêu BSC</div></div>
-    <div class="stat" style="border-left:4px solid #E31837"><div class="stat-v" style="color:#C8860A">${PG.length}</div><div class="stat-l">📨 Lượt phân giao</div></div>`;
+    <div class="stat"><div class="stat-v" style="color:#006B68">${CB.length}</div><div class="stat-l">👤 Cán bộ AM</div></div>
+    <div class="stat"><div class="stat-v" style="color:#006B68">${totK}</div><div class="stat-l">🎯 Chỉ tiêu KPI</div></div>
+    <div class="stat"><div class="stat-v" style="color:#0A7A6E">${totB}</div><div class="stat-l">📐 Chỉ tiêu BSC</div></div>
+    <div class="stat" style="border-left:4px solid #E31837"><div class="stat-v" style="color:#C09500">${PG.length}</div><div class="stat-l">📨 Lượt phân giao</div></div>`;
   const rec = [...PG].reverse().slice(0, 8);
   document.getElementById('pgRecent').innerHTML = rec.length ? rec.map(p => `
     <tr class="row-c" onclick="viewPG('${p.id}')">
@@ -862,16 +949,16 @@ function renderDash() {
       <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
       <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
       <td>${p.ctCount}</td>
-      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td style="color:${p.khCount?'#006B68':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ky||''}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
       <td><button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button></td>
     </tr>`).join('') : '<tr><td colspan="9"><div class="empty">📭<p>Chưa có phân giao</p></div></td></tr>';
   document.getElementById('vtStat').innerHTML = Object.entries(VT).map(([vt,cts]) =>
-    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #EBF2F8"><span class="vt">${vt}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
+    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="vt">${vt}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
   document.getElementById('bscStat').innerHTML = Object.entries(BSC).map(([m,cts]) =>
-    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #EBF2F8"><span class="ph">${m}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
+    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="ph">${m}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -989,15 +1076,15 @@ function renderTargets() {
     list.forEach(c => { if (!byPh[c.phong]) byPh[c.phong]=[]; byPh[c.phong].push(c); });
     if (!Object.keys(byPh).length) { html = '<div class="empty">Không tìm thấy</div>'; }
     else html = Object.entries(byPh).map(([ph,cbs]) =>
-      `<div style="padding:5px 14px 3px;background:#F0F6FC;border-bottom:1px solid #e4eaf2"><span class="ph">${ph}</span></div>` +
+      `<div style="padding:5px 14px 3px;background:#EDF7F6;border-bottom:1px solid #e4eaf2"><span class="ph">${ph}</span></div>` +
       cbs.map(c => {
         const sel = WZ.target === c.maCB;
         const ctN = (VT[c.viTri]||[]).length;
         return `<div class="tp${sel?' sel':''}" onclick="pickTargetKPI('${esc(c.maCB)}','${esc(c.tenCB)}','${esc(c.phong)}','${esc(c.viTri)}')">
-          <div class="tp-av" style="background:${sel?'#005BAA':'#EAF2FB'};color:${sel?'#fff':'#005BAA'}">${c.tenCB.charAt(0)}</div>
+          <div class="tp-av" style="background:${sel?'#006B68':'#E8F5F4'};color:${sel?'#fff':'#006B68'}">${c.tenCB.charAt(0)}</div>
           <div style="flex:1"><div class="tp-nm">${c.tenCB}</div>
           <div class="tp-sb">${c.maCB} · <span class="vt" style="font-size:10px">${c.viTri}</span> · ${ctN} chỉ tiêu</div></div>
-          ${sel ? '<span style="color:#005BAA;font-size:18px;font-weight:700">✓</span>' : ''}
+          ${sel ? '<span style="color:#006B68;font-size:18px;font-weight:700">✓</span>' : ''}
         </div>`;
       }).join('')).join('');
   } else {
@@ -1007,10 +1094,10 @@ function renderTargets() {
       const sel = WZ.target === ph;
       const ctN = (BSC[maBCT]||[]).length;
       return `<div class="tp${sel?' sel':''}" onclick="pickTargetBSC('${esc(ph)}','${esc(maBCT)}')">
-        <div class="tp-av" style="background:${sel?'#1B7A3E':'#E4F5EC'};color:${sel?'#fff':'#1B7A3E'};font-size:18px">🏢</div>
+        <div class="tp-av" style="background:${sel?'#0A7A6E':'#E0F4F0'};color:${sel?'#fff':'#0A7A6E'};font-size:18px">🏢</div>
         <div style="flex:1"><div class="tp-nm">${ph}</div>
         <div class="tp-sb">Mã BCT: <span class="ph" style="font-size:10px">${maBCT}</span> · ${ctN} chỉ tiêu</div></div>
-        ${sel ? '<span style="color:#1B7A3E;font-size:18px;font-weight:700">✓</span>' : ''}
+        ${sel ? '<span style="color:#0A7A6E;font-size:18px;font-weight:700">✓</span>' : ''}
       </div>`;
     }).join('');
   }
@@ -1057,7 +1144,7 @@ function buildStep3() {
       <td style="font-size:12.5px;max-width:240px">${ct}</td>
       <td style="text-align:right">
         <span class="suggest" id="sg_${i}" onclick="fillSuggest(${i})" title="Nhấn để điền vào ô KH">—</span>
-        <div class="ratio-bar" id="rb_${i}"><div class="ratio-fill" id="rf_${i}" style="width:0%;background:#F5A623"></div></div>
+        <div class="ratio-bar" id="rb_${i}"><div class="ratio-fill" id="rf_${i}" style="width:0%;background:#FFC62F"></div></div>
       </td>
       <td><input type="text" class="vi" id="v_${i}" placeholder="Nhập số..." autocomplete="off" inputmode="decimal" oninput="onValChange(${i})"></td>
       <td><input type="text" class="ui" id="u_${i}" placeholder="Đơn vị" autocomplete="off"></td>
@@ -1160,7 +1247,7 @@ function updateRatioBadge(i, suggest, entered) {
   if(entered !== null && suggest > 0) {
     const ratio = entered / suggest;
     const pct = Math.min(Math.round(ratio*100), 200);
-    if(rf) { rf.style.width=Math.min(pct,100)+'%'; rf.style.background = ratio>=0.9&&ratio<=1.1 ? '#1B7A3E' : ratio<0.7 ? '#c0392b' : '#F5A623'; }
+    if(rf) { rf.style.width=Math.min(pct,100)+'%'; rf.style.background = ratio>=0.9&&ratio<=1.1 ? '#0A7A6E' : ratio<0.7 ? '#c0392b' : '#FFC62F'; }
     sg.className = 'suggest ' + (ratio>=0.9&&ratio<=1.1 ? 'ok' : ratio<0.7 ? 'high' : '');
     sg.title = `Gợi ý: ${fmtSuggest(suggest)} | Nhập: ${fmtSuggest(entered)} | Tỷ lệ: ${(ratio*100).toFixed(0)}%`;
   } else {
@@ -1209,14 +1296,14 @@ function buildStep4() {
     if(entered && !isNaN(sgVal) && sgVal > 0) {
       const r = entered / sgVal;
       ratioTxt = (r*100).toFixed(0) + '%';
-      ratioColor = r>=0.9&&r<=1.1 ? '#1B7A3E' : r>=0.7 ? '#C8860A' : '#c0392b';
+      ratioColor = r>=0.9&&r<=1.1 ? '#0A7A6E' : r>=0.7 ? '#C09500' : '#c0392b';
       ratioNote = r>=0.9&&r<=1.1 ? '✓' : r>1.1 ? '↑' : '↓';
     }
     return `<tr>
       <td style="color:#8096A7;font-size:11px">${i+1}</td>
       <td style="font-size:12.5px;max-width:220px">${v.chiTieu}</td>
-      <td style="text-align:right;font-size:12px;color:#C8860A;background:#FFF3E0">${sgTxt}</td>
-      <td style="text-align:right;font-weight:700;color:${v.soKH?'#005BAA':'#8096A7'}">${v.soKH||'—'}</td>
+      <td style="text-align:right;font-size:12px;color:#C09500;background:#FFFBEC">${sgTxt}</td>
+      <td style="text-align:right;font-weight:700;color:${v.soKH?'#006B68':'#8096A7'}">${v.soKH||'—'}</td>
       <td style="font-size:11.5px;font-weight:700;color:${ratioColor}">${ratioTxt} ${ratioNote}</td>
       <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
       <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
@@ -1283,7 +1370,7 @@ function renderDS() {
       <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
       <td style="font-size:11.5px">${p.ky||'—'}</td>
       <td>${p.ctCount}</td>
-      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td style="color:${p.khCount?'#006B68':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
       <td><div style="display:flex;gap:3px">
@@ -1297,7 +1384,7 @@ function viewPG(id) {
   const p = PG.find(x => x.id === id); if (!p) return;
   document.getElementById('mPGT').textContent = `${p.boCT} · ${p.target} · ${p.targetKey}`;
   document.getElementById('mPGB').innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#F0F6FC;border-radius:10px;padding:14px;margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#EDF7F6;border-radius:10px;padding:14px;margin-bottom:16px">
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Bộ CT</div>
         <div style="margin-top:3px"><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">${p.boCT==='KPI'?'Cán bộ':'Phòng'}</div>
@@ -1311,24 +1398,24 @@ function viewPG(id) {
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Hạn / Ngày lập</div>
         <div style="font-size:12px;margin-top:3px">${p.han||'—'} · ${p.ngayGiao||''}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Tổng CT</div>
-        <div style="font-size:22px;font-weight:800;color:#005BAA;margin-top:2px">${p.ctCount}</div></div>
+        <div style="font-size:22px;font-weight:800;color:#006B68;margin-top:2px">${p.ctCount}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Đã nhập KH</div>
-        <div style="font-size:22px;font-weight:800;color:${p.khCount===p.ctCount?'#1B7A3E':'#C8860A'};margin-top:2px">${p.khCount||0}/${p.ctCount}</div></div>
+        <div style="font-size:22px;font-weight:800;color:${p.khCount===p.ctCount?'#0A7A6E':'#C09500'};margin-top:2px">${p.khCount||0}/${p.ctCount}</div></div>
     </div>
-    ${p.ghiChu ? `<div style="background:#FEF3E2;border:1px solid #F5C066;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12.5px"><strong>📝 Ghi chú:</strong> ${p.ghiChu}</div>` : ''}
+    ${p.ghiChu ? `<div style="background:#FFFBEC;border:1px solid #FFDB7A;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12.5px"><strong>📝 Ghi chú:</strong> ${p.ghiChu}</div>` : ''}
     <div class="tw"><table>
-      <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFF3E0;color:#B87100">Số gợi ý (PP2)</th><th style="text-align:right">Số KH đã giao</th><th>Tỷ lệ KH/GY</th><th>Đơn vị</th><th>Ghi chú CT</th></tr></thead>
+      <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFFBEC;color:#C09500">Số gợi ý (PP2)</th><th style="text-align:right">Số KH đã giao</th><th>Tỷ lệ KH/GY</th><th>Đơn vị</th><th>Ghi chú CT</th></tr></thead>
       <tbody>${(p.items||[]).map((v,i) => {
         const sg = v.soGoiY;
         const sgTxt = (sg !== null && sg !== undefined && !isNaN(sg)) ? fmtSuggest(sg) : '—';
         const entered = parseFloat((v.soKH||'').replace(/[^0-9.-]/g,'')) || null;
         let rTxt='—', rColor='#8096A7', rNote='';
-        if(entered && sg && sg>0){ const r=entered/sg; rTxt=(r*100).toFixed(0)+'%'; rColor=r>=0.9&&r<=1.1?'#1B7A3E':r>=0.7?'#C8860A':'#c0392b'; rNote=r>=0.9&&r<=1.1?'✓':r>1.1?'↑':'↓'; }
+        if(entered && sg && sg>0){ const r=entered/sg; rTxt=(r*100).toFixed(0)+'%'; rColor=r>=0.9&&r<=1.1?'#0A7A6E':r>=0.7?'#C09500':'#c0392b'; rNote=r>=0.9&&r<=1.1?'✓':r>1.1?'↑':'↓'; }
         return `<tr>
           <td style="color:#8096A7;font-size:11px">${i+1}</td>
           <td style="font-size:12.5px">${v.chiTieu}</td>
-          <td style="text-align:right;font-size:12px;color:#C8860A;background:#fffdf0">${sgTxt}</td>
-          <td style="text-align:right;font-weight:700;color:${v.soKH?'#005BAA':'#8096A7'};font-size:13px">${v.soKH||'—'}</td>
+          <td style="text-align:right;font-size:12px;color:#C09500;background:#fffdf0">${sgTxt}</td>
+          <td style="text-align:right;font-weight:700;color:${v.soKH?'#006B68':'#8096A7'};font-size:13px">${v.soKH||'—'}</td>
           <td style="font-size:12px;font-weight:700;color:${rColor}">${rTxt} ${rNote}</td>
           <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
           <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
@@ -1372,14 +1459,14 @@ function renderCB() {
     const ctN = (VT[c.viTri]||[]).length;
     const pgN = PG.filter(p => p.boCT==='KPI' && p.target===c.tenCB).length;
     return `<tr>
-      <td><span style="font-family:monospace;font-size:10.5px;background:#EAF2FB;padding:2px 5px;border-radius:4px">${c.maCB}</span></td>
-      <td><span style="font-family:monospace;font-size:10.5px;background:#EAF2FB;color:#005BAA;padding:2px 5px;border-radius:4px">${c.maAM||'—'}</span></td>
+      <td><span style="font-family:monospace;font-size:10.5px;background:#E8F5F4;padding:2px 5px;border-radius:4px">${c.maCB}</span></td>
+      <td><span style="font-family:monospace;font-size:10.5px;background:#E8F5F4;color:#006B68;padding:2px 5px;border-radius:4px">${c.maAM||'—'}</span></td>
       <td><strong>${c.tenCB}</strong></td>
       <td><span class="ph">${c.phong}</span></td>
       <td><span class="vt">${c.viTri}</span></td>
-      <td><span style="font-size:10.5px;padding:2px 7px;border-radius:10px;font-weight:700;background:${c.trangThai==='HOAT_DONG'?'#E4F5EC':'#fdecea'};color:${c.trangThai==='HOAT_DONG'?'#0D6B3A':'#c0392b'}">${c.trangThai}</span></td>
+      <td><span style="font-size:10.5px;padding:2px 7px;border-radius:10px;font-weight:700;background:${c.trangThai==='HOAT_DONG'?'#E0F4F0':'#fdecea'};color:${c.trangThai==='HOAT_DONG'?'#087A70':'#c0392b'}">${c.trangThai}</span></td>
       <td>${ctN} CT</td>
-      <td>${pgN ? `<span style="color:#005BAA;font-weight:700">${pgN}</span>` : '—'}</td>
+      <td>${pgN ? `<span style="color:#006B68;font-weight:700">${pgN}</span>` : '—'}</td>
     </tr>`;
   }).join('');
   renderPag('cbPag', pages, cbPg, p => { cbPg=p; renderCB(); });
@@ -1401,8 +1488,8 @@ function renderPag(id, pages, cur, fn) {
 // ═══════════════════════════════════════════════════════════════
 // IMPORT EXCEL
 // ═══════════════════════════════════════════════════════════════
-function dze(e)  { e.preventDefault(); e.currentTarget.style.borderColor='#0068C5'; }
-function dze2(e) { e.currentTarget.style.borderColor='#C8D8E8'; }
+function dze(e)  { e.preventDefault(); e.currentTarget.style.borderColor='#007B78'; }
+function dze2(e) { e.currentTarget.style.borderColor='#B8D8D6'; }
 function dropF(e) { e.preventDefault(); dze2(e); const f=e.dataTransfer.files[0]; if(f) importFile(f); }
 function doImport(inp) { if(inp.files[0]) importFile(inp.files[0]); inp.value=''; }
 
@@ -1472,7 +1559,7 @@ function renderExpPreview() {
       <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
       <td style="font-size:11.5px">${p.ky||'—'}</td>
       <td>${p.ctCount}</td>
-      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td style="color:${p.khCount?'#006B68':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
     </tr>`).join('') : '<tr><td colspan="8"><div class="empty">Không có dữ liệu</div></td></tr>';
@@ -1588,6 +1675,217 @@ function clearAllPG() {
   if (!confirm('Xóa tất cả phân giao? Không thể hoàn tác.')) return;
   PG.forEach(p => gsDeletePG(p.id));
   PG=[]; updBadges(); renderDash();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMPORT KẾ HOẠCH HÀNG LOẠT
+// ═══════════════════════════════════════════════════════════════
+let _impKHData = [];
+
+function updateImpKHHint() {
+  const type = document.querySelector('input[name="impKHType"]:checked').value;
+  const hint = document.getElementById('impKHHint');
+  const drop = document.getElementById('impKHDropHint');
+  if (type === 'KPI') {
+    hint.textContent = 'Cột bắt buộc: MA_CB, CHI_TIEU, SO_KH';
+    drop.textContent = 'File KPI: MA_CB · CHI_TIEU · SO_KH · DON_VI · GHI_CHU · NGUOI_GIAO · KY · HAN';
+  } else {
+    hint.textContent = 'Cột bắt buộc: DON_VI, CHI_TIEU, SO_KH';
+    drop.textContent = 'File BSC: DON_VI · CHI_TIEU · SO_KH · DON_VI_TINH · GHI_CHU · NGUOI_GIAO · KY · HAN';
+  }
+}
+
+function dropKH(e) { e.preventDefault(); dze2(e); const f=e.dataTransfer.files[0]; if(f) importFileKH(f); }
+function doImportKH(inp) { if(inp.files[0]) importFileKH(inp.files[0]); inp.value=''; }
+
+function importFileKH(file) {
+  const type = document.querySelector('input[name="impKHType"]:checked').value;
+  document.getElementById('impKHAlert').innerHTML = '<div class="alert a-inf">⏳ Đang đọc file...</div>';
+  document.getElementById('impKHPreviewCard').style.display = 'none';
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      if (rows.length < 2) throw new Error('File trống hoặc thiếu dữ liệu');
+      const hdr = rows[0].map(h => String(h).trim().toUpperCase());
+      const col = name => hdr.indexOf(name);
+      type === 'KPI' ? parseKHKPI(rows, hdr, col) : parseKHBSC(rows, hdr, col);
+    } catch(err) {
+      document.getElementById('impKHAlert').innerHTML = `<div class="alert a-err">❌ Lỗi: ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseKHKPI(rows, hdr, col) {
+  const iMA=col('MA_CB'), iCT=col('CHI_TIEU'), iSK=col('SO_KH');
+  if (iMA<0||iCT<0||iSK<0) throw new Error('Thiếu cột bắt buộc: MA_CB, CHI_TIEU, SO_KH. Header hiện tại: '+hdr.join(', '));
+  const iDV=col('DON_VI'), iGC=col('GHI_CHU'), iNG=col('NGUOI_GIAO'), iKY=col('KY'), iHAN=col('HAN');
+  const groups={}, errors=[];
+  for (let i=1; i<rows.length; i++) {
+    const r=rows[i];
+    const maCB=String(r[iMA]||'').trim(), chiTieu=String(r[iCT]||'').trim(), soKH=String(r[iSK]||'').trim();
+    if (!maCB&&!chiTieu) continue;
+    if (!maCB)    { errors.push(`Hàng ${i+1}: thiếu MA_CB`); continue; }
+    if (!chiTieu) { errors.push(`Hàng ${i+1}: thiếu CHI_TIEU`); continue; }
+    if (!groups[maCB]) {
+      const cb = CB.find(c => c.maCB===maCB || c.maAM===maCB);
+      if (!cb) { errors.push(`Hàng ${i+1}: không tìm thấy cán bộ MA_CB="${maCB}"`); continue; }
+      groups[maCB] = { maCB:cb.maCB, tenCB:cb.tenCB, phong:cb.phong, viTri:cb.viTri,
+        nguoiGiao:iNG>=0?String(r[iNG]||'').trim():'', ky:iKY>=0?String(r[iKY]||'').trim():'',
+        han:iHAN>=0?String(r[iHAN]||'').trim():'', items:[] };
+    }
+    const vtCTs = VT[groups[maCB].viTri]||[];
+    const matchCT = vtCTs.find(ct=>vna(ct)===vna(chiTieu))||chiTieu;
+    groups[maCB].items.push({ chiTieu:matchCT, soKH, donVi:iDV>=0?String(r[iDV]||'').trim():'',
+      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, _matched:vtCTs.some(ct=>vna(ct)===vna(chiTieu)) });
+  }
+  _impKHData = Object.values(groups).map(g=>({ boCT:'KPI', target:g.tenCB, targetKey:g.viTri,
+    targetSub:g.phong, nguoiGiao:g.nguoiGiao, ky:g.ky, han:g.han, items:g.items }));
+  showKHPreview('KPI', errors);
+}
+
+function parseKHBSC(rows, hdr, col) {
+  const iDV=col('DON_VI'), iCT=col('CHI_TIEU'), iSK=col('SO_KH');
+  if (iDV<0||iCT<0||iSK<0) throw new Error('Thiếu cột bắt buộc: DON_VI, CHI_TIEU, SO_KH. Header hiện tại: '+hdr.join(', '));
+  const iDVT=col('DON_VI_TINH'), iGC=col('GHI_CHU'), iNG=col('NGUOI_GIAO'), iKY=col('KY'), iHAN=col('HAN');
+  const groups={}, errors=[];
+  for (let i=1; i<rows.length; i++) {
+    const r=rows[i];
+    const donVi=String(r[iDV]||'').trim(), chiTieu=String(r[iCT]||'').trim(), soKH=String(r[iSK]||'').trim();
+    if (!donVi&&!chiTieu) continue;
+    if (!donVi)   { errors.push(`Hàng ${i+1}: thiếu DON_VI`); continue; }
+    if (!chiTieu) { errors.push(`Hàng ${i+1}: thiếu CHI_TIEU`); continue; }
+    if (!groups[donVi]) {
+      const maBCT = PB[donVi]||'';
+      if (!maBCT) { errors.push(`Hàng ${i+1}: phòng "${donVi}" không có trong danh sách`); continue; }
+      groups[donVi] = { donVi, maBCT, nguoiGiao:iNG>=0?String(r[iNG]||'').trim():'',
+        ky:iKY>=0?String(r[iKY]||'').trim():'', han:iHAN>=0?String(r[iHAN]||'').trim():'', items:[] };
+    }
+    const bscCTs=BSC[groups[donVi].maBCT]||[];
+    const matchCT=bscCTs.find(ct=>vna(ct)===vna(chiTieu))||chiTieu;
+    groups[donVi].items.push({ chiTieu:matchCT, soKH, donVi:iDVT>=0?String(r[iDVT]||'').trim():'',
+      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, _matched:bscCTs.some(ct=>vna(ct)===vna(chiTieu)) });
+  }
+  _impKHData = Object.values(groups).map(g=>({ boCT:'BSC', target:g.donVi, targetKey:g.maBCT,
+    targetSub:'Mã BCT: '+g.maBCT, nguoiGiao:g.nguoiGiao, ky:g.ky, han:g.han, items:g.items }));
+  showKHPreview('BSC', errors);
+}
+
+function showKHPreview(type, errors) {
+  const card=document.getElementById('impKHPreviewCard');
+  const totalItems=_impKHData.reduce((a,g)=>a+g.items.length,0);
+  const unmatched=_impKHData.reduce((a,g)=>a+g.items.filter(it=>!it._matched).length,0);
+  document.getElementById('impKHPreviewInfo').textContent=`${_impKHData.length} ${type==='KPI'?'cán bộ':'đơn vị'} · ${totalItems} chỉ tiêu`;
+  document.getElementById('impKHPreviewHead').innerHTML=`<tr>
+    <th>Bộ CT</th><th>${type==='KPI'?'Cán bộ':'Phòng'}</th><th>${type==='KPI'?'Vị trí':'Mã BCT'}</th>
+    <th>Chỉ tiêu</th><th style="text-align:right">Số KH</th><th>Đơn vị</th>
+    <th>Khớp?</th><th>Người giao</th><th>Kỳ</th></tr>`;
+  let html='';
+  _impKHData.forEach(g=>{
+    g.items.forEach((it,i)=>{
+      const m=it._matched?'<span style="color:#0A7A6E;font-weight:700">✓</span>':'<span style="color:#E31837;font-weight:700" title="Tên không khớp chính xác">⚠</span>';
+      html+=`<tr style="background:${it._matched?'':'#FFF0F0'}">
+        ${i===0?`<td rowspan="${g.items.length}"><span class="badge ${g.boCT==='KPI'?'bk':'bb'}">${g.boCT}</span></td>
+                 <td rowspan="${g.items.length}"><strong>${g.target}</strong></td>
+                 <td rowspan="${g.items.length}"><span class="${g.boCT==='KPI'?'vt':'ph'}">${g.targetKey}</span></td>`:''}
+        <td style="font-size:12px;max-width:260px">${it.chiTieu}</td>
+        <td style="text-align:right;font-weight:700;color:#006B68">${it.soKH||'—'}</td>
+        <td style="font-size:11.5px">${it.donVi||'—'}</td>
+        <td style="text-align:center">${m}</td>
+        ${i===0?`<td rowspan="${g.items.length}" style="font-size:11.5px">${g.nguoiGiao||'—'}</td>
+                 <td rowspan="${g.items.length}" style="font-size:11.5px">${g.ky||'—'}</td>`:''}
+      </tr>`;
+    });
+  });
+  document.getElementById('impKHPreviewTb').innerHTML=html||'<tr><td colspan="9"><div class="empty">Không có dữ liệu hợp lệ</div></td></tr>';
+  let noteHtml='';
+  if (errors.length) noteHtml+=`<div style="color:#E31837;margin-bottom:6px"><strong>⚠ ${errors.length} lỗi bỏ qua:</strong> ${errors.slice(0,5).join(' | ')}${errors.length>5?' ... và '+(errors.length-5)+' lỗi khác':''}</div>`;
+  if (unmatched) noteHtml+=`<div style="color:#C09500"><strong>⚠ ${unmatched} chỉ tiêu</strong> có tên không khớp chính xác — vẫn import nhưng cần kiểm tra lại.</div>`;
+  if (!errors.length&&!unmatched) noteHtml='<span style="color:#0A7A6E;font-weight:700">✅ Tất cả dữ liệu hợp lệ, sẵn sàng import.</span>';
+  document.getElementById('impKHPreviewNote').innerHTML=noteHtml;
+  document.getElementById('impKHAlert').innerHTML=_impKHData.length
+    ?`<div class="alert a-ok">✅ Đọc xong: ${_impKHData.length} ${type==='KPI'?'cán bộ':'đơn vị'} · ${totalItems} chỉ tiêu${errors.length?' · <span style="color:#c0392b">'+errors.length+' lỗi bỏ qua</span>':''}. Kiểm tra bảng bên dưới rồi nhấn <strong>Xác nhận import</strong>.</div>`
+    :'<div class="alert a-err">❌ Không có dữ liệu hợp lệ. Kiểm tra lại file.</div>';
+  card.style.display=_impKHData.length?'':'none';
+  document.getElementById('btnConfirmImpKH').disabled=!_impKHData.length;
+}
+
+async function confirmImportKH() {
+  if (!_impKHData.length) return;
+  const btn=document.getElementById('btnConfirmImpKH');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Đang lưu...';
+  const today=new Date().toLocaleDateString('vi-VN');
+  let saved=0, failed=0;
+  for (const g of _impKHData) {
+    const khCount=g.items.filter(it=>it.soKH).length;
+    const newPG={
+      id:uid(), boCT:g.boCT, target:g.target, targetKey:g.targetKey, targetSub:g.targetSub||'',
+      ctCount:g.items.length, khCount,
+      items:g.items.map(it=>({chiTieu:it.chiTieu,soKH:it.soKH,donVi:it.donVi,ghiChu:it.ghiChu,soGoiY:null})),
+      nguoiGiao:g.nguoiGiao||'', ky:g.ky||'', han:g.han||'', ghiChu:'', ngayGiao:today
+    };
+    PG.push(newPG);
+    try { await gsSavePG(newPG); saved++; } catch(e) { failed++; }
+  }
+  updBadges(); renderDash(); _impKHData=[];
+  document.getElementById('impKHPreviewCard').style.display='none';
+  btn.disabled=false; btn.innerHTML='✅ Xác nhận import';
+  document.getElementById('impKHAlert').innerHTML=`<div class="alert ${saved>0?'a-ok':'a-err'}">${
+    saved>0?`✅ Đã import ${saved} phân giao thành công!${failed?' ('+failed+' lỗi GSheet)':''} Vào <b>Danh sách PG</b> để kiểm tra.`
+           :'❌ Import thất bại.'}</div>`;
+  document.getElementById('bImpKH').textContent=saved>0?saved+' mới':'Mới';
+}
+
+function downloadKHSample(type) {
+  const wb=XLSX.utils.book_new();
+  if (type==='KPI') {
+    const rows=[['MA_CB','CHI_TIEU','SO_KH','DON_VI','GHI_CHU','NGUOI_GIAO','KY','HAN']];
+    CB.slice(0,3).forEach(c=>(VT[c.viTri]||[]).slice(0,3).forEach(ct=>rows.push([c.maCB,ct,'','Triệu đồng','','','Quý 1/2025','2025-03-31'])));
+    const ws=XLSX.utils.aoa_to_sheet(rows); ws['!cols']=[12,55,14,16,20,20,14,14].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb,ws,'KPI_KH');
+    const guide=[['HƯỚNG DẪN IMPORT KẾ HOẠCH KPI'],[''],
+      ['Cột','Bắt buộc','Mô tả'],
+      ['MA_CB','✅','Mã cán bộ — lấy từ sheet CB trong Google Sheets'],
+      ['CHI_TIEU','✅','Tên chỉ tiêu — phải khớp chính xác với bộ chỉ tiêu'],
+      ['SO_KH','✅','Số kế hoạch (số thuần, không có đơn vị)'],
+      ['DON_VI','','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
+      ['GHI_CHU','','Ghi chú riêng cho chỉ tiêu này'],
+      ['NGUOI_GIAO','','Tên người giao (mỗi cán bộ chỉ cần điền 1 lần)'],
+      ['KY','','Kỳ đánh giá: Quý 1/2025, Quý 2/2025...'],
+      ['HAN','','Hạn hoàn thành: định dạng YYYY-MM-DD'],[''],
+      ['Lưu ý:'],
+      ['• Mỗi hàng = 1 cán bộ × 1 chỉ tiêu'],
+      ['• Các hàng cùng MA_CB được nhóm thành 1 phân giao'],
+      ['• Để lại SO_KH trống nếu chưa có số'],
+    ];
+    const wsG=XLSX.utils.aoa_to_sheet(guide); wsG['!cols']=[{wch:20},{wch:10},{wch:60}];
+    XLSX.utils.book_append_sheet(wb,wsG,'Hướng dẫn');
+    XLSX.writeFile(wb,'Mau_Import_KH_KPI.xlsx');
+  } else {
+    const rows=[['DON_VI','CHI_TIEU','SO_KH','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']];
+    Object.entries(PB).slice(0,3).forEach(([dv,maBCT])=>(BSC[maBCT]||[]).slice(0,3).forEach(ct=>rows.push([dv,ct,'','Triệu đồng','','','Quý 1/2025','2025-03-31'])));
+    const ws=XLSX.utils.aoa_to_sheet(rows); ws['!cols']=[20,55,14,16,20,20,14,14].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb,ws,'BSC_KH');
+    const guide=[['HƯỚNG DẪN IMPORT KẾ HOẠCH BSC'],[''],
+      ['Cột','Bắt buộc','Mô tả'],
+      ['DON_VI','✅','Tên phòng / PGD — phải khớp chính xác'],
+      ['CHI_TIEU','✅','Tên chỉ tiêu BSC'],
+      ['SO_KH','✅','Số kế hoạch'],
+      ['DON_VI_TINH','','Đơn vị tính'],
+      ['GHI_CHU','','Ghi chú'],
+      ['NGUOI_GIAO','','Người giao'],
+      ['KY','','Kỳ đánh giá'],
+      ['HAN','','Hạn hoàn thành YYYY-MM-DD'],[''],
+      ['Danh sách đơn vị hợp lệ:'],
+      ...Object.entries(PB).map(([dv,bct])=>[dv,'→ Mã BCT: '+bct,'']),
+    ];
+    const wsG=XLSX.utils.aoa_to_sheet(guide); wsG['!cols']=[{wch:25},{wch:15},{wch:55}];
+    XLSX.utils.book_append_sheet(wb,wsG,'Hướng dẫn');
+    XLSX.writeFile(wb,'Mau_Import_KH_BSC.xlsx');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
