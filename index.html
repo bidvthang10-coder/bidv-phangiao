@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phân Giao Chỉ Tiêu KPI &amp; BSC</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#EAF2FB;color:#003F7A;font-size:13.5px;line-height:1.5;}
+.app{display:flex;height:100vh;overflow:hidden;}
+/* SIDEBAR */
+.sb{width:215px;background:linear-gradient(180deg,#003F7A 0%,#002558 100%);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo{padding:15px 16px 12px;border-bottom:1px solid rgba(255,255,255,.08);}
+.sb-brand{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,200,200,.5);font-weight:700;}
+.sb-name{font-size:15px;font-weight:800;color:#fff;margin-top:4px;line-height:1.25;}
+.sb-name b{color:#FF4D6B;}
+.sb-nav{flex:1;overflow-y:auto;padding:6px 0;}
+.sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.25);padding:12px 14px 4px;font-weight:700;}
+.sb-a{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;color:rgba(255,255,255,.58);font-size:12.5px;font-weight:500;border-left:3px solid transparent;user-select:none;transition:background .12s;}
+.sb-a:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);}
+.sb-a.on{background:rgba(255,255,255,.15);color:#fff;border-left-color:#E31837;}
+.sb-ic{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+.sb-bx{margin-left:auto;background:rgba(227,24,55,.18);color:#FF6B7A;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;min-width:20px;text-align:center;}
+.sb-ft{padding:9px 14px;border-top:1px solid rgba(255,255,255,.07);font-size:9px;color:rgba(200,220,255,.3);text-align:center;}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{height:52px;background:#fff;border-bottom:1px solid #C8D8E8;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.top-t{font-size:16px;font-weight:800;color:#003F7A;}
+.top-s{font-size:10.5px;color:#8096A7;background:#EAF2FB;padding:2px 9px;border-radius:20px;border:1px solid #C8D8E8;margin-left:10px;}
+.top-r{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.content{flex:1;overflow-y:auto;padding:18px 20px;}
+/* BUTTONS */
+.btn{padding:7px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;transition:filter .12s;}
+.btn-blue{background:#005BAA;color:#fff;}.btn-blue:hover{background:#002D5A;}
+.btn-green{background:#1B7A3E;color:#fff;}.btn-green:hover{background:#145F30;}
+.btn-gold{background:#E08000;color:#fff;}.btn-gold:hover{background:#C07000;filter:none;}
+.btn-gray{background:#D8E6F0;color:#4A5568;border:1.5px solid #C8D8E8;}.btn-gray:hover{background:#C0D0E0;}
+.btn-red{background:#c0392b;color:#fff;}.btn-red:hover{filter:brightness(.88);}
+.btn-sm{padding:5px 10px;font-size:11.5px;} .btn-xs{padding:3px 7px;font-size:11px;}
+/* CARD */
+.card{background:#fff;border-radius:12px;border:1px solid #C8D8E8;box-shadow:0 1px 6px rgba(15,31,48,.07);margin-bottom:14px;}
+.card-h{padding:12px 16px;border-bottom:1px solid #C8D8E8;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.card-t{font-size:13.5px;font-weight:700;color:#003F7A;}
+.card-b{padding:16px;}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.stat{background:#fff;border-radius:12px;padding:14px 16px;border:1px solid #C8D8E8;box-shadow:0 1px 6px rgba(15,31,48,.07);}
+.stat-v{font-size:28px;font-weight:800;line-height:1;}
+.stat-l{font-size:11px;color:#4A5568;margin-top:4px;}
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{background:#F0F6FC;padding:8px 11px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#8096A7;border-bottom:1px solid #C8D8E8;white-space:nowrap;}
+td{padding:8px 11px;border-bottom:1px solid #E8F0F8;font-size:12.5px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+.row-c{cursor:pointer;}.row-c:hover td{background:#f6f9fd;}
+/* BADGE / TAGS */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+.bk{background:#EAF2FB;color:#005BAA;} .bb{background:#E4F5EC;color:#0D6B3A;}
+.vt{background:#EAF2FB;color:#005BAA;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
+.ph{background:#E4F5EC;color:#0D6B3A;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block;}
+/* FILTER */
+.fbar{display:flex;gap:7px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.srch{position:relative;flex:1;min-width:180px;}
+.srch input{width:100%;padding:7px 10px 7px 30px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;outline:none;}
+.srch input:focus{border-color:#0068C5;}
+.srch-ic{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
+.fsel{padding:7px 9px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:12.5px;background:#fff;color:#003F7A;cursor:pointer;outline:none;}
+/* FORM */
+.fg{margin-bottom:12px;}
+.fl{display:block;font-size:10.5px;font-weight:700;color:#4A5568;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid #C8D8E8;border-radius:7px;font-family:inherit;font-size:13px;color:#003F7A;background:#fff;outline:none;}
+.fc:focus{border-color:#0068C5;}
+textarea.fc{resize:vertical;min-height:60px;}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.req{color:#c0392b;}
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(5,15,30,.55);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .18s;}
+.ov.show{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:900px;max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(10,20,40,.22);transform:translateY(12px);transition:transform .18s;}
+.ov.show .modal{transform:translateY(0);}
+.mhd{padding:16px 20px 12px;border-bottom:1px solid #C8D8E8;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:5;}
+.mtt{font-size:14.5px;font-weight:800;}
+.mxb{width:28px;height:28px;border:none;background:#EAF2FB;border-radius:50%;cursor:pointer;font-size:17px;color:#4A5568;display:flex;align-items:center;justify-content:center;}
+.mxb:hover{background:#C8D8E8;}
+.mbd{padding:16px 20px;}
+.mft{padding:11px 20px;border-top:1px solid #C8D8E8;display:flex;justify-content:flex-end;gap:7px;position:sticky;bottom:0;background:#fff;}
+/* SECTION */
+.sec{display:none;}.sec.show{display:block;}
+/* ALERTS */
+.alert{padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12.5px;}
+.a-ok{background:#E4F5EC;color:#0D6B3A;border:1px solid #80CCA0;}
+.a-err{background:#fdecea;color:#c0392b;border:1px solid #f5b7b1;}
+.a-inf{background:#EAF2FB;color:#005BAA;border:1px solid #7DB3E0;}
+.a-warn{background:#FEF3E2;color:#C8860A;border:1px solid #F5C066;}
+/* GS STATUS BAR */
+#gsBar{padding:8px 14px;border-radius:8px;border:1px solid transparent;font-size:12px;margin-bottom:12px;display:none;align-items:center;gap:8px;}
+/* EMPTY */
+.empty{text-align:center;padding:32px;color:#8096A7;}
+/* PAG */
+.pag{display:flex;align-items:center;gap:4px;padding:8px 12px;justify-content:flex-end;flex-wrap:wrap;}
+.pb{min-width:28px;height:28px;border:1.5px solid #C8D8E8;border-radius:6px;background:#fff;cursor:pointer;font-size:11.5px;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;}
+.pb:hover{background:#EAF2FB;} .pb.on{background:#005BAA;color:#fff;border-color:#005BAA;}
+/* WIZARD */
+.steps{display:flex;align-items:center;margin-bottom:20px;}
+.wst{display:flex;align-items:center;gap:7px;flex:1;}
+.wsn{width:28px;height:28px;border-radius:50%;border:2px solid #C8D8E8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#8096A7;background:#fff;flex-shrink:0;}
+.wst.done .wsn{background:#005BAA;border-color:#005BAA;color:#fff;}
+.wst.cur .wsn{background:#005BAA;border-color:#005BAA;color:#fff;}
+.wsl{font-size:11.5px;font-weight:600;color:#8096A7;}
+.wst.done .wsl,.wst.cur .wsl{color:#003F7A;}
+.wln{flex:1;height:2px;background:#C8D8E8;margin:0 8px;}
+.wln.done{background:#005BAA;}
+/* BOCO */
+.boco-g{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.boco{border:2px solid #C8D8E8;border-radius:12px;padding:18px;cursor:pointer;position:relative;background:#fff;}
+.boco:hover{border-color:#0068C5;}
+.boco.sk{border-color:#005BAA;background:#EAF2FB;} .boco.sb{border-color:#1B7A3E;background:#E4F5EC;}
+.boco-ic{font-size:32px;margin-bottom:8px;} .boco-nm{font-size:14px;font-weight:800;} .boco-sb{font-size:11.5px;color:#4A5568;margin-top:3px;}
+.boco-ck{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;border:2px solid #C8D8E8;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.boco.sk .boco-ck{background:#005BAA;border-color:#005BAA;color:#fff;} .boco.sb .boco-ck{background:#1B7A3E;border-color:#1B7A3E;color:#fff;}
+/* TARGET */
+.tp{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #E8F0F8;cursor:pointer;}
+.tp:hover{background:#f0f5ff;} .tp.sel{background:#D8EAFA;}
+.tp-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;}
+.tp-nm{font-size:13px;font-weight:700;} .tp-sb{font-size:11px;color:#8096A7;margin-top:1px;}
+/* SUMBOX */
+.sumbox{background:linear-gradient(135deg,#001F4D,#005BAA);border-radius:12px;padding:16px;color:#fff;margin-bottom:14px;}
+.sumbox h4{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px;}
+.sum-r{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+.sum-r:last-child{border:none;} .sum-l{font-size:11.5px;color:rgba(255,255,255,.6);} .sum-v{font-size:12px;font-weight:700;color:#fff;}
+/* ASSIGN TABLE */
+.at{width:100%;border-collapse:collapse;}
+.at th{background:#F0F6FC;padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#8096A7;border-bottom:1px solid #C8D8E8;white-space:nowrap;}
+.at td{padding:5px 8px;border-bottom:1px solid #EBF2F8;vertical-align:middle;}
+.at tr:last-child td{border-bottom:none;}
+.vi{width:130px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12.5px;text-align:right;outline:none;background:#fff;}
+.vi:focus{border-color:#0068C5;background:#EAF2FB;}
+.ui{width:90px;padding:5px 7px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12px;outline:none;background:#fff;}
+.ni{width:100%;padding:4px 7px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:11.5px;outline:none;background:#fff;}
+/* IMPORT ZONE */
+.iz{border:2px dashed #C8D8E8;border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:#EAF2FB;}
+.iz:hover{border-color:#0068C5;background:#EAF2FB;}
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.suggest{background:#FFF3E0;color:#B87100;padding:3px 8px;border-radius:5px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;border:1.5px solid #F5C066;display:inline-block;}
+.suggest:hover{background:#FEF0CC;border-color:#e0b800;}
+.suggest.ok{background:#E4F5EC;color:#1B7A3E;border-color:#80CCA0;}
+.suggest.high{background:#fdecea;color:#c0392b;border-color:#f5b7b1;}
+.ratio-bar{height:5px;border-radius:3px;background:#D8E6F0;margin-top:3px;overflow:hidden;}
+.ratio-fill{height:100%;border-radius:3px;transition:width .3s;}
+.param-box{background:#EAF2FB;border:1.5px solid #C8D9F0;border-radius:10px;padding:14px;margin-bottom:14px;}
+.param-box h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#005BAA;margin-bottom:10px;}
+.param-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.param-lbl{font-size:12px;color:#4A5568;min-width:160px;}
+.param-inp{width:90px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-family:inherit;font-size:12px;text-align:right;outline:none;}
+.param-inp:focus{border-color:#0068C5;}
+.hint{font-size:10.5px;color:#8096A7;font-style:italic;}
+/* GS CONFIG STEPS */
+.gs-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #E8F0F8;}
+.gs-step:last-child{border:none;}
+.gs-num{width:24px;height:24px;border-radius:50%;background:#005BAA;color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.gs-step-t{font-size:12.5px;color:#003F7A;line-height:1.6;}
+.gs-step-t b{color:#005BAA;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo">
+    <div class="sb-brand">Chi nhánh Cẩm Phả</div>
+    <div class="sb-name">Phân Giao<br><b>Chỉ Tiêu</b></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">Tổng quan</div>
+    <div class="sb-a on" data-s="dash" onclick="go(this)"><span class="sb-ic">📊</span>Dashboard</div>
+    <div class="sb-sec">Bộ chỉ tiêu</div>
+    <div class="sb-a" data-s="kpi" onclick="go(this)"><span class="sb-ic">🎯</span>Chỉ tiêu KPI<span class="sb-bx" id="bKPI">0</span></div>
+    <div class="sb-a" data-s="bsc" onclick="go(this)"><span class="sb-ic">📐</span>Chỉ tiêu BSC<span class="sb-bx" id="bBSC">0</span></div>
+    <div class="sb-sec">Phân giao</div>
+    <div class="sb-a" data-s="tao" onclick="go(this)"><span class="sb-ic">📨</span>Tạo phân giao</div>
+    <div class="sb-a" data-s="ds" onclick="go(this)"><span class="sb-ic">📋</span>Danh sách PG<span class="sb-bx" id="bPG">0</span></div>
+    <div class="sb-sec">Quản lý</div>
+    <div class="sb-a" data-s="cb" onclick="go(this)"><span class="sb-ic">👥</span>Cán bộ</div>
+    <div class="sb-a" data-s="imp" onclick="go(this)"><span class="sb-ic">📥</span>Import Excel</div>
+    <div class="sb-a" data-s="exp" onclick="go(this)"><span class="sb-ic">📤</span>Xuất dữ liệu</div>
+    <div class="sb-a" data-s="gscfg" onclick="go(this)"><span class="sb-ic">🔗</span>Google Sheets<span id="gsStatusDot" style="margin-left:auto;font-size:10px">⚪</span></div>
+  </nav>
+  <div class="sb-ft">v4.1 · Google Sheets</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center">
+      <div class="top-t" id="topT">Dashboard</div>
+      <div class="top-s" id="topS">Tổng quan</div>
+    </div>
+    <div class="top-r">
+      <div id="gsBar" style="font-size:11.5px;padding:4px 10px;border-radius:6px;border:1px solid transparent;max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+      <button class="btn btn-gray btn-sm" onclick="loadFromGSheet()" title="Tải lại từ Google Sheets">🔄 Đồng bộ</button>
+      <button class="btn btn-blue btn-sm" onclick="go(document.querySelector('[data-s=tao]'))">📨 Phân giao mới</button>
+    </div>
+  </div>
+  <div class="content">
+
+  <!-- DASHBOARD -->
+  <div class="sec show" id="sec-dash">
+    <div class="stats" id="statRow"></div>
+    <div style="display:grid;grid-template-columns:3fr 1fr;gap:14px">
+      <div class="card">
+        <div class="card-h"><div class="card-t">📋 Phân giao gần đây</div>
+          <button class="btn btn-gray btn-sm" onclick="go(document.querySelector('[data-s=ds]'))">Xem tất cả →</button>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Cán bộ / Phòng</th><th>Bộ CT</th><th>Vị trí / Mã BCT</th><th>Số CT</th><th>Đã nhập KH</th><th>Người giao</th><th>Kỳ</th><th>Ngày</th><th></th></tr></thead>
+          <tbody id="pgRecent"></tbody>
+        </table></div>
+      </div>
+      <div>
+        <div class="card"><div class="card-h"><div class="card-t">KPI theo vị trí</div></div>
+          <div class="card-b" id="vtStat" style="padding:10px 14px;font-size:12px"></div></div>
+        <div class="card"><div class="card-h"><div class="card-t">BSC theo mã BCT</div></div>
+          <div class="card-b" id="bscStat" style="padding:10px 14px;font-size:12px"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="sec" id="sec-kpi">
+    <div class="fbar">
+      <div class="srch"><span class="srch-ic">🔍</span><input id="kpiSQ" placeholder="Tìm chỉ tiêu..." oninput="renderKPI()"></div>
+      <select class="fsel" id="kpiVTF" onchange="renderKPI()"><option value="">Tất cả vị trí</option></select>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">🎯 Chỉ tiêu KPI theo Vị trí</div><span id="kpiCnt" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw"><table><thead><tr><th>#</th><th>Vị trí</th><th>Tên chỉ tiêu</th></tr></thead><tbody id="kpiTb"></tbody></table></div>
+      <div class="pag" id="kpiPag"></div>
+    </div>
+  </div>
+
+  <!-- BSC -->
+  <div class="sec" id="sec-bsc">
+    <div class="fbar">
+      <div class="srch"><span class="srch-ic">🔍</span><input id="bscSQ" placeholder="Tìm chỉ tiêu..." oninput="renderBSC()"></div>
+      <select class="fsel" id="bscMF" onchange="renderBSC()"><option value="">Tất cả mã BCT</option></select>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">📐 Chỉ tiêu BSC theo Mã BCT</div><span id="bscCnt" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw"><table><thead><tr><th>#</th><th>Mã BCT</th><th>Tên chỉ tiêu</th></tr></thead><tbody id="bscTb"></tbody></table></div>
+      <div class="pag" id="bscPag"></div>
+    </div>
+  </div>
+
+  <!-- TẠO PHÂN GIAO -->
+  <div class="sec" id="sec-tao">
+    <div class="steps">
+      <div class="wst cur" id="ws1"><div class="wsn">1</div><div class="wsl">Chọn bộ CT</div></div>
+      <div class="wln" id="wl1"></div>
+      <div class="wst" id="ws2"><div class="wsn">2</div><div class="wsl">Chọn cán bộ / phòng</div></div>
+      <div class="wln" id="wl2"></div>
+      <div class="wst" id="ws3"><div class="wsn">3</div><div class="wsl">Nhập số kế hoạch</div></div>
+      <div class="wln" id="wl3"></div>
+      <div class="wst" id="ws4"><div class="wsn">4</div><div class="wsl">Xác nhận & lưu</div></div>
+    </div>
+    <div id="wz1">
+      <div class="card"><div class="card-h"><div class="card-t">Bước 1 · Chọn bộ chỉ tiêu</div></div>
+        <div class="card-b"><div class="boco-g">
+          <div class="boco" id="boK" onclick="pickBC('KPI')">
+            <div class="boco-ck" id="ckK"></div><div class="boco-ic">🎯</div>
+            <div class="boco-nm">Bộ chỉ tiêu KPI</div><div class="boco-sb">Giao cho cán bộ AM theo vị trí</div>
+            <div style="margin-top:8px"><span class="badge bk" id="kCS">0 vị trí</span></div>
+          </div>
+          <div class="boco" id="boB" onclick="pickBC('BSC')">
+            <div class="boco-ck" id="ckB"></div><div class="boco-ic">📐</div>
+            <div class="boco-nm">Bộ chỉ tiêu BSC</div><div class="boco-sb">Giao cho phòng / PGD theo mã BCT</div>
+            <div style="margin-top:8px"><span class="badge bb" id="bCS">0 mã BCT</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-blue" id="btnW1" onclick="wzNext(1)" disabled>Tiếp theo →</button></div>
+    </div>
+    <div id="wz2" style="display:none">
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t" id="wz2T">Bước 2 · Chọn cán bộ</div>
+          <div class="srch" style="width:230px"><span class="srch-ic">🔍</span><input id="wzSQ" placeholder="Tìm..." oninput="renderTargets()"></div>
+        </div>
+        <div style="max-height:440px;overflow-y:auto" id="targetList"></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-gray" onclick="wzBack(2)">← Quay lại</button>
+        <button class="btn btn-blue" id="btnW2" onclick="wzNext(2)" disabled>Tiếp theo →</button>
+      </div>
+    </div>
+    <div id="wz3" style="display:none">
+      <div class="card">
+        <div class="card-h">
+          <div><div class="card-t" id="wz3T">Bước 3 · Nhập số kế hoạch</div>
+            <div style="font-size:11.5px;color:#8096A7;margin-top:2px" id="wz3Sub"></div></div>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-gray btn-sm" onclick="toggleParamBox()" id="btnParam">⚙ Thông số PP2 ▾</button>
+            <button class="btn btn-gold btn-sm" onclick="calcSuggest()">💡 Tính số gợi ý</button>
+            <button class="btn btn-blue btn-sm" onclick="fillAllSuggest()">↙ Điền tất cả gợi ý</button>
+            <span style="font-size:11.5px;color:#4A5568">|</span>
+            <span style="font-size:11.5px;color:#4A5568">Đơn vị mặc định:</span>
+            <input type="text" id="defUnit" placeholder="vd: Triệu đồng" style="width:130px;padding:5px 8px;border:1.5px solid #C8D8E8;border-radius:6px;font-size:12px;font-family:inherit;outline:none">
+            <button class="btn btn-gray btn-sm" onclick="applyUnit()">Áp dụng</button>
+            <button class="btn btn-gray btn-sm" onclick="clearVals()">Xóa trắng</button>
+          </div>
+        </div>
+        <!-- PARAM BOX PP2 -->
+        <div id="paramBox" style="display:none;padding:14px 16px;background:#f8fbff;border-bottom:1.5px solid #C8D8E8">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+            <!-- Cột 1: KH Chi nhánh -->
+            <div class="param-box">
+              <h4>📋 Số KH Chi nhánh &amp; TH năm trước</h4>
+              <div style="font-size:11.5px;color:#4A5568;margin-bottom:10px">Nhập để tính KH tăng ròng CN phân bổ xuống.</div>
+              <div class="param-row">
+                <span class="param-lbl">KH Chi nhánh (kỳ này)</span>
+                <input type="text" class="param-inp" id="pp_khCN" placeholder="0" oninput="calcSuggest()">
+                <span class="hint" id="pp_donViCN"></span>
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">TH Chi nhánh (31/12 n-1)</span>
+                <input type="text" class="param-inp" id="pp_thCN" placeholder="0" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl" style="color:#C8860A;font-weight:700">→ KH tăng ròng CN</span>
+                <span id="pp_tangRongCN" style="font-weight:700;color:#C8860A;font-size:13px">—</span>
+              </div>
+            </div>
+            <!-- Cột 2: Thông số Phòng -->
+            <div class="param-box">
+              <h4>🏢 Thông số Phòng / Đơn vị</h4>
+              <div class="param-row">
+                <span class="param-lbl">TH Phòng (31/12 n-1)</span>
+                <input type="text" class="param-inp" id="pp_thP" placeholder="0" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">Tổng PC Phòng (PCđc CN)</span>
+                <input type="text" class="param-inp" id="pp_pcCN" placeholder="0" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">PC Phòng này (PCđc P)</span>
+                <input type="text" class="param-inp" id="pp_pcP" placeholder="0" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">Hệ số H1 Phòng</span>
+                <input type="text" class="param-inp" id="pp_h1" placeholder="1.0" value="1.0" oninput="calcSuggest()">
+                <span class="hint">0.5 / 0.8 / 1.0 / 1.2 / 1.5</span>
+              </div>
+              <div class="param-row">
+                <span class="param-lbl" style="color:#1B7A3E;font-weight:700">→ KH Phòng (PP2)</span>
+                <span id="pp_khPhong" style="font-weight:700;color:#1B7A3E;font-size:13px">—</span>
+              </div>
+            </div>
+            <!-- Cột 3: Thông số cán bộ -->
+            <div class="param-box">
+              <h4>👤 Thông số Cán bộ (cho từng CT)</h4>
+              <div class="param-row">
+                <span class="param-lbl">TH Cán bộ (31/12 n-1)</span>
+                <input type="text" class="param-inp" id="pp_thCB" placeholder="0" oninput="calcSuggest()">
+                <span class="hint">Mặc định dùng TH từng CT</span>
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">PC Cán bộ (Hvt riêng)</span>
+                <input type="text" class="param-inp" id="pp_pcCB" placeholder="1" value="1" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">Tổng PCđc Phòng (Σ PC×H2)</span>
+                <input type="text" class="param-inp" id="pp_sumPCH2" placeholder="0" oninput="calcSuggest()">
+              </div>
+              <div class="param-row">
+                <span class="param-lbl">Hệ số H2 cán bộ này</span>
+                <input type="text" class="param-inp" id="pp_h2" placeholder="1.0" value="1.0" oninput="calcSuggest()">
+                <span class="hint">0.5 / 0.8 / 1.0 / 1.2 / 1.5</span>
+              </div>
+              <div style="background:#fff;border:1px solid #C8D8E8;border-radius:7px;padding:8px 10px;margin-top:6px;font-size:11px;color:#4A5568">
+                <b>Công thức PP2:</b><br>
+                KH(CB) = TH(CB) + KH_tăng_ròng(P) × PCđc(CB)/Σ PCđc(P)<br>
+                KH_tăng_ròng(P) = KH(P) - TH(P)<br>
+                PCđc(CB) = PC(CB) × H2
+              </div>
+            </div>
+          </div>
+          <!-- Bảng H2 tham chiếu -->
+          <div style="margin-top:10px;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+            <div style="font-size:11.5px;color:#4A5568;font-weight:700;padding-top:4px">Tra hệ số H2:</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <span onclick="setH2(0.5)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#fdecea;color:#c0392b;font-size:11.5px;font-weight:700;border:1.5px solid #f5b7b1">NSLĐ ≥2× BQ → <b>0.5</b></span>
+              <span onclick="setH2(0.8)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#fff3e0;color:#e65100;font-size:11.5px;font-weight:700;border:1.5px solid #FFC266">1.2×÷2× BQ → <b>0.8</b></span>
+              <span onclick="setH2(1.0)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#e8f5e9;color:#2e7d32;font-size:11.5px;font-weight:700;border:1.5px solid #a5d6a7">0.75×÷1.2× BQ → <b>1.0</b></span>
+              <span onclick="setH2(1.2)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#EAF2FB;color:#005BAA;font-size:11.5px;font-weight:700;border:1.5px solid #7DB3E0">&lt;0.75× BQ → <b>1.2</b></span>
+              <span onclick="setH2(1.5)" style="cursor:pointer;padding:3px 10px;border-radius:5px;background:#f3e5f5;color:#6a1b9a;font-size:11.5px;font-weight:700;border:1.5px solid #ce93d8">&lt;0.5× BQ → <b>1.5</b></span>
+            </div>
+          </div>
+        </div>
+        <div style="overflow-y:auto;max-height:480px">
+          <table class="at"><thead><tr>
+            <th style="width:36px">#</th><th>Tên chỉ tiêu</th>
+            <th style="width:140px;text-align:right;background:#FFF3E0;color:#B87100">💡 Số gợi ý (PP2)</th>
+            <th style="width:150px;text-align:right">Số KH nhập</th>
+            <th style="width:110px">Đơn vị</th><th style="min-width:110px">Ghi chú</th>
+          </tr></thead><tbody id="wz3Tb"></tbody></table>
+        </div>
+        <div style="padding:8px 14px;background:#f9fbfc;border-top:1px solid #E8F0F8;font-size:11.5px;color:#4A5568">
+          💡 Nhập số kế hoạch cụ thể. Bỏ trống nếu chưa có giá trị.
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-gray" onclick="wzBack(3)">← Quay lại</button>
+        <button class="btn btn-blue" onclick="wzNext(3)">Xem lại & Xác nhận →</button>
+      </div>
+    </div>
+    <div id="wz4" style="display:none">
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:14px;margin-bottom:12px">
+        <div class="card">
+          <div class="card-h"><div class="card-t">📑 Xem lại trước khi lưu</div><span id="wz4N" style="font-size:11px;color:#8096A7"></span></div>
+          <div class="tw" style="max-height:400px;overflow-y:auto"><table>
+            <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFF3E0;color:#B87100">Số gợi ý</th><th style="text-align:right">Số KH nhập</th><th>Tỷ lệ</th><th>Đơn vị</th><th>Ghi chú</th></tr></thead>
+            <tbody id="wz4Tb"></tbody>
+          </table></div>
+        </div>
+        <div>
+          <div class="sumbox"><h4>Tóm tắt</h4><div id="wzSumC"></div></div>
+          <div class="card"><div class="card-b">
+            <div class="fg"><label class="fl">Người giao <span class="req">*</span></label>
+              <input type="text" class="fc" id="pgNG" placeholder="Họ tên người giao..."></div>
+            <div class="fg"><label class="fl">Kỳ đánh giá</label>
+              <select class="fc" id="pgKy">
+                <option>Quý 1/2025</option><option>Quý 2/2025</option>
+                <option>Quý 3/2025</option><option>Quý 4/2025</option><option>Cả năm 2025</option>
+              </select></div>
+            <div class="fg"><label class="fl">Hạn hoàn thành</label>
+              <input type="date" class="fc" id="pgHan"></div>
+            <div class="fg"><label class="fl">Ghi chú</label>
+              <textarea class="fc" id="pgGC" rows="2"></textarea></div>
+          </div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-gray" onclick="wzBack(4)">← Sửa lại</button>
+        <button class="btn btn-green" id="btnSavePG" onclick="savePG()">✅ Xác nhận phân giao</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANH SÁCH PG -->
+  <div class="sec" id="sec-ds">
+    <div class="fbar">
+      <div class="srch"><span class="srch-ic">🔍</span><input id="dsSQ" placeholder="Tìm..." oninput="renderDS()"></div>
+      <select class="fsel" id="dsBo" onchange="renderDS()"><option value="">Tất cả</option><option>KPI</option><option>BSC</option></select>
+      <select class="fsel" id="dsKy" onchange="renderDS()"><option value="">Tất cả kỳ</option></select>
+      <button class="btn btn-green btn-sm" onclick="exportAllPG()">⬇ Xuất tất cả</button>
+      <button class="btn btn-gray btn-sm" onclick="exportFilteredPG()">⬇ Xuất đang lọc</button>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">📋 Danh sách phân giao</div><span id="dsCnt" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw"><table>
+        <thead><tr><th>Bộ CT</th><th>Cán bộ / Phòng</th><th>Vị trí / Mã BCT</th><th>Kỳ</th><th>Số CT</th><th>Đã nhập KH</th><th>Người giao</th><th>Ngày lập</th><th></th></tr></thead>
+        <tbody id="dsTb"></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- CÁN BỘ -->
+  <div class="sec" id="sec-cb">
+    <div class="fbar">
+      <div class="srch"><span class="srch-ic">🔍</span><input id="cbSQ" placeholder="Tìm cán bộ..." oninput="renderCB()"></div>
+      <select class="fsel" id="cbVTF" onchange="renderCB()"><option value="">Tất cả vị trí</option></select>
+      <select class="fsel" id="cbPhF" onchange="renderCB()"><option value="">Tất cả phòng</option></select>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">👥 Danh sách cán bộ AM</div><span id="cbCnt" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw"><table>
+        <thead><tr><th>Mã CB</th><th>Mã AM</th><th>Họ tên</th><th>Phòng</th><th>Vị trí</th><th>Trạng thái</th><th>Số CT</th><th>Lần PG</th></tr></thead>
+        <tbody id="cbTb"></tbody>
+      </table></div>
+      <div class="pag" id="cbPag"></div>
+    </div>
+  </div>
+
+  <!-- IMPORT -->
+  <div class="sec" id="sec-imp">
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">📥 Import file BO_CHI_TIEU_KH.xlsx</div>
+        <button class="btn btn-gold btn-sm" onclick="downloadSample()">⬇ Tải file mẫu</button>
+      </div>
+      <div class="card-b">
+        <div id="impAlert"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div style="background:#EAF2FB;border-radius:10px;padding:13px">
+            <div style="font-weight:700;font-size:12px;color:#005BAA;margin-bottom:8px">📋 Sheet "KPI"</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse">
+              <tr style="background:#B8D4ED"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">MA_CB</td><td style="padding:2px 6px;color:#4A5568">164245</td></tr>
+              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">MA_AM</td><td style="padding:2px 6px;color:#4A5568">44116008</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">TEN_CB</td><td style="padding:2px 6px;color:#4A5568">Nguyễn Văn A</td></tr>
+              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">EMAIL</td><td style="padding:2px 6px;color:#4A5568"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f3e1f3d363b29713c3032712931">[email&#160;protected]</a></td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">PHONG</td><td style="padding:2px 6px;color:#4A5568">CẨM BÌNH</td></tr>
+              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">VI_TRI</td><td style="padding:2px 6px;color:#4A5568">QLKH</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">VAI_TRO</td><td style="padding:2px 6px;color:#4A5568">CAN_BO</td></tr>
+              <tr style="background:#EAF2FB"><td style="padding:2px 6px;font-family:monospace;color:#005BAA">TRANG THAI</td><td style="padding:2px 6px;color:#4A5568">HOAT_DONG</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#005BAA">CHI TIEU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ cuối kỳ</td></tr>
+            </table>
+            <div style="margin-top:6px;font-size:10.5px;color:#005BAA">⚠ 1 hàng = 1 cán bộ × 1 chỉ tiêu</div>
+          </div>
+          <div style="background:#E4F5EC;border-radius:10px;padding:13px">
+            <div style="font-weight:700;font-size:12px;color:#0D6B3A;margin-bottom:8px">📋 Sheet "BSC"</div>
+            <table style="width:100%;font-size:11px;border-collapse:collapse">
+              <tr style="background:#9DD6B8"><td style="padding:2px 6px;font-weight:700">Cột</td><td style="padding:2px 6px;font-weight:700">Ví dụ</td></tr>
+              <tr><td style="padding:2px 6px;font-family:monospace;color:#0D6B3A">MÃ BCT</td><td style="padding:2px 6px;color:#4A5568">PGD / KHCN / KHDN / KHƯT</td></tr>
+              <tr style="background:#f0faf5"><td style="padding:2px 6px;font-family:monospace;color:#0D6B3A">CHỈ TIÊU</td><td style="padding:2px 6px;color:#4A5568">Dư nợ tín dụng cuối kỳ</td></tr>
+            </table>
+            <div style="margin-top:10px;font-size:11px;color:#1B7A3E;line-height:1.8">
+              <b>Phòng → Mã BCT:</b><br>
+              CẨM BÌNH, CẨM PHÚ, CẨM THỦY,<br>MÔNG DƯƠNG, QUANG HANH, VÂN ĐỒN → <b>PGD</b><br>
+              KHCN → <b>KHCN</b> · KHDN → <b>KHDN</b> · KHƯT → <b>KHƯT</b>
+            </div>
+          </div>
+        </div>
+        <div class="iz" onclick="document.getElementById('fImp').click()" ondragover="dze(event)" ondragleave="dze2(event)" ondrop="dropF(event)">
+          <div style="font-size:36px">📂</div>
+          <p style="font-weight:700;font-size:13px;margin:6px 0">Kéo thả hoặc nhấn để chọn file .xlsx</p>
+          <p style="font-size:11.5px;color:#8096A7">File có 2 sheet: <b>KPI</b> và <b>BSC</b></p>
+        </div>
+        <input type="file" id="fImp" accept=".xlsx" style="display:none" onchange="doImport(this)">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">⚙️ Quản lý dữ liệu</div></div>
+      <div class="card-b" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-blue btn-sm" onclick="loadFromGSheet()">🔄 Tải lại từ GSheet</button>
+        <button class="btn btn-gold btn-sm" onclick="syncBoCT()">⬆ Đồng bộ bộ CT lên GSheet</button>
+        <button class="btn btn-gray btn-sm" onclick="resetDef()">↩ Khôi phục mặc định</button>
+        <button class="btn btn-red btn-sm" onclick="clearAllPG()">🗑 Xóa tất cả phân giao</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- XUẤT DỮ LIỆU -->
+  <div class="sec" id="sec-exp">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="card"><div class="card-h"><div class="card-t">📤 Xuất danh sách phân giao</div></div>
+        <div class="card-b">
+          <div class="fg"><label class="fl">Lọc bộ chỉ tiêu</label>
+            <select class="fc" id="expBo" onchange="renderExpPreview()"><option value="">Tất cả</option><option>KPI</option><option>BSC</option></select></div>
+          <div class="fg"><label class="fl">Lọc kỳ đánh giá</label>
+            <select class="fc" id="expKy" onchange="renderExpPreview()"><option value="">Tất cả kỳ</option></select></div>
+          <div class="fg"><label class="fl">Định dạng</label>
+            <div style="display:flex;gap:12px;margin-top:4px">
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="expFmt" value="summary" checked> <b>Tóm tắt</b> (1 hàng/PG)</label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="radio" name="expFmt" value="detail"> <b>Chi tiết</b> (1 hàng/CT)</label>
+            </div></div>
+          <button class="btn btn-green" onclick="exportPGExcel()" style="width:100%;justify-content:center;padding:10px">⬇ Xuất Excel phân giao</button>
+        </div></div>
+      <div class="card"><div class="card-h"><div class="card-t">📋 Xuất bộ chỉ tiêu</div></div>
+        <div class="card-b">
+          <button class="btn btn-blue" onclick="exportBoCT()" style="width:100%;justify-content:center;padding:10px;margin-bottom:10px">⬇ Xuất bộ CT KPI + BSC</button>
+          <button class="btn btn-gold" onclick="downloadSample()" style="width:100%;justify-content:center;padding:10px">⬇ Tải file mẫu import</button>
+        </div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">📊 Xem trước</div><span id="expPrev" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw" style="max-height:360px;overflow-y:auto"><table>
+        <thead><tr><th>Bộ CT</th><th>Cán bộ / Phòng</th><th>Vị trí / Mã BCT</th><th>Kỳ</th><th>Số CT</th><th>Đã KH</th><th>Người giao</th><th>Ngày</th></tr></thead>
+        <tbody id="expTb"></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- GOOGLE SHEETS CONFIG -->
+  <div class="sec" id="sec-gscfg">
+    <div style="display:grid;grid-template-columns:3fr 2fr;gap:14px">
+      <div class="card">
+        <div class="card-h"><div class="card-t">🔗 Kết nối Google Sheets</div></div>
+        <div class="card-b">
+          <div id="gsCfgStatus" style="margin-bottom:14px"></div>
+          <div class="fg">
+            <label class="fl">URL Web App (Apps Script) <span class="req">*</span></label>
+            <input type="text" class="fc" id="gsUrlInp" placeholder="https://script.google.com/macros/s/xxxxx/exec">
+            <div style="font-size:11px;color:#8096A7;margin-top:4px">Lấy URL sau khi Deploy Apps Script → Web App</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <button class="btn btn-gold btn-sm" onclick="testGS()">🔌 Kiểm tra kết nối</button>
+            <button class="btn btn-green" onclick="saveGSUrl()">💾 Lưu & Kết nối</button>
+            <button class="btn btn-gray btn-sm" onclick="clearGSUrl()">✕ Xóa kết nối</button>
+          </div>
+          <div id="gsTestOut" style="font-size:12.5px"></div>
+          <div style="margin-top:14px">
+            <div style="font-weight:700;font-size:12px;color:#4A5568;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">Thao tác đồng bộ</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-blue btn-sm" onclick="loadFromGSheet()">🔄 Tải tất cả từ GSheet</button>
+              <button class="btn btn-gold btn-sm" onclick="syncBoCT()">⬆ Đẩy bộ CT lên GSheet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><div class="card-t">📋 Hướng dẫn cài đặt</div></div>
+        <div class="card-b" style="padding:12px 16px">
+          <div class="gs-step"><div class="gs-num">1</div><div class="gs-step-t">Mở <b>Google Sheets</b> mới → vào <b>Extensions → Apps Script</b></div></div>
+          <div class="gs-step"><div class="gs-num">2</div><div class="gs-step-t">Xóa code mặc định, dán toàn bộ nội dung file <b>Code.gs</b> đã tải về</div></div>
+          <div class="gs-step"><div class="gs-num">3</div><div class="gs-step-t">Chạy hàm <b>setupSheets()</b> một lần để tạo các sheet (CB, VT, BSC, PB, PG, PG_ITEMS)</div></div>
+          <div class="gs-step"><div class="gs-num">4</div><div class="gs-step-t">Nhấn <b>Deploy → New deployment</b><br>• Type: <b>Web App</b><br>• Execute as: <b>Me</b><br>• Who has access: <b>Anyone</b></div></div>
+          <div class="gs-step"><div class="gs-num">5</div><div class="gs-step-t">Copy <b>Web app URL</b> → dán vào ô bên trái → <b>Lưu & Kết nối</b></div></div>
+          <div class="gs-step"><div class="gs-num">6</div><div class="gs-step-t">Vào <b>Import Excel</b>, import file BO_CHI_TIEU_KH.xlsx → tự động đồng bộ lên GSheet</div></div>
+          <div style="background:#FEF3E2;border-radius:8px;padding:10px;margin-top:10px;font-size:11.5px;color:#C8860A">
+            ⚠ Mỗi lần sửa code Apps Script cần <b>Deploy lại</b> (New deployment hoặc Manage deployments → Edit).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODAL: Chi tiết PG -->
+<div class="ov" id="ov-pg">
+  <div class="modal">
+    <div class="mhd"><div class="mtt" id="mPGT">Chi tiết phân giao</div><button class="mxb" onclick="closeM('ov-pg')">×</button></div>
+    <div class="mbd" id="mPGB"></div>
+    <div class="mft">
+      <button class="btn btn-red btn-sm" id="mDel">🗑 Xóa</button>
+      <button class="btn btn-green btn-sm" id="mExp">⬇ Xuất Excel</button>
+      <button class="btn btn-gray" onclick="closeM('ov-pg')">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════════════════════════════
+// DEFAULT DATA (nhúng sẵn từ file Excel)
+// ═══════════════════════════════════════════════════════════════
+const D_CB  = [{"maCB": "164245", "maAM": "44116008", "tenCB": "Lê Văn Thái", "phong": "CẨM BÌNH", "viTri": "QLKH", "trangThai": "HOAT_DONG"}, {"maCB": "173739", "maAM": "44116002", "tenCB": "Nguyễn Hằng Nga", "phong": "CẨM BÌNH", "viTri": "VRM/DRM", "trangThai": "HOAT_DONG"}, {"maCB": "151180", "maAM": "", "tenCB": "Nguyễn Hồng Ánh", "phong": "CẨM BÌNH", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "166744", "maAM": "44116003", "tenCB": "Nguyễn Văn Thành", "phong": "CẨM BÌNH", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "181959", "maAM": "44116005", "tenCB": "Trần Thu Hà", "phong": "CẨM BÌNH", "viTri": "QLKH", "trangThai": "HOAT_DONG"}, {"maCB": "150242", "maAM": "44116004", "tenCB": "Trịnh Thu Hằng", "phong": "CẨM BÌNH", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "161198", "maAM": "44116007", "tenCB": "Vũ Thị Thúy Hằng", "phong": "CẨM BÌNH", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "161170", "maAM": "44115704", "tenCB": "Đào Mạnh Thắng", "phong": "CẨM PHÚ", "viTri": "PRM", "trangThai": "HOAT_DONG"}, {"maCB": "157", "maAM": "44115700", "tenCB": "Mã Chung", "phong": "CẨM PHÚ", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "177670", "maAM": "44115706", "tenCB": "Nguyễn Hiếu Trung", "phong": "CẨM PHÚ", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "19304", "maAM": "44115708", "tenCB": "Phạm Thị Tuyết", "phong": "CẨM PHÚ", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "149035", "maAM": "", "tenCB": "Tạ Thị Nga", "phong": "CẨM PHÚ", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "164255", "maAM": "44115702", "tenCB": "Vũ Thị Thu Hiền", "phong": "CẨM PHÚ", "viTri": "VRM/DRM", "trangThai": "HOAT_DONG"}, {"maCB": "164174", "maAM": "44115503", "tenCB": "Đặng Xuân Nam", "phong": "CẨM THỦY", "viTri": "VRM/DRM", "trangThai": "HOAT_DONG"}, {"maCB": "171187", "maAM": "44115506", "tenCB": "Đoàn Thị Phương Thảo", "phong": "CẨM THỦY", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "172820", "maAM": "44115501", "tenCB": "Nguyễn Thị Minh Thùy", "phong": "CẨM THỦY", "viTri": "PRM", "trangThai": "HOAT_DONG"}, {"maCB": "158668", "maAM": "44115504", "tenCB": "Nguyễn Thị Thanh Huyền", "phong": "CẨM THỦY", "viTri": "QLKH", "trangThai": "HOAT_DONG"}, {"maCB": "149134", "maAM": "44115502", "tenCB": "Nguyễn Thúy Phương", "phong": "CẨM THỦY", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "165992", "maAM": "44115507", "tenCB": "Phạm Khánh Linh", "phong": "CẨM THỦY", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "181960", "maAM": "44115505", "tenCB": "Trần Tiến Đạt", "phong": "CẨM THỦY", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "180183", "maAM": "44112107", "tenCB": "Bùi Thị Thêu", "phong": "KHCN", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "164254", "maAM": "44112114", "tenCB": "Bùi Thuỳ Dung", "phong": "KHCN", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "155446", "maAM": "44112112", "tenCB": "Đặng Thị Thu Hà", "phong": "KHCN", "viTri": "PTP PRM", "trangThai": "HOAT_DONG"}, {"maCB": "174872", "maAM": "44112110", "tenCB": "Trần Thị Cúc", "phong": "KHCN", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "177965", "maAM": "44102109", "tenCB": "Đỗ Thùy Dung", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "183570", "maAM": "44102110", "tenCB": "Nguyễn Hà Trang", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "165853", "maAM": "44102107", "tenCB": "Nguyễn Thị Hiền", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "158931", "maAM": "44102104", "tenCB": "Nguyễn Thị Minh Thủy", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "180185", "maAM": "44102108", "tenCB": "Nguyễn Thị Trà", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "155698", "maAM": "44102102", "tenCB": "Phạm Minh Duy", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "159673", "maAM": "44102105", "tenCB": "Tạ Thị Kim Dung", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "180732", "maAM": "44102106", "tenCB": "Trần Trung Nghĩa", "phong": "KHDN", "viTri": "QLKHDN", "trangThai": "HOAT_DONG"}, {"maCB": "156883", "maAM": "44112204", "tenCB": "Lê Thị Dương", "phong": "KHƯT", "viTri": "PRM", "trangThai": "HOAT_DONG"}, {"maCB": "164263", "maAM": "44112202", "tenCB": "Nguyễn Quảng Hà", "phong": "KHƯT", "viTri": "PTP PRME", "trangThai": "HOAT_DONG"}, {"maCB": "156882", "maAM": "44112203", "tenCB": "Nguyễn Thị Hiền", "phong": "KHƯT", "viTri": "PRM", "trangThai": "HOAT_DONG"}, {"maCB": "180769", "maAM": "44112205", "tenCB": "Phạm Thị Hương", "phong": "KHƯT", "viTri": "PRM", "trangThai": "HOAT_DONG"}, {"maCB": "175454", "maAM": "44115801", "tenCB": "Đào Ngọc Bích", "phong": "MÔNG DƯƠNG", "viTri": "VRM/DRM", "trangThai": "HOAT_DONG"}, {"maCB": "161169", "maAM": "44115802", "tenCB": "Nguyễn Công Hữu", "phong": "MÔNG DƯƠNG", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "161167", "maAM": "44115707", "tenCB": "Nguyễn Thị Kim Thương", "phong": "MÔNG DƯƠNG", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "151184", "maAM": "44115808", "tenCB": "Nguyễn Thị Tâm", "phong": "MÔNG DƯƠNG", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "19337", "maAM": "44115901", "tenCB": "Đỗ Thị Minh Thoan", "phong": "QUANG HANH", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "171781", "maAM": "44115909", "tenCB": "Lưu Mạnh Cường", "phong": "QUANG HANH", "viTri": "VRM/DRM", "trangThai": "HOAT_DONG"}, {"maCB": "165898", "maAM": "44115908", "tenCB": "Nhâm Chí Trung", "phong": "QUANG HANH", "viTri": "QLKH", "trangThai": "HOAT_DONG"}, {"maCB": "162019", "maAM": "44115907", "tenCB": "Vũ Thị Nụ", "phong": "QUANG HANH", "viTri": "VRM", "trangThai": "HOAT_DONG"}, {"maCB": "181958", "maAM": "44116103", "tenCB": "Bùi Đức Thắng", "phong": "VÂN ĐỒN", "viTri": "QLKH", "trangThai": "HOAT_DONG"}, {"maCB": "141329", "maAM": "44116104", "tenCB": "Châu Ngọc Chất", "phong": "VÂN ĐỒN", "viTri": "PGĐ RBT", "trangThai": "HOAT_DONG"}, {"maCB": "171191", "maAM": "44116105", "tenCB": "Nguyễn Thị Thúy Ngân", "phong": "VÂN ĐỒN", "viTri": "HT", "trangThai": "HOAT_DONG"}, {"maCB": "177288", "maAM": "44116102", "tenCB": "Phạm Lan Ngọc Ánh", "phong": "VÂN ĐỒN", "viTri": "DRM", "trangThai": "HOAT_DONG"}];
+const D_VT  = {"QLKH": ["Doanh thu Bảo hiểm nhân thọ bán mới", "Dư nợ cuối kỳ", "Dư nợ KHTC cuối kỳ", "Dư nợ tín dụng bán lẻ cuối kỳ", "Dư nợ tín dụng khách hàng SME", "Huy động vốn cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "Huy động vốn KHTC cuối kỳ", "Huy động vốn KKH KHTC bình quân", "Số lượng khách hàng SMB mới có PSGD", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng TCKT mới có quan hệ tín dụng", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "SLSP/KH", "Quy mô KHDN tăng mới", "Quy mô KHCN tăng mới"], "VRM/DRM": ["Dư nợ cuối kỳ", "Dư nợ KHTC cuối kỳ", "Dư nợ tín dụng bán lẻ cuối kỳ", "Dư nợ tín dụng khách hàng SME", "Huy động vốn cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "Huy động vốn KHTC cuối kỳ", "Huy động vốn KKH KHTC bình quân", "SLSP/KH", "Số lượng KH SMB lũy kế (từ KHTT trở lên) có PSGD trong kỳ", "Số lượng khách hàng nâng hạng lên KHCC", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng TCKT mới có quan hệ tín dụng", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng (không gồm thu dịch vụ bảo hiểm và thu phí SPĐT)", "Thu KDNT&PS", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Quy mô KHDN tăng mới", "Quy mô KHCN tăng mới"], "HT": ["Huy động vốn cuối kỳ", "Huy động vốn bán lẻ cuối kỳ", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Số lượng TCKT mới có quan hệ tín dụng", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Huy động vốn không kỳ hạn bình quân", "Dư nợ cuối kỳ", "Dư nợ tín dụng bán lẻ cuối kỳ", "Thu dịch vụ ròng", "Thu nợ HTNB", "Quy mô KHCN tăng mới", "Số lượng khách hàng SMB mới có PSGD"], "VRM": ["Dư nợ tín dụng bán lẻ cuối kỳ", "Huy động vốn cuối kỳ", "Huy động vốn bán lẻ cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "SLSP/KH", "Số lượng KH SMB lũy kế (từ KHTT trở lên) có PSGD trong kỳ", "Số lượng khách hàng nâng hạng lên KHCC", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng (không gồm thu dịch vụ bảo hiểm và thu phí SPĐT)", "Thu KDNT&PS", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Quy mô KHCN tăng mới"], "PGĐ RBT": ["Dư nợ cuối kỳ", "Huy động vốn cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "SLSP/KH", "Số lượng KH SMB lũy kế (từ KHTT trở lên) có PSGD trong kỳ", "Số lượng khách hàng nâng hạng lên KHCC", "Số lượng khách hàng SMB mới có PSGD", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng khoản vay/thẻ tín dụng giới thiệu thành công", "Số lượng TCKT mới có quan hệ tín dụng", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng", "Thu KDNT&PS", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Quy mô KHCN tăng mới", "Quy mô KHDN tăng mới"], "PRM": ["Dư nợ tín dụng bán lẻ cuối kỳ", "Huy động vốn cuối kỳ", "Huy động vốn bán lẻ cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "SLSP/KH", "Số lượng khách hàng cao cấp lũy kế", "Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên", "Số lượng khách hàng nâng hạng lên KHCC hạng Private trở lên", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng (không gồm thu dịch vụ bảo hiểm và thu phí SPĐT)", "Thu KDNT&PS", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Quy mô KHDN tăng mới", "Quy mô KHCN tăng mới"], "PTP PRM": ["Dư nợ tín dụng bán lẻ cuối kỳ", "Huy động vốn cuối kỳ", "Huy động vốn bán lẻ cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "SLSP/KH", "Số lượng KH SMB lũy kế (từ KHTT trở lên) có PSGD trong kỳ", "Số lượng khách hàng nâng hạng lên KHCC", "Số lượng khách hàng SMB mới có PSGD", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng", "Thu KDNT&PS", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Quy mô KHCN tăng mới"], "QLKHDN": ["Doanh thu Bảo hiểm nhân thọ bán mới", "Dư nợ KHTC cuối kỳ", "Dư nợ tín dụng khách hàng SME", "Huy động vốn cuối kỳ", "Huy động vốn KHTC cuối kỳ", "Huy động vốn KKH KHTC bình quân", "Số lượng khách hàng mới có phát sinh thu nhập (gồm cả KH mở CIF mới và khách hàng inactive được active lại)", "Số lượng khách hàng tăng mới đăng ký dịch vụ Ibank có phát sinh giao dịch", "Số lượng TCKT mới có quan hệ tín dụng", "Thu dịch vụ bảo hiểm", "Thu dịch vụ ròng", "Thu KDNT&PS", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu nhập ròng KHTC (không gồm thu nợ HTNB, Thu KDNTPS và lãi dự thu nhóm 1 quá hạn)", "Thu nhập thuần từ hoạt động ngân hàng số", "Thu nhập từ bảo lãnh", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Quy mô KHDN tăng mới"], "PTP PRME": ["Dư nợ tín dụng bán lẻ cuối kỳ", "Huy động vốn cuối kỳ", "Huy động vốn bán lẻ cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "SLSP/KH", "Số lượng khách hàng cao cấp lũy kế", "Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng (không gồm thu dịch vụ bảo hiểm và thu phí SPĐT)", "Thu KDNT&PS", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Quy mô KHCN tăng mới"], "DRM": ["Dư nợ cuối kỳ", "Dư nợ KHTC cuối kỳ", "Dư nợ tín dụng bán lẻ cuối kỳ", "Dư nợ tín dụng khách hàng SME", "Huy động vốn cuối kỳ", "Huy động vốn không kỳ hạn bình quân", "Huy động vốn KHTC cuối kỳ", "Huy động vốn KKH KHTC bình quân", "SLSP/KH", "Số lượng KH SMB lũy kế (từ KHTT trở lên) có PSGD trong kỳ", "Số lượng khách hàng nâng hạng lên KHCC", "Số lượng KHCN mới có quan hệ tín dụng mới", "Số lượng TCKT mới có quan hệ tín dụng", "Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch", "Thu dịch vụ bảo hiểm", "Thu dịch vụ BHNT (BML)", "Thu dịch vụ ròng (không gồm thu dịch vụ bảo hiểm và thu phí SPĐT)", "Thu KDNT&PS", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu nhập ròng bán lẻ (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu phí Sản phẩm đầu tư", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Quy mô KHCN tăng mới", "Quy mô KHDN tăng mới"]};
+const D_BSC = {"PGD": ["Hoa hồng bảo hiểm (Bic, Metlife)", "Thu nhập ròng từ hoạt động Ngân hàng số", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Số lượng khách hàng cao cấp lũy kế", "Dư nợ tín dụng cuối kỳ", "Số lượng thẻ tín dụng mới có phát sinh giao dịch", "Mức độ hài lòng của khách hàng bên ngoài", "Huy động vốn KKH bình quân", "Số lượng khách hàng tăng mới đăng ký dịch vụ Smartbanking và Ibank có phát sinh giao dịch", "Huy động vốn cuối kỳ", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Số lượng giao dịch bình quân quy chuẩn/người", "Tỷ lệ lỗi tác nghiệp bình quân", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Thu kinh doanh ngoại tệ và phái sinh", "Thu dịch vụ ròng", "Thu nợ hạch toán ngoại bảng", "Huy động vốn bình quân", "Dư nợ tín dụng bình quân", "Kết quả các kỳ thi sát hạch và các khóa đào tạo, tập huấn", "Số lượng KHCN mới có quan hệ tín dụng mới", "Phát triển KHTC mới hiệu quả", "Thu dịch vụ BHNT (BML)", "Số cán bộ vi phạm ý thức tổ chức kỷ luật", "Vượt giới hạn dư nợ cầm cố/thấu chi tiền gửi giấy tờ có giá"], "KHCN": ["Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Hoa hồng bảo hiểm (Bic, Metlife)", "Thu nhập ròng từ hoạt động Ngân hàng số", "Thu phí sản phẩm đầu tư", "Số lượng khách hàng cao cấp lũy kế", "Số lượng khách hàng tăng mới đăng ký dịch vụ Smartbanking và Ibank có phát sinh giao dịch", "Huy động vốn cuối kỳ", "Dư nợ tín dụng cuối kỳ", "Số lượng thẻ tín dụng mới có phát sinh giao dịch", "Huy động vốn KKH bình quân", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Thu dịch vụ ròng", "Thu nợ hạch toán ngoại bảng", "Dư nợ tín dụng bình quân", "Huy động vốn bình quân", "Dư nợ tín dụng TDH cuối kỳ ", "Kết quả các kỳ thi sát hạch và các khóa đào tạo, tập huấn", "Số lượng KHCN mới có quan hệ tín dụng mới", "Vượt giới hạn dư nợ cầm cố/thấu chi tiền gửi giấy tờ có giá", "Thu dịch vụ BHNT (BML)", "Số cán bộ vi phạm ý thức tổ chức kỷ luật"], "KHDN": ["Hoa hồng bảo hiểm (Bic, Metlife)", "Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Thu dịch vụ ròng", "Thu nhập ròng từ hoạt động Ngân hàng số", "Dư nợ tín dụng TDH cuối kỳ", "Số lượng khách hàng tăng mới đăng ký dịch vụ Ibank có phát sinh giao dịch", "Dư nợ tín dụng cuối kỳ", "Phát triển KHTC mới hiệu quả", "Huy động vốn KKH bình quân", "Huy động vốn cuối kỳ", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Thu nợ hạch toán ngoại bảng", "Thu kinh doanh ngoại tệ và phái sinh", "Thu bảo lãnh", "Huy động vốn bình quân", "Dư nợ tín dụng bình quân", "Kết quả các kỳ thi sát hạch và các khóa đào tạo, tập huấn", "Thu dịch vụ BHNT (BML)", "Số cán bộ vi phạm ý thức tổ chức kỷ luật", "Số lượng khách hàng TCKT mới quan hệ tín dụng"], "KHƯT": ["Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)", "Hoa hồng bảo hiểm (Bic, Metlife)", "Thu phí sản phẩm đầu tư", "Huy động vốn KKH bình quân", "Số lượng thẻ tín dụng mới có phát sinh giao dịch", "Huy động vốn cuối kỳ", "Dư nợ tín dụng cuối kỳ", "Số lượng khách hàng cao cấp lũy kế", "Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên", "Mức độ hài lòng của khách hàng bên ngoài", "Tỷ lệ nợ quá hạn/Tổng dư nợ", "Tỷ lệ nợ xấu gộp/Tổng dư nợ", "Huy động vốn bình quân", "Dư nợ tín dụng bình quân", "Thu nợ hạch toán ngoại bảng", "Dư nợ tín dụng TDH cuối kỳ ", "Kết quả các kỳ thi sát hạch và các khóa đào tạo, tập huấn", "Số lượng KHCN mới có quan hệ tín dụng mới", "Thu dịch vụ BHNT (BML)", "Vượt giới hạn dư nợ cầm cố/thấu chi tiền gửi giấy tờ có giá", "Số cán bộ vi phạm ý thức tổ chức kỷ luật"]};
+const D_PB  = {"CẨM BÌNH": "PGD", "CẨM PHÚ": "PGD", "CẨM THỦY": "PGD", "KHCN": "KHCN", "KHDN": "KHDN", "KHƯT": "KHƯT", "MÔNG DƯƠNG": "PGD", "QUANG HANH": "PGD", "VÂN ĐỒN": "PGD"};
+
+// ═══════════════════════════════════════════════════════════════
+// GOOGLE SHEETS CONFIG
+// ═══════════════════════════════════════════════════════════════
+let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || '';
+
+// Dữ liệu RAM — khởi tạo từ default, ghi đè khi sync từ GSheet
+let CB  = JSON.parse(JSON.stringify(D_CB));
+let VT  = JSON.parse(JSON.stringify(D_VT));
+let BSC = JSON.parse(JSON.stringify(D_BSC));
+let PB  = JSON.parse(JSON.stringify(D_PB));
+let PG  = [];
+let GS_LOADING = false;
+
+// ── GSheet API ──────────────────────────────────────────────────
+async function gsGet(params) {
+  if (!SHEET_URL) throw new Error('Chưa cấu hình URL');
+  const url = SHEET_URL + '?' + new URLSearchParams(params);
+  const r = await fetch(url, { redirect: 'follow' });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'API error');
+  return j.data;
+}
+
+async function gsPost(body) {
+  if (!SHEET_URL) throw new Error('Chưa cấu hình URL');
+  const r = await fetch(SHEET_URL, {
+    method: 'POST', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'API error');
+  return j.data;
+}
+
+// ── Load từ GSheet ──────────────────────────────────────────────
+async function loadFromGSheet() {
+  if (!SHEET_URL) { gsBar('warn', '⚠ Chưa cấu hình URL Google Sheets. Vào mục <b>Google Sheets</b> để cài đặt.'); return; }
+  if (GS_LOADING) return;
+  GS_LOADING = true;
+  gsBar('load', '<span class="spin"></span> Đang tải từ Google Sheets...');
+  try {
+    const d = await gsGet({ action: 'getAll' });
+    if (d.cb  && d.cb.length)               CB  = d.cb;
+    if (d.vt  && Object.keys(d.vt).length)  VT  = d.vt;
+    if (d.bsc && Object.keys(d.bsc).length) BSC = d.bsc;
+    if (d.pb  && Object.keys(d.pb).length)  PB  = d.pb;
+    PG = d.pg || [];
+    GS_LOADING = false;
+    updBadges(); renderDash();
+    gsBar('ok', '✅ Đã tải từ Google Sheets — ' + PG.length + ' phân giao · ' + CB.length + ' cán bộ');
+    updGsDot(true);
+  } catch(e) {
+    GS_LOADING = false;
+    gsBar('err', '❌ Lỗi kết nối GSheet: ' + e.message);
+    updGsDot(false);
+  }
+}
+
+// ── Đồng bộ bộ CT lên GSheet ────────────────────────────────────
+async function syncBoCT() {
+  if (!SHEET_URL) { gsBar('warn', '⚠ Chưa cấu hình URL'); return; }
+  gsBar('load', '<span class="spin"></span> Đang đồng bộ bộ chỉ tiêu...');
+  try {
+    await gsPost({ action: 'saveAll', cb: CB, vt: VT, bsc: BSC, pb: PB });
+    gsBar('ok', '✅ Đã đồng bộ bộ chỉ tiêu lên Google Sheets!');
+  } catch(e) { gsBar('err', '❌ Lỗi: ' + e.message); }
+}
+
+// ── Ghi 1 PG lên GSheet ─────────────────────────────────────────
+async function gsSavePG(pgObj) {
+  if (!SHEET_URL) return;
+  try { await gsPost({ action: 'addPG', pg: pgObj }); }
+  catch(e) { gsBar('err', '⚠ Lưu GSheet thất bại: ' + e.message); }
+}
+
+// ── Xóa 1 PG trên GSheet ────────────────────────────────────────
+async function gsDeletePG(id) {
+  if (!SHEET_URL) return;
+  try { await gsPost({ action: 'deletePG', id }); }
+  catch(e) { console.warn('GSheet delete failed:', e.message); }
+}
+
+// ── Status bar ───────────────────────────────────────────────────
+function gsBar(type, msg) {
+  const el = document.getElementById('gsBar');
+  const st = {
+    ok:   'background:#E4F5EC;color:#0D6B3A;border-color:#80CCA0',
+    err:  'background:#fdecea;color:#c0392b;border-color:#f5b7b1',
+    warn: 'background:#FEF3E2;color:#C8860A;border-color:#F5C066',
+    load: 'background:#EAF2FB;color:#005BAA;border-color:#7DB3E0'
+  };
+  el.style.cssText = st[type] || st.load;
+  el.innerHTML = msg;
+  el.style.display = 'flex';
+  if (type === 'ok') setTimeout(() => { el.style.display = 'none'; }, 5000);
+}
+
+function updGsDot(ok) {
+  const d = document.getElementById('gsStatusDot');
+  if (d) d.textContent = ok ? '🟢' : '🔴';
+}
+
+// ── GSheet Config UI ─────────────────────────────────────────────
+async function testGS() {
+  const url = document.getElementById('gsUrlInp').value.trim();
+  if (!url) { document.getElementById('gsTestOut').innerHTML = '<span style="color:#c0392b">⚠ Nhập URL trước!</span>'; return; }
+  document.getElementById('gsTestOut').innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#005BAA"></span> Đang kiểm tra...';
+  try {
+    const r = await fetch(url + '?action=getAll', { redirect: 'follow' });
+    const j = await r.json();
+    if (j.ok) {
+      const d = j.data;
+      document.getElementById('gsTestOut').innerHTML =
+        `<div class="alert a-ok">✅ Kết nối thành công!<br>CB: ${(d.cb||[]).length} · VT: ${Object.keys(d.vt||{}).length} · BSC: ${Object.keys(d.bsc||{}).length} · PG: ${(d.pg||[]).length}</div>`;
+    } else {
+      document.getElementById('gsTestOut').innerHTML = `<div class="alert a-err">❌ API lỗi: ${j.error}</div>`;
+    }
+  } catch(e) {
+    document.getElementById('gsTestOut').innerHTML = `<div class="alert a-err">❌ Không kết nối được: ${e.message}<br><small>Kiểm tra URL và quyền deploy (Anyone)</small></div>`;
+  }
+}
+
+async function saveGSUrl() {
+  const url = document.getElementById('gsUrlInp').value.trim();
+  if (!url) { alert('Nhập URL Apps Script!'); return; }
+  SHEET_URL = url;
+  localStorage.setItem('pg4_sheetUrl', url);
+  renderGsCfgStatus();
+  await loadFromGSheet();
+}
+
+function clearGSUrl() {
+  if (!confirm('Xóa kết nối Google Sheets?')) return;
+  SHEET_URL = '';
+  localStorage.removeItem('pg4_sheetUrl');
+  document.getElementById('gsUrlInp').value = '';
+  updGsDot(false);
+  renderGsCfgStatus();
+}
+
+function renderGsCfgStatus() {
+  const el = document.getElementById('gsCfgStatus');
+  if (!el) return;
+  if (SHEET_URL) {
+    el.innerHTML = `<div class="alert a-ok">🟢 Đã kết nối: <span style="font-family:monospace;font-size:11px;word-break:break-all">${SHEET_URL}</span></div>`;
+  } else {
+    el.innerHTML = `<div class="alert a-warn">⚪ Chưa kết nối Google Sheets. Nhập URL và nhấn <b>Lưu & Kết nối</b>.</div>`;
+  }
+  const inp = document.getElementById('gsUrlInp');
+  if (inp && !inp.value) inp.value = SHEET_URL;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+const vna = s => (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const has = (s, q) => vna(s).includes(vna(q));
+const esc = s => (s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
+
+// ═══════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════
+const NT = { dash:'Dashboard', kpi:'Chỉ tiêu KPI', bsc:'Chỉ tiêu BSC',
+  tao:'Tạo phân giao', ds:'Danh sách phân giao', cb:'Cán bộ',
+  imp:'Import Excel', exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
+const NS = { dash:'Tổng quan', kpi:'Theo vị trí', bsc:'Theo mã BCT',
+  tao:'Phân giao số kế hoạch cụ thể', ds:'Lịch sử phân giao',
+  cb:'Danh sách cán bộ AM', imp:'Import từ file Excel',
+  exp:'Xuất Excel', gscfg:'Cấu hình kết nối Google Sheets' };
+
+function go(el) {
+  const s = el.dataset.s; if (!s) return;
+  document.querySelectorAll('.sb-a').forEach(a => a.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.sec').forEach(x => x.classList.remove('show'));
+  document.getElementById('sec-' + s).classList.add('show');
+  document.getElementById('topT').textContent = NT[s] || s;
+  document.getElementById('topS').textContent = NS[s] || '';
+  const fn = { dash:renderDash, kpi:renderKPI, bsc:renderBSC, ds:renderDS,
+               cb:renderCB, exp:renderExpPreview, gscfg:renderGsCfgStatus };
+  (fn[s] || function(){})();
+}
+
+function openM(id)  { document.getElementById(id).classList.add('show'); }
+function closeM(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.ov').forEach(el =>
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); }));
+
+function updBadges() {
+  document.getElementById('bKPI').textContent = Object.keys(VT).length;
+  document.getElementById('bBSC').textContent = Object.keys(BSC).length;
+  document.getElementById('bPG').textContent  = PG.length;
+  document.getElementById('kCS').textContent  = Object.keys(VT).length + ' vị trí';
+  document.getElementById('bCS').textContent  = Object.keys(BSC).length + ' mã BCT';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════════════
+function renderDash() {
+  const totK = Object.values(VT).reduce((a,v) => a+v.length, 0);
+  const totB = Object.values(BSC).reduce((a,v) => a+v.length, 0);
+  document.getElementById('statRow').innerHTML = `
+    <div class="stat"><div class="stat-v" style="color:#005BAA">${CB.length}</div><div class="stat-l">👤 Cán bộ AM</div></div>
+    <div class="stat"><div class="stat-v" style="color:#005BAA">${totK}</div><div class="stat-l">🎯 Chỉ tiêu KPI</div></div>
+    <div class="stat"><div class="stat-v" style="color:#1B7A3E">${totB}</div><div class="stat-l">📐 Chỉ tiêu BSC</div></div>
+    <div class="stat" style="border-left:4px solid #E31837"><div class="stat-v" style="color:#C8860A">${PG.length}</div><div class="stat-l">📨 Lượt phân giao</div></div>`;
+  const rec = [...PG].reverse().slice(0, 8);
+  document.getElementById('pgRecent').innerHTML = rec.length ? rec.map(p => `
+    <tr class="row-c" onclick="viewPG('${p.id}')">
+      <td><strong>${p.target}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
+      <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
+      <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
+      <td>${p.ctCount}</td>
+      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td>${p.nguoiGiao||'—'}</td>
+      <td style="font-size:11px">${p.ky||''}</td>
+      <td style="font-size:11px">${p.ngayGiao||''}</td>
+      <td><button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button></td>
+    </tr>`).join('') : '<tr><td colspan="9"><div class="empty">📭<p>Chưa có phân giao</p></div></td></tr>';
+  document.getElementById('vtStat').innerHTML = Object.entries(VT).map(([vt,cts]) =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #EBF2F8"><span class="vt">${vt}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
+  document.getElementById('bscStat').innerHTML = Object.entries(BSC).map(([m,cts]) =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #EBF2F8"><span class="ph">${m}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KPI / BSC TABLES
+// ═══════════════════════════════════════════════════════════════
+let kpiPg=1, bscPg=1;
+
+function renderKPI() {
+  const q = document.getElementById('kpiSQ').value||'';
+  const vt = document.getElementById('kpiVTF').value||'';
+  const vts = Object.keys(VT);
+  const el = document.getElementById('kpiVTF'), cur = el.value;
+  el.innerHTML = '<option value="">Tất cả vị trí</option>' + vts.map(v=>`<option value="${v}"${v===cur?' selected':''}>${v}</option>`).join('');
+  let rows = [];
+  Object.entries(VT).forEach(([v,cts]) => {
+    if (vt && v !== vt) return;
+    cts.forEach((ct,i) => { if (!q||has(ct,q)) rows.push({viTri:v, chiTieu:ct}); });
+  });
+  document.getElementById('kpiCnt').textContent = rows.length + ' chỉ tiêu';
+  const pages = Math.max(1, Math.ceil(rows.length/30));
+  if (kpiPg > pages) kpiPg = 1;
+  const sl = rows.slice((kpiPg-1)*30, kpiPg*30);
+  document.getElementById('kpiTb').innerHTML = sl.length ? sl.map((r,i) =>
+    `<tr><td style="color:#8096A7;font-size:11px">${(kpiPg-1)*30+i+1}</td><td><span class="vt">${r.viTri}</span></td><td>${r.chiTieu}</td></tr>`).join('')
+    : '<tr><td colspan="3"><div class="empty">Không có dữ liệu</div></td></tr>';
+  renderPag('kpiPag', pages, kpiPg, p => { kpiPg=p; renderKPI(); });
+}
+
+function renderBSC() {
+  const q = document.getElementById('bscSQ').value||'';
+  const mf = document.getElementById('bscMF').value||'';
+  const ms = Object.keys(BSC);
+  const el = document.getElementById('bscMF'), cur = el.value;
+  el.innerHTML = '<option value="">Tất cả mã BCT</option>' + ms.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m}</option>`).join('');
+  let rows = [];
+  Object.entries(BSC).forEach(([m,cts]) => {
+    if (mf && m !== mf) return;
+    cts.forEach(ct => { if (!q||has(ct,q)) rows.push({maBCT:m, chiTieu:ct}); });
+  });
+  document.getElementById('bscCnt').textContent = rows.length + ' chỉ tiêu';
+  const pages = Math.max(1, Math.ceil(rows.length/30));
+  if (bscPg > pages) bscPg = 1;
+  const sl = rows.slice((bscPg-1)*30, bscPg*30);
+  document.getElementById('bscTb').innerHTML = sl.length ? sl.map((r,i) =>
+    `<tr><td style="color:#8096A7;font-size:11px">${(bscPg-1)*30+i+1}</td><td><span class="ph">${r.maBCT}</span></td><td>${r.chiTieu}</td></tr>`).join('')
+    : '<tr><td colspan="3"><div class="empty">Không có dữ liệu</div></td></tr>';
+  renderPag('bscPag', pages, bscPg, p => { bscPg=p; renderBSC(); });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// WIZARD PHÂN GIAO
+// ═══════════════════════════════════════════════════════════════
+let WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[] };
+
+function pickBC(t) {
+  WZ.boCT = t;
+  document.getElementById('boK').className = 'boco' + (t==='KPI' ? ' sk' : '');
+  document.getElementById('boB').className = 'boco' + (t==='BSC' ? ' sb' : '');
+  document.getElementById('ckK').textContent = t==='KPI' ? '✓' : '';
+  document.getElementById('ckB').textContent = t==='BSC' ? '✓' : '';
+  document.getElementById('btnW1').disabled = false;
+}
+
+function wzStep(n) {
+  [1,2,3,4].forEach(i => { document.getElementById('ws'+i).className = 'wst' + (i<n?' done':i===n?' cur':''); });
+  [1,2,3].forEach(i => { document.getElementById('wl'+i).className = 'wln' + (i<n?' done':''); });
+}
+
+function wzNext(step) {
+  if (step === 1) {
+    if (!WZ.boCT) return;
+    document.getElementById('wz1').style.display = 'none';
+    document.getElementById('wz2').style.display = '';
+    document.getElementById('wz2T').textContent = WZ.boCT==='KPI' ? 'Bước 2 · Chọn cán bộ AM' : 'Bước 2 · Chọn phòng / PGD';
+    document.getElementById('wzSQ').value = '';
+    WZ.target = null; document.getElementById('btnW2').disabled = true;
+    wzStep(2); renderTargets();
+  } else if (step === 2) {
+    if (!WZ.target) { alert('Vui lòng chọn cán bộ / phòng!'); return; }
+    document.getElementById('wz2').style.display = 'none';
+    document.getElementById('wz3').style.display = '';
+    wzStep(3); buildStep3();
+  } else if (step === 3) {
+    WZ.vals = WZ.ctList.map((ct,i) => {
+      const sgEl = document.getElementById('sg_'+i);
+      const sgVal = sgEl ? parseFloat(sgEl.dataset.val||'') : NaN;
+      return {
+        chiTieu: ct,
+        soKH:    document.getElementById('v_'+i).value.trim(),
+        donVi:   document.getElementById('u_'+i).value.trim(),
+        ghiChu:  document.getElementById('n_'+i).value.trim(),
+        soGoiY:  !isNaN(sgVal) ? sgVal : null
+      };
+    });
+    document.getElementById('wz3').style.display = 'none';
+    document.getElementById('wz4').style.display = '';
+    wzStep(4); buildStep4();
+  }
+}
+
+function wzBack(step) {
+  const map = { 2:['wz2','wz1'], 3:['wz3','wz2'], 4:['wz4','wz3'] };
+  if (!map[step]) return;
+  document.getElementById(map[step][0]).style.display = 'none';
+  document.getElementById(map[step][1]).style.display = '';
+  wzStep(step - 1);
+}
+
+function renderTargets() {
+  const q = document.getElementById('wzSQ').value||'';
+  let html = '';
+  if (WZ.boCT === 'KPI') {
+    const list = CB.filter(c => !q || has(c.tenCB,q) || has(c.maCB,q) || has(c.phong,q) || has(c.viTri,q));
+    const byPh = {};
+    list.forEach(c => { if (!byPh[c.phong]) byPh[c.phong]=[]; byPh[c.phong].push(c); });
+    if (!Object.keys(byPh).length) { html = '<div class="empty">Không tìm thấy</div>'; }
+    else html = Object.entries(byPh).map(([ph,cbs]) =>
+      `<div style="padding:5px 14px 3px;background:#F0F6FC;border-bottom:1px solid #e4eaf2"><span class="ph">${ph}</span></div>` +
+      cbs.map(c => {
+        const sel = WZ.target === c.maCB;
+        const ctN = (VT[c.viTri]||[]).length;
+        return `<div class="tp${sel?' sel':''}" onclick="pickTargetKPI('${esc(c.maCB)}','${esc(c.tenCB)}','${esc(c.phong)}','${esc(c.viTri)}')">
+          <div class="tp-av" style="background:${sel?'#005BAA':'#EAF2FB'};color:${sel?'#fff':'#005BAA'}">${c.tenCB.charAt(0)}</div>
+          <div style="flex:1"><div class="tp-nm">${c.tenCB}</div>
+          <div class="tp-sb">${c.maCB} · <span class="vt" style="font-size:10px">${c.viTri}</span> · ${ctN} chỉ tiêu</div></div>
+          ${sel ? '<span style="color:#005BAA;font-size:18px;font-weight:700">✓</span>' : ''}
+        </div>`;
+      }).join('')).join('');
+  } else {
+    const list = Object.entries(PB).filter(([ph]) => !q || has(ph,q));
+    if (!list.length) { html = '<div class="empty">Không tìm thấy</div>'; }
+    else html = list.map(([ph, maBCT]) => {
+      const sel = WZ.target === ph;
+      const ctN = (BSC[maBCT]||[]).length;
+      return `<div class="tp${sel?' sel':''}" onclick="pickTargetBSC('${esc(ph)}','${esc(maBCT)}')">
+        <div class="tp-av" style="background:${sel?'#1B7A3E':'#E4F5EC'};color:${sel?'#fff':'#1B7A3E'};font-size:18px">🏢</div>
+        <div style="flex:1"><div class="tp-nm">${ph}</div>
+        <div class="tp-sb">Mã BCT: <span class="ph" style="font-size:10px">${maBCT}</span> · ${ctN} chỉ tiêu</div></div>
+        ${sel ? '<span style="color:#1B7A3E;font-size:18px;font-weight:700">✓</span>' : ''}
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('targetList').innerHTML = html;
+}
+
+function pickTargetKPI(maCB, tenCB, phong, viTri) {
+  WZ.target = maCB; WZ.targetName = tenCB; WZ.targetSub = phong;
+  WZ.targetKey = viTri; WZ.ctList = VT[viTri]||[];
+  document.getElementById('btnW2').disabled = false;
+  renderTargets();
+}
+function pickTargetBSC(phong, maBCT) {
+  WZ.target = phong; WZ.targetName = phong; WZ.targetSub = 'Mã BCT: ' + maBCT;
+  WZ.targetKey = maBCT; WZ.ctList = BSC[maBCT]||[];
+  document.getElementById('btnW2').disabled = false;
+  renderTargets();
+}
+
+function buildStep3() {
+  document.getElementById('wz3Sub').textContent =
+    (WZ.boCT==='KPI' ? WZ.targetName + ' · Vị trí: ' + WZ.targetKey : WZ.targetName + ' · Mã BCT: ' + WZ.targetKey)
+    + ' · ' + WZ.ctList.length + ' chỉ tiêu';
+  document.getElementById('defUnit').value = '';
+  document.getElementById('paramBox').style.display = 'none';
+  document.getElementById('btnParam').textContent = '⚙ Thông số PP2 ▾';
+  // Reset param inputs
+  ['pp_khCN','pp_thCN','pp_thP','pp_pcCN','pp_pcP','pp_thCB'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  ['pp_h1','pp_h2'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '1.0';
+  });
+  const el_pcCB = document.getElementById('pp_pcCB'); if(el_pcCB) el_pcCB.value = '1';
+  // Auto-fill PC cán bộ nếu KPI (lấy từ D_CB nếu có trường hvt)
+  if(WZ.boCT === 'KPI') {
+    const cb = CB.find(c => c.maCB === WZ.target);
+    if(cb && cb.hvt) { const el=document.getElementById('pp_pcCB'); if(el) el.value=cb.hvt; }
+  }
+  // Render rows
+  document.getElementById('wz3Tb').innerHTML = WZ.ctList.map((ct,i) => `
+    <tr id="row_${i}">
+      <td style="color:#8096A7;font-size:11px">${i+1}</td>
+      <td style="font-size:12.5px;max-width:240px">${ct}</td>
+      <td style="text-align:right">
+        <span class="suggest" id="sg_${i}" onclick="fillSuggest(${i})" title="Nhấn để điền vào ô KH">—</span>
+        <div class="ratio-bar" id="rb_${i}"><div class="ratio-fill" id="rf_${i}" style="width:0%;background:#F5A623"></div></div>
+      </td>
+      <td><input type="text" class="vi" id="v_${i}" placeholder="Nhập số..." autocomplete="off" inputmode="decimal" oninput="onValChange(${i})"></td>
+      <td><input type="text" class="ui" id="u_${i}" placeholder="Đơn vị" autocomplete="off"></td>
+      <td><input type="text" class="ni" id="n_${i}" placeholder="Ghi chú" autocomplete="off"></td>
+    </tr>`).join('');
+  setTimeout(() => { const e = document.getElementById('v_0'); if(e) e.focus(); }, 100);
+}
+
+function toggleParamBox() {
+  const box = document.getElementById('paramBox');
+  const btn = document.getElementById('btnParam');
+  const show = box.style.display === 'none';
+  box.style.display = show ? '' : 'none';
+  btn.textContent = show ? '⚙ Thông số PP2 ▴' : '⚙ Thông số PP2 ▾';
+  if(show) calcSuggest();
+}
+
+function setH2(v) {
+  const el = document.getElementById('pp_h2'); if(el){ el.value=v; calcSuggest(); }
+}
+
+// ── Tính số gợi ý theo PP2 ────────────────────────────────────────────
+// Công thức: KH(CB) = TH(CB) + KH_tăng_ròng(P) × PCđc(CB) / Σ PCđc(P)
+// KH_tăng_ròng(P) = KH(P) - TH(P)
+// KH(P) = TH(P) + KH_tăng_ròng(CN)/PCđc(CN) × PCđc(P)
+// PCđc(P) = PC(P) × H1, PCđc(CB) = PC(CB) × H2
+function calcSuggest() {
+  const pNum = id => { const v=parseFloat((document.getElementById(id)||{}).value||'0'); return isNaN(v)?0:v; };
+
+  const khCN    = pNum('pp_khCN');
+  const thCN    = pNum('pp_thCN');
+  const thP     = pNum('pp_thP');
+  const pcCN    = pNum('pp_pcCN');   // Tổng PCđc CN = Σ PCđc(P)
+  const pcP     = pNum('pp_pcP');    // PC Phòng này (chưa nhân H1)
+  const h1      = pNum('pp_h1') || 1;
+  const pcCB    = pNum('pp_pcCB') || 1;
+  const h2      = pNum('pp_h2') || 1;
+  const sumPCH2 = pNum('pp_sumPCH2');  // Σ PC×H2 trong phòng
+
+  const tangRongCN = khCN - thCN;
+  document.getElementById('pp_tangRongCN').textContent = tangRongCN ? fmtSuggest(tangRongCN) : '—';
+
+  // KH Phòng theo PP2 (Bước 3)
+  let khPhong = null;
+  if(pcCN > 0 && pcP > 0) {
+    const pcdcP = pcP * h1;
+    khPhong = thP + tangRongCN / pcCN * pcdcP;
+    document.getElementById('pp_khPhong').textContent = fmtSuggest(khPhong);
+  } else {
+    document.getElementById('pp_khPhong').textContent = '—';
+  }
+
+  // KH từng cán bộ: TH(CB) + tăng_ròng(P) × PCđc(CB)/Σ PCđc(P tính H2)
+  const tangRongP = khPhong !== null ? khPhong - thP : null;
+  const denominatorCB = sumPCH2 > 0 ? sumPCH2 : (pcCB * h2); // fallback nếu chỉ nhập 1 CB
+  const pcdcCB = pcCB * h2;
+
+  WZ.ctList.forEach((ct, i) => {
+    const thCBi = pNum('pp_thCB') || 0;
+    let suggest = null;
+
+    if(tangRongP !== null && denominatorCB > 0) {
+      suggest = thCBi + tangRongP * pcdcCB / denominatorCB;
+    } else if(khCN > 0 && thCN >= 0 && pcCN > 0 && pcCB > 0) {
+      // Fallback: dùng trực tiếp từ CN xuống CB (bỏ qua tầng phòng)
+      suggest = thCBi + tangRongCN * pcdcCB / denominatorCB;
+    }
+
+    const sgEl = document.getElementById('sg_'+i);
+    const rbEl = document.getElementById('rf_'+i);
+    if(sgEl) {
+      if(suggest !== null && !isNaN(suggest)) {
+        sgEl.textContent = fmtSuggest(suggest);
+        sgEl.dataset.val = suggest.toFixed(4);
+        // So sánh với giá trị đã nhập
+        const entered = parseFloat(document.getElementById('v_'+i).value.replace(/,/g,'')) || null;
+        updateRatioBadge(i, suggest, entered);
+      } else {
+        sgEl.textContent = '—';
+        sgEl.dataset.val = '';
+      }
+    }
+    if(rbEl) rbEl.style.width = '0%';
+  });
+}
+
+function fmtSuggest(v) {
+  if(v === null || isNaN(v)) return '—';
+  const abs = Math.abs(v);
+  if(abs >= 1e9) return (v/1e9).toFixed(3) + ' B';
+  if(abs >= 1e6) return (v/1e6).toFixed(3) + ' M';
+  if(abs >= 1e3) return v.toLocaleString('vi-VN',{maximumFractionDigits:1});
+  return v.toLocaleString('vi-VN',{maximumFractionDigits:2});
+}
+
+function updateRatioBadge(i, suggest, entered) {
+  const sg = document.getElementById('sg_'+i);
+  const rf = document.getElementById('rf_'+i);
+  if(!sg) return;
+  if(entered !== null && suggest > 0) {
+    const ratio = entered / suggest;
+    const pct = Math.min(Math.round(ratio*100), 200);
+    if(rf) { rf.style.width=Math.min(pct,100)+'%'; rf.style.background = ratio>=0.9&&ratio<=1.1 ? '#1B7A3E' : ratio<0.7 ? '#c0392b' : '#F5A623'; }
+    sg.className = 'suggest ' + (ratio>=0.9&&ratio<=1.1 ? 'ok' : ratio<0.7 ? 'high' : '');
+    sg.title = `Gợi ý: ${fmtSuggest(suggest)} | Nhập: ${fmtSuggest(entered)} | Tỷ lệ: ${(ratio*100).toFixed(0)}%`;
+  } else {
+    sg.className = 'suggest';
+    if(rf) { rf.style.width='0%'; }
+  }
+}
+
+function onValChange(i) {
+  const entered = parseFloat(document.getElementById('v_'+i).value.replace(/,/g,'')) || null;
+  const sg = document.getElementById('sg_'+i);
+  const suggest = sg ? parseFloat(sg.dataset.val||'') : null;
+  if(suggest) updateRatioBadge(i, suggest, entered);
+}
+
+function fillSuggest(i) {
+  const sg = document.getElementById('sg_'+i);
+  const val = sg ? sg.dataset.val : null;
+  if(!val) return;
+  const inp = document.getElementById('v_'+i);
+  if(inp) { inp.value = fmtSuggest(parseFloat(val)); onValChange(i); }
+}
+
+function fillAllSuggest() {
+  WZ.ctList.forEach((_,i) => { const sg = document.getElementById('sg_'+i); if(sg && sg.dataset.val) fillSuggest(i); });
+}
+
+function applyUnit() {
+  const unit = document.getElementById('defUnit').value.trim(); if (!unit) return;
+  WZ.ctList.forEach((_,i) => { const e = document.getElementById('u_'+i); if(e && !e.value) e.value = unit; });
+}
+function clearVals() {
+  WZ.ctList.forEach((_,i) => ['v_','u_','n_'].forEach(p => { const e=document.getElementById(p+i); if(e) e.value=''; }));
+}
+
+function buildStep4() {
+  const khCnt = WZ.vals.filter(v => v.soKH).length;
+  document.getElementById('wz4N').textContent = WZ.vals.length + ' chỉ tiêu';
+  document.getElementById('wz4Tb').innerHTML = WZ.vals.map((v,i) => {
+    // Lấy số gợi ý đã tính ở bước 3
+    const sgEl = document.getElementById('sg_'+i);
+    const sgVal = sgEl ? parseFloat(sgEl.dataset.val||'') : NaN;
+    const sgTxt = (!isNaN(sgVal) && sgVal) ? fmtSuggest(sgVal) : '—';
+    const entered = parseFloat((v.soKH||'').replace(/[^0-9.-]/g,'')) || null;
+    let ratioTxt = '—', ratioColor = '#8096A7', ratioNote = '';
+    if(entered && !isNaN(sgVal) && sgVal > 0) {
+      const r = entered / sgVal;
+      ratioTxt = (r*100).toFixed(0) + '%';
+      ratioColor = r>=0.9&&r<=1.1 ? '#1B7A3E' : r>=0.7 ? '#C8860A' : '#c0392b';
+      ratioNote = r>=0.9&&r<=1.1 ? '✓' : r>1.1 ? '↑' : '↓';
+    }
+    return `<tr>
+      <td style="color:#8096A7;font-size:11px">${i+1}</td>
+      <td style="font-size:12.5px;max-width:220px">${v.chiTieu}</td>
+      <td style="text-align:right;font-size:12px;color:#C8860A;background:#FFF3E0">${sgTxt}</td>
+      <td style="text-align:right;font-weight:700;color:${v.soKH?'#005BAA':'#8096A7'}">${v.soKH||'—'}</td>
+      <td style="font-size:11.5px;font-weight:700;color:${ratioColor}">${ratioTxt} ${ratioNote}</td>
+      <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
+      <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('wzSumC').innerHTML = `
+    <div class="sum-r"><span class="sum-l">Bộ CT</span><span class="sum-v"><span style="background:rgba(255,255,255,.15);padding:1px 8px;border-radius:10px">${WZ.boCT}</span></span></div>
+    <div class="sum-r"><span class="sum-l">${WZ.boCT==='KPI'?'Cán bộ':'Phòng'}</span><span class="sum-v">${WZ.targetName}</span></div>
+    <div class="sum-r"><span class="sum-l">${WZ.boCT==='KPI'?'Vị trí':'Mã BCT'}</span><span class="sum-v">${WZ.targetKey}</span></div>
+    <div class="sum-r"><span class="sum-l">Tổng chỉ tiêu</span><span class="sum-v">${WZ.ctList.length}</span></div>
+    <div class="sum-r"><span class="sum-l">Đã nhập số KH</span><span class="sum-v" style="color:${khCnt===WZ.ctList.length?'#7bffb0':'#ffe082'}">${khCnt}/${WZ.ctList.length}</span></div>`;
+}
+
+async function savePG() {
+  const ng = document.getElementById('pgNG').value.trim();
+  if (!ng) { alert('Vui lòng nhập tên người giao!'); return; }
+  const btn = document.getElementById('btnSavePG');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Đang lưu...';
+  const khCnt = WZ.vals.filter(v => v.soKH).length;
+  const newPG = {
+    id: uid(), boCT: WZ.boCT,
+    target: WZ.targetName, targetKey: WZ.targetKey, targetSub: WZ.targetSub||'',
+    ctCount: WZ.ctList.length, khCount: khCnt,
+    items: JSON.parse(JSON.stringify(WZ.vals)),
+    nguoiGiao: ng, ky: document.getElementById('pgKy').value,
+    han: document.getElementById('pgHan').value,
+    ghiChu: document.getElementById('pgGC').value,
+    ngayGiao: new Date().toLocaleDateString('vi-VN')
+  };
+  PG.push(newPG);
+  await gsSavePG(newPG);
+  btn.disabled = false; btn.innerHTML = '✅ Xác nhận phân giao';
+  updBadges();
+  // Reset wizard
+  WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[] };
+  document.getElementById('wz4').style.display = 'none';
+  document.getElementById('wz1').style.display = '';
+  wzStep(1);
+  ['boK','boB'].forEach(id => document.getElementById(id).className = 'boco');
+  ['ckK','ckB'].forEach(id => document.getElementById(id).textContent = '');
+  document.getElementById('btnW1').disabled = true;
+  ['pgNG','pgGC','pgHan'].forEach(id => document.getElementById(id).value = '');
+  gsBar('ok', '✅ Phân giao thành công! Đã lưu lên Google Sheets.');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DANH SÁCH PG
+// ═══════════════════════════════════════════════════════════════
+function renderDS() {
+  const q  = document.getElementById('dsSQ').value||'';
+  const bo = document.getElementById('dsBo').value||'';
+  const ky = document.getElementById('dsKy').value||'';
+  const kys = [...new Set(PG.map(p => p.ky).filter(Boolean))];
+  const kyEl = document.getElementById('dsKy'), curKy = kyEl.value;
+  kyEl.innerHTML = '<option value="">Tất cả kỳ</option>' + kys.map(k=>`<option value="${k}"${k===curKy?' selected':''}>${k}</option>`).join('');
+  const list = PG.filter(p =>
+    (!q  || has(p.target,q) || has(p.nguoiGiao||'',q) || has(p.targetKey,q)) &&
+    (!bo || p.boCT === bo) && (!ky || p.ky === ky));
+  document.getElementById('dsCnt').textContent = list.length + ' phân giao';
+  document.getElementById('dsTb').innerHTML = list.length ? [...list].reverse().map(p => `
+    <tr class="row-c" onclick="viewPG('${p.id}')">
+      <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
+      <td><strong>${p.target}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
+      <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
+      <td style="font-size:11.5px">${p.ky||'—'}</td>
+      <td>${p.ctCount}</td>
+      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td>${p.nguoiGiao||'—'}</td>
+      <td style="font-size:11px">${p.ngayGiao||''}</td>
+      <td><div style="display:flex;gap:3px">
+        <button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button>
+        <button class="btn btn-red btn-xs" onclick="event.stopPropagation();delPG('${p.id}')">🗑</button>
+      </div></td>
+    </tr>`).join('') : '<tr><td colspan="9"><div class="empty">📭<p>Chưa có phân giao</p></div></td></tr>';
+}
+
+function viewPG(id) {
+  const p = PG.find(x => x.id === id); if (!p) return;
+  document.getElementById('mPGT').textContent = `${p.boCT} · ${p.target} · ${p.targetKey}`;
+  document.getElementById('mPGB').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#F0F6FC;border-radius:10px;padding:14px;margin-bottom:16px">
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Bộ CT</div>
+        <div style="margin-top:3px"><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">${p.boCT==='KPI'?'Cán bộ':'Phòng'}</div>
+        <div style="font-weight:700;margin-top:3px">${p.target}</div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">${p.boCT==='KPI'?'Vị trí':'Mã BCT'}</div>
+        <div style="margin-top:3px"><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Người giao</div>
+        <div style="font-weight:700;margin-top:3px">${p.nguoiGiao||'—'}</div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Kỳ</div>
+        <div style="margin-top:3px">${p.ky||'—'}</div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Hạn / Ngày lập</div>
+        <div style="font-size:12px;margin-top:3px">${p.han||'—'} · ${p.ngayGiao||''}</div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Tổng CT</div>
+        <div style="font-size:22px;font-weight:800;color:#005BAA;margin-top:2px">${p.ctCount}</div></div>
+      <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Đã nhập KH</div>
+        <div style="font-size:22px;font-weight:800;color:${p.khCount===p.ctCount?'#1B7A3E':'#C8860A'};margin-top:2px">${p.khCount||0}/${p.ctCount}</div></div>
+    </div>
+    ${p.ghiChu ? `<div style="background:#FEF3E2;border:1px solid #F5C066;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12.5px"><strong>📝 Ghi chú:</strong> ${p.ghiChu}</div>` : ''}
+    <div class="tw"><table>
+      <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFF3E0;color:#B87100">Số gợi ý (PP2)</th><th style="text-align:right">Số KH đã giao</th><th>Tỷ lệ KH/GY</th><th>Đơn vị</th><th>Ghi chú CT</th></tr></thead>
+      <tbody>${(p.items||[]).map((v,i) => {
+        const sg = v.soGoiY;
+        const sgTxt = (sg !== null && sg !== undefined && !isNaN(sg)) ? fmtSuggest(sg) : '—';
+        const entered = parseFloat((v.soKH||'').replace(/[^0-9.-]/g,'')) || null;
+        let rTxt='—', rColor='#8096A7', rNote='';
+        if(entered && sg && sg>0){ const r=entered/sg; rTxt=(r*100).toFixed(0)+'%'; rColor=r>=0.9&&r<=1.1?'#1B7A3E':r>=0.7?'#C8860A':'#c0392b'; rNote=r>=0.9&&r<=1.1?'✓':r>1.1?'↑':'↓'; }
+        return `<tr>
+          <td style="color:#8096A7;font-size:11px">${i+1}</td>
+          <td style="font-size:12.5px">${v.chiTieu}</td>
+          <td style="text-align:right;font-size:12px;color:#C8860A;background:#fffdf0">${sgTxt}</td>
+          <td style="text-align:right;font-weight:700;color:${v.soKH?'#005BAA':'#8096A7'};font-size:13px">${v.soKH||'—'}</td>
+          <td style="font-size:12px;font-weight:700;color:${rColor}">${rTxt} ${rNote}</td>
+          <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
+          <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table></div>`;
+  document.getElementById('mDel').onclick = () => { if(confirm('Xóa phân giao này?')) { delPG(id); closeM('ov-pg'); } };
+  document.getElementById('mExp').onclick = () => exportSinglePG(id);
+  openM('ov-pg');
+}
+
+function delPG(id) {
+  PG = PG.filter(p => p.id !== id);
+  gsDeletePG(id);
+  updBadges();
+  if (document.getElementById('sec-ds').classList.contains('show')) renderDS();
+  renderDash();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CÁN BỘ
+// ═══════════════════════════════════════════════════════════════
+let cbPg = 1;
+function renderCB() {
+  const q  = document.getElementById('cbSQ').value||'';
+  const vt = document.getElementById('cbVTF').value||'';
+  const ph = document.getElementById('cbPhF').value||'';
+  const vts = [...new Set(CB.map(c=>c.viTri))].sort();
+  const phs = [...new Set(CB.map(c=>c.phong))].sort();
+  const vtEl=document.getElementById('cbVTF'),cvt=vtEl.value;
+  vtEl.innerHTML='<option value="">Tất cả vị trí</option>'+vts.map(v=>`<option value="${v}"${v===cvt?' selected':''}>${v}</option>`).join('');
+  const phEl=document.getElementById('cbPhF'),cph=phEl.value;
+  phEl.innerHTML='<option value="">Tất cả phòng</option>'+phs.map(p=>`<option value="${p}"${p===cph?' selected':''}>${p}</option>`).join('');
+  let list = CB.filter(c => (!q||has(c.tenCB,q)||has(c.maCB,q)) && (!vt||c.viTri===vt) && (!ph||c.phong===ph));
+  document.getElementById('cbCnt').textContent = list.length + ' cán bộ';
+  const pages = Math.max(1, Math.ceil(list.length/20));
+  if (cbPg > pages) cbPg = 1;
+  const sl = list.slice((cbPg-1)*20, cbPg*20);
+  document.getElementById('cbTb').innerHTML = sl.map(c => {
+    const ctN = (VT[c.viTri]||[]).length;
+    const pgN = PG.filter(p => p.boCT==='KPI' && p.target===c.tenCB).length;
+    return `<tr>
+      <td><span style="font-family:monospace;font-size:10.5px;background:#EAF2FB;padding:2px 5px;border-radius:4px">${c.maCB}</span></td>
+      <td><span style="font-family:monospace;font-size:10.5px;background:#EAF2FB;color:#005BAA;padding:2px 5px;border-radius:4px">${c.maAM||'—'}</span></td>
+      <td><strong>${c.tenCB}</strong></td>
+      <td><span class="ph">${c.phong}</span></td>
+      <td><span class="vt">${c.viTri}</span></td>
+      <td><span style="font-size:10.5px;padding:2px 7px;border-radius:10px;font-weight:700;background:${c.trangThai==='HOAT_DONG'?'#E4F5EC':'#fdecea'};color:${c.trangThai==='HOAT_DONG'?'#0D6B3A':'#c0392b'}">${c.trangThai}</span></td>
+      <td>${ctN} CT</td>
+      <td>${pgN ? `<span style="color:#005BAA;font-weight:700">${pgN}</span>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  renderPag('cbPag', pages, cbPg, p => { cbPg=p; renderCB(); });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PAGINATOR
+// ═══════════════════════════════════════════════════════════════
+function renderPag(id, pages, cur, fn) {
+  const el = document.getElementById(id); if (!el || pages<=1) { if(el) el.innerHTML=''; return; }
+  const s = Math.max(1,cur-2), e = Math.min(pages,cur+2);
+  let h = `<span style="font-size:11px;color:#8096A7;margin-right:4px">Trang ${cur}/${pages}</span>`;
+  if (s>1) h += `<button class="pb" onclick="(${fn.toString()})(1)">1</button>` + (s>2?'<span style="color:#8096A7">…</span>':'');
+  for (let p=s; p<=e; p++) h += `<button class="pb${p===cur?' on':''}" onclick="(${fn.toString()})(${p})">${p}</button>`;
+  if (e<pages) h += (e<pages-1?'<span style="color:#8096A7">…</span>':'') + `<button class="pb" onclick="(${fn.toString()})(${pages})">${pages}</button>`;
+  el.innerHTML = h;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMPORT EXCEL
+// ═══════════════════════════════════════════════════════════════
+function dze(e)  { e.preventDefault(); e.currentTarget.style.borderColor='#0068C5'; }
+function dze2(e) { e.currentTarget.style.borderColor='#C8D8E8'; }
+function dropF(e) { e.preventDefault(); dze2(e); const f=e.dataTransfer.files[0]; if(f) importFile(f); }
+function doImport(inp) { if(inp.files[0]) importFile(inp.files[0]); inp.value=''; }
+
+function importFile(file) {
+  document.getElementById('impAlert').innerHTML = '<div class="alert a-inf">⏳ Đang xử lý...</div>';
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
+      const wsK = wb.Sheets['KPI'] || wb.Sheets[wb.SheetNames[0]];
+      const kR = XLSX.utils.sheet_to_json(wsK, { header:1, defval:'' });
+      const nCB={}, nVT={};
+      for (let i=1; i<kR.length; i++) {
+        const r=kR[i];
+        const maCB=String(r[0]||''),maAM=String(r[1]||''),tenCB=String(r[2]||''),
+              phong=String(r[4]||''),viTri=String(r[5]||''),tt=String(r[7]||''),ct=String(r[8]||'');
+        if (!ct) continue;
+        if (maCB && !nCB[maCB]) nCB[maCB]={maCB,maAM,tenCB,phong,viTri,trangThai:tt};
+        if (viTri) { if(!nVT[viTri]) nVT[viTri]=[]; if(!nVT[viTri].includes(ct)) nVT[viTri].push(ct); }
+      }
+      const wsB = wb.Sheets['BSC'] || (wb.SheetNames.length>1 ? wb.Sheets[wb.SheetNames[1]] : null);
+      const nBSC={};
+      if (wsB) {
+        const bR = XLSX.utils.sheet_to_json(wsB, { header:1, defval:'' });
+        for (let i=1; i<bR.length; i++) {
+          const r=bR[i]; const m=String(r[0]||''),ct=String(r[1]||'');
+          if (!ct) continue;
+          if (!nBSC[m]) nBSC[m]=[];
+          if (!nBSC[m].includes(ct)) nBSC[m].push(ct);
+        }
+      }
+      const bscKeys = Object.keys(nBSC);
+      const nPB={};
+      Object.values(nCB).forEach(c => {
+        if (!nPB[c.phong]) nPB[c.phong] = bscKeys.includes(c.phong) ? c.phong : (bscKeys.find(k=>k==='PGD') || bscKeys[0] || 'PGD');
+      });
+      CB=Object.values(nCB); VT=nVT; BSC=nBSC; PB=nPB;
+      updBadges(); renderDash();
+      document.getElementById('impAlert').innerHTML = `<div class="alert a-ok">✅ Import thành công: ${CB.length} cán bộ · ${Object.keys(VT).length} vị trí KPI · ${Object.keys(BSC).length} mã BSC.<br>Đang đồng bộ lên Google Sheets...</div>`;
+      syncBoCT();
+    } catch(err) {
+      document.getElementById('impAlert').innerHTML = `<div class="alert a-err">❌ Lỗi: ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// XUẤT DỮ LIỆU
+// ═══════════════════════════════════════════════════════════════
+function getExpList() {
+  const bo = document.getElementById('expBo') ? document.getElementById('expBo').value : '';
+  const ky = document.getElementById('expKy') ? document.getElementById('expKy').value : '';
+  return PG.filter(p => (!bo||p.boCT===bo) && (!ky||p.ky===ky));
+}
+
+function renderExpPreview() {
+  const list = getExpList();
+  document.getElementById('expPrev').textContent = list.length + ' phân giao';
+  const kys = [...new Set(PG.map(p=>p.ky).filter(Boolean))];
+  const kyEl = document.getElementById('expKy');
+  if (kyEl) { const cur=kyEl.value; kyEl.innerHTML='<option value="">Tất cả kỳ</option>'+kys.map(k=>`<option value="${k}"${k===cur?' selected':''}>${k}</option>`).join(''); }
+  document.getElementById('expTb').innerHTML = list.length ? list.map(p => `
+    <tr>
+      <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
+      <td><strong>${p.target}</strong></td>
+      <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
+      <td style="font-size:11.5px">${p.ky||'—'}</td>
+      <td>${p.ctCount}</td>
+      <td style="color:${p.khCount?'#005BAA':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
+      <td>${p.nguoiGiao||'—'}</td>
+      <td style="font-size:11px">${p.ngayGiao||''}</td>
+    </tr>`).join('') : '<tr><td colspan="8"><div class="empty">Không có dữ liệu</div></td></tr>';
+}
+
+function exportPGExcel() {
+  const list = getExpList();
+  if (!list.length) { alert('Không có dữ liệu!'); return; }
+  const fmt = document.querySelector('input[name="expFmt"]:checked').value;
+  const wb = XLSX.utils.book_new();
+  if (fmt === 'summary') {
+    const rows = [['Bộ CT','Cán bộ / Phòng','Vị trí / Mã BCT','Kỳ','Số CT','Đã nhập KH','Người giao','Hạn','Ngày lập','Ghi chú']];
+    list.forEach(p => rows.push([p.boCT,p.target,p.targetKey,p.ky||'',p.ctCount,p.khCount||0,p.nguoiGiao||'',p.han||'',p.ngayGiao||'',p.ghiChu||'']));
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [6,22,12,14,7,8,18,12,12,30].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, ws, 'Tóm tắt');
+  } else {
+    const rows = [['Bộ CT','Cán bộ / Phòng','Vị trí / Mã BCT','Kỳ','Người giao','Ngày lập','STT','Tên chỉ tiêu','Số KH','Đơn vị','Ghi chú CT']];
+    list.forEach(p => (p.items||[]).forEach((v,i) =>
+      rows.push([p.boCT,p.target,p.targetKey,p.ky||'',p.nguoiGiao||'',p.ngayGiao||'',i+1,v.chiTieu,v.soKH||'',v.donVi||'',v.ghiChu||''])));
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [6,22,12,14,18,12,5,52,15,14,25].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, ws, 'Chi tiết');
+    const rows2 = [['Bộ CT','Cán bộ / Phòng','Vị trí / Mã BCT','Kỳ','Số CT','Đã KH','Người giao','Ngày']];
+    list.forEach(p => rows2.push([p.boCT,p.target,p.targetKey,p.ky||'',p.ctCount,p.khCount||0,p.nguoiGiao||'',p.ngayGiao||'']));
+    const ws2 = XLSX.utils.aoa_to_sheet(rows2);
+    ws2['!cols'] = [6,22,12,14,6,6,18,12].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, ws2, 'Tóm tắt');
+  }
+  XLSX.writeFile(wb, `PhanGiao_${new Date().toLocaleDateString('vi-VN').replace(/\//g,'-')}.xlsx`);
+}
+
+function exportAllPG()      { if(!PG.length){alert('Chưa có phân giao!');return;} exportFullDetail(PG,'PhanGiao_TatCa'); }
+function exportFilteredPG() {
+  const q=document.getElementById('dsSQ').value||'',bo=document.getElementById('dsBo').value||'',ky=document.getElementById('dsKy').value||'';
+  const list=PG.filter(p=>(!q||has(p.target,q)||has(p.nguoiGiao||'',q))&&(!bo||p.boCT===bo)&&(!ky||p.ky===ky));
+  if(!list.length){alert('Không có dữ liệu!');return;}
+  exportFullDetail(list,'PhanGiao_LocFilter');
+}
+
+function exportFullDetail(list, fname) {
+  const wb = XLSX.utils.book_new();
+  const rows = [['Bộ CT','Cán bộ / Phòng','Vị trí / Mã BCT','Kỳ','Người giao','Hạn','Ngày lập','STT','Tên chỉ tiêu','Số KH','Đơn vị','Ghi chú CT']];
+  list.forEach(p => (p.items||[]).forEach((v,i) =>
+    rows.push([p.boCT,p.target,p.targetKey,p.ky||'',p.nguoiGiao||'',p.han||'',p.ngayGiao||'',i+1,v.chiTieu,v.soKH||'',v.donVi||'',v.ghiChu||''])));
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [6,22,12,14,18,12,12,5,52,15,14,25].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws, 'Chi tiết');
+  const rows2 = [['Bộ CT','Cán bộ / Phòng','Vị trí / Mã BCT','Kỳ','Số CT','Đã KH','Người giao','Hạn','Ngày lập']];
+  list.forEach(p => rows2.push([p.boCT,p.target,p.targetKey,p.ky||'',p.ctCount,p.khCount||0,p.nguoiGiao||'',p.han||'',p.ngayGiao||'']));
+  const ws2 = XLSX.utils.aoa_to_sheet(rows2);
+  ws2['!cols'] = [6,22,12,14,6,6,18,12,12].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, ws2, 'Tóm tắt');
+  XLSX.writeFile(wb, `${fname}_${new Date().toLocaleDateString('vi-VN').replace(/\//g,'-')}.xlsx`);
+}
+
+function exportSinglePG(id) {
+  const p = PG.find(x => x.id===id); if(!p) return;
+  const wb = XLSX.utils.book_new();
+  const rows = [
+    ['PHÂN GIAO CHỈ TIÊU','','','',''],
+    ['Bộ chỉ tiêu:', p.boCT,'','',''],
+    [p.boCT==='KPI'?'Cán bộ:':'Phòng:', p.target, 'Vị trí / Mã BCT:', p.targetKey,''],
+    ['Kỳ:', p.ky||'','Người giao:', p.nguoiGiao||'',''],
+    ['Hạn:', p.han||'','Ngày lập:', p.ngayGiao||'',''],
+    ['Ghi chú:', p.ghiChu||'','','',''],
+    ['','','','',''],
+    ['STT','Tên chỉ tiêu','Số kế hoạch','Đơn vị','Ghi chú']
+  ];
+  (p.items||[]).forEach((v,i) => rows.push([i+1,v.chiTieu,v.soKH||'',v.donVi||'',v.ghiChu||'']));
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:5},{wch:55},{wch:16},{wch:14},{wch:25}];
+  ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:4}}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Phân giao');
+  const safe = s => (s||'').replace(/[\/\\?*\[\]]/g,'_').slice(0,20);
+  XLSX.writeFile(wb, `PG_${safe(p.target)}_${safe(p.ky)}.xlsx`);
+}
+
+function exportBoCT() {
+  const wb = XLSX.utils.book_new();
+  const kRows = [['VI_TRI','CHI TIEU']];
+  Object.entries(VT).forEach(([v,cts]) => cts.forEach(ct => kRows.push([v,ct])));
+  const wsK = XLSX.utils.aoa_to_sheet(kRows); wsK['!cols']=[{wch:14},{wch:60}];
+  XLSX.utils.book_append_sheet(wb, wsK, 'KPI');
+  const bRows = [['MÃ BCT','CHỈ TIÊU']];
+  Object.entries(BSC).forEach(([m,cts]) => cts.forEach(ct => bRows.push([m,ct])));
+  const wsB = XLSX.utils.aoa_to_sheet(bRows); wsB['!cols']=[{wch:10},{wch:60}];
+  XLSX.utils.book_append_sheet(wb, wsB, 'BSC');
+  XLSX.writeFile(wb, 'BoCT_HienTai.xlsx');
+}
+
+function downloadSample() {
+  const wb = XLSX.utils.book_new();
+  const kRows = [['MA_CB','MA_AM','TEN_CB','EMAIL','PHONG','VI_TRI','VAI_TRO','TRANG THAI','CHI TIEU']];
+  CB.forEach(c => (VT[c.viTri]||[]).forEach(ct => kRows.push([c.maCB,c.maAM,c.tenCB,'',c.phong,c.viTri,'CAN_BO',c.trangThai||'HOAT_DONG',ct])));
+  const wsK = XLSX.utils.aoa_to_sheet(kRows);
+  wsK['!cols'] = [8,10,20,22,14,12,10,12,55].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb, wsK, 'KPI');
+  const bRows = [['MÃ BCT','CHỈ TIÊU']];
+  Object.entries(BSC).forEach(([m,cts]) => cts.forEach(ct => bRows.push([m,ct])));
+  const wsB = XLSX.utils.aoa_to_sheet(bRows); wsB['!cols']=[{wch:10},{wch:60}];
+  XLSX.utils.book_append_sheet(wb, wsB, 'BSC');
+  XLSX.writeFile(wb, 'BO_CHI_TIEU_KH_MAU.xlsx');
+}
+
+function resetDef() {
+  if (!confirm('Khôi phục dữ liệu mặc định? Sẽ ghi đè Google Sheets.')) return;
+  CB=JSON.parse(JSON.stringify(D_CB)); VT=JSON.parse(JSON.stringify(D_VT));
+  BSC=JSON.parse(JSON.stringify(D_BSC)); PB=JSON.parse(JSON.stringify(D_PB));
+  updBadges(); renderDash(); syncBoCT();
+}
+function clearAllPG() {
+  if (!confirm('Xóa tất cả phân giao? Không thể hoàn tác.')) return;
+  PG.forEach(p => gsDeletePG(p.id));
+  PG=[]; updBadges(); renderDash();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('todayTxt').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+updBadges();
+renderDash();
+updGsDot(false);
+if (SHEET_URL) {
+  loadFromGSheet();
+} else {
+  gsBar('warn', '⚠ Chưa kết nối Google Sheets. Nhấn <b style="cursor:pointer;text-decoration:underline" onclick="go(document.querySelector(\'[data-s=gscfg]\'))">🔗 Google Sheets</b> để cài đặt.');
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</body></html>
