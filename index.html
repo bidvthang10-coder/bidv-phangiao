@@ -251,6 +251,10 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="sb-a" data-s="cb" onclick="go(this)"><span class="sb-ic">👥</span>Cán bộ</div>
     <div class="sb-a" data-s="imp" onclick="go(this)"><span class="sb-ic">📥</span>Import bộ CT</div>
     <div class="sb-a" data-s="impkh" onclick="go(this)"><span class="sb-ic">📊</span>Import kế hoạch<span class="sb-bx" id="bImpKH">Mới</span></div>
+    <div class="sb-sec">Phân tích</div>
+    <div class="sb-a" data-s="daukp" onclick="go(this)"><span class="sb-ic">📅</span>Số liệu đầu kỳ</div>
+    <div class="sb-a" data-s="baocaoHL" onclick="go(this)"><span class="sb-ic">📊</span>Báo cáo hợp lý<span class="sb-bx" id="bBaocao" style="background:#E31837">!</span></div>
+    <div class="sb-sec">Hệ thống</div>
     <div class="sb-a" data-s="exp" onclick="go(this)"><span class="sb-ic">📤</span>Xuất dữ liệu</div>
     <div class="sb-a" data-s="gscfg" onclick="go(this)"><span class="sb-ic">🔗</span>Google Sheets<span id="gsStatusDot" style="margin-left:auto;font-size:10px">⚪</span></div>
   </nav>
@@ -1016,7 +1020,8 @@ const esc = s => (s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
 // ═══════════════════════════════════════════════════════════════
 const NT = { dash:'Dashboard', kpi:'Chỉ tiêu KPI', bsc:'Chỉ tiêu BSC',
   tao:'Tạo phân giao', ds:'Danh sách phân giao', cb:'Cán bộ',
-  imp:'Import Excel', daukp:'Số liệu đầu kỳ', baocaoHL:'Báo cáo hợp lý', exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
+  imp:'Import bộ CT', impkh:'Import kế hoạch', daukp:'Số liệu đầu kỳ', baocaoHL:'Báo cáo hợp lý',
+  exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
 const NS = { dash:'Tổng quan', kpi:'Theo vị trí', bsc:'Theo mã BCT',
   tao:'Phân giao số kế hoạch cụ thể', ds:'Lịch sử phân giao',
   cb:'Danh sách cán bộ AM', imp:'Import bộ chỉ tiêu từ file Excel',
@@ -2313,7 +2318,7 @@ function applyRoleUI() {
   document.querySelectorAll('.sb-a').forEach(el => {
     const s = el.dataset.s;
     let show = true;
-    if(r === 'truong') show = !['imp','gscfg'].includes(s);  // truong thấy impkh, exp, daukp, baocaoHL
+    if(r === 'truong') show = !['imp','gscfg','cb','exp'].includes(s);  // truong: impkh, daukp, baocaoHL, ds, dash, tao
     if(r === 'canbo')  show = ['ds','dash','baocaoHL'].includes(s);
     el.style.display = show ? '' : 'none';
   });
@@ -2593,6 +2598,9 @@ function renderBaocaoHL() {
       <div style="font-size:22px;font-weight:900;color:#E31837">${failRules}</div>
     </div>`;
 
+  // Cập nhật badge cảnh báo
+  const bcBadge=document.getElementById('bBaocao');
+  if(bcBadge){bcBadge.textContent=failRules>0?failRules+'!':warnRules>0?warnRules+'⚠':'✓';bcBadge.style.background=failRules>0?'#E31837':warnRules>0?'#D4A800':'#006B68';}
   wrap.innerHTML=`<table class="at" style="min-width:800px">
     <thead><tr>
       <th style="width:36px">#</th><th>Chỉ tiêu KPI / BSC (ngưỡng)</th>
