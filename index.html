@@ -2309,25 +2309,68 @@ async function confirmImportKH() {
   const btn=document.getElementById('btnConfirmImpKH');
   btn.disabled=true; btn.innerHTML='<span class="spin"></span> Đang lưu...';
   const today=new Date().toLocaleDateString('vi-VN');
-  let saved=0, failed=0;
+  let saved=0, overwritten=0, skipped=0, failed=0;
+
   for (const g of _impKHData) {
-    const khCount=g.items.filter(it=>it.soKH).length;
-    const newPG={
-      id:uid(), boCT:g.boCT, target:g.target, targetKey:g.targetKey, targetSub:g.targetSub||'',
-      ctCount:g.items.length, khCount,
-      items:g.items.map(it=>({chiTieu:it.chiTieu,soKH:it.soKH,donVi:it.donVi,ghiChu:it.ghiChu,soGoiY:null})),
-      nguoiGiao:g.nguoiGiao||'', ky:g.ky||'', han:g.han||'', ghiChu:'', ngayGiao:today
-    };
-    PG.push(newPG);
-    try { await gsSavePG(newPG); saved++; } catch(e) { failed++; }
+    const ky = g.ky || '';
+    // Tìm PG đã có cùng target + boCT + kỳ
+    const existing = PG.find(p =>
+      p.boCT === g.boCT &&
+      (p.target === g.target) &&
+      (!ky || p.ky === ky)
+    );
+
+    if (existing) {
+      if (existing.status === 'chot') {
+        // ĐÃ CHỐT → không cho import, bỏ qua
+        skipped++;
+        continue;
+      }
+      // CHƯA CHỐT → ghi đè: cập nhật items + khCount
+      const khCount = g.items.filter(it=>it.soKH).length;
+      existing.items    = g.items.map(it=>({chiTieu:it.chiTieu,soKH:it.soKH,donVi:it.donVi,ghiChu:it.ghiChu,soGoiY:null}));
+      existing.ctCount  = g.items.length;
+      existing.khCount  = khCount;
+      existing.nguoiGiao= g.nguoiGiao || existing.nguoiGiao;
+      existing.han      = g.han || existing.han;
+      existing.ngayGiao = today;
+      // Nếu đã duyệt → reset về chờ duyệt vì nội dung đã thay đổi
+      if (existing.status === 'da_duyet') existing.status = '';
+      try {
+        await gsPost({action:'updatePGItems', id:existing.id,
+          items:existing.items, khCount:existing.khCount});
+        overwritten++;
+      } catch(e) { failed++; }
+    } else {
+      // CHƯA CÓ → tạo mới
+      const khCount = g.items.filter(it=>it.soKH).length;
+      const newPG = {
+        id:uid(), boCT:g.boCT, target:g.target, targetKey:g.targetKey, targetSub:g.targetSub||'',
+        ctCount:g.items.length, khCount,
+        items:g.items.map(it=>({chiTieu:it.chiTieu,soKH:it.soKH,donVi:it.donVi,ghiChu:it.ghiChu,soGoiY:null})),
+        nguoiGiao:g.nguoiGiao||'', ky:g.ky||'', han:g.han||'', ghiChu:'', ngayGiao:today, status:''
+      };
+      PG.push(newPG);
+      try { await gsSavePG(newPG); saved++; } catch(e) { failed++; }
+    }
   }
+
   updBadges(); renderDash(); renderDS(); _impKHData=[];
   document.getElementById('impKHPreviewCard').style.display='none';
   btn.disabled=false; btn.innerHTML='✅ Xác nhận import';
-  document.getElementById('impKHAlert').innerHTML=`<div class="alert ${saved>0?'a-ok':'a-err'}">${
-    saved>0?`✅ Đã import ${saved} phân giao thành công!${failed?' ('+failed+' lỗi GSheet)':''} Vào <b>Danh sách PG</b> để kiểm tra.`
-           :'❌ Import thất bại.'}</div>`;
-  document.getElementById('bImpKH').textContent=saved>0?saved+' mới':'Mới';
+
+  // Thông báo kết quả chi tiết
+  const parts = [];
+  if(saved)       parts.push(`<b>${saved}</b> phân giao mới`);
+  if(overwritten) parts.push(`<b>${overwritten}</b> đã ghi đè (chưa chốt)`);
+  if(skipped)     parts.push(`<b style="color:#E31837">${skipped}</b> bỏ qua (đã chốt)`);
+  if(failed)      parts.push(`<b style="color:#E31837">${failed}</b> lỗi GSheet`);
+  const total = saved+overwritten;
+  const cls   = total>0 ? 'a-ok' : (skipped>0 ? 'a-warn' : 'a-err');
+  const icon  = total>0 ? '✅' : (skipped>0 ? '⚠' : '❌');
+  document.getElementById('impKHAlert').innerHTML =
+    `<div class="alert ${cls}">${icon} ${parts.join(' · ')}${skipped?'<br><small>Bản ghi đã chốt không bị ghi đè — mở chốt trước nếu muốn cập nhật.</small>':''}</div>`;
+  document.getElementById('bImpKH').textContent = total>0 ? total+' bản' : 'Mới';
 }
 
 function downloadKHSample(type) {
