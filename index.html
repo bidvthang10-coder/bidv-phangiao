@@ -381,11 +381,11 @@ textarea.fc{resize:vertical;min-height:60px;}
           <div style="display:flex;align-items:center;gap:8px">
             <label style="font-size:12px;font-weight:700;color:#005452;white-space:nowrap">📅 Kỳ:</label>
             <select id="wzKy" style="padding:6px 10px;border:1.5px solid #B8D8D6;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#1A1A2E" onchange="WZ.ky=this.value;if(WZ.target)renderTargets();">
-              <option value="Quý 1/2025">Quý 1/2025</option>
-              <option value="Quý 2/2025">Quý 2/2025</option>
-              <option value="Quý 3/2025">Quý 3/2025</option>
-              <option value="Quý 4/2025">Quý 4/2025</option>
-              <option value="Cả năm 2025">Cả năm 2025</option>
+              <option value="Quý 1/2026">Quý 1/2026</option>
+              <option value="Quý 2/2026">Quý 2/2026</option>
+              <option value="Quý 3/2026">Quý 3/2026</option>
+              <option value="Quý 4/2026">Quý 4/2026</option>
+              <option value="Cả năm 2026">Cả năm 2026</option>
             </select>
           </div>
         </div>
@@ -689,7 +689,7 @@ textarea.fc{resize:vertical;min-height:60px;}
               <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">GHI_CHU</td><td style="padding:3px 7px">Ghi chú CT</td><td style="padding:3px 7px;color:#4A5568"></td></tr>
               <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">NGUOI_GIAO</td><td style="padding:3px 7px">Người giao</td><td style="padding:3px 7px;color:#4A5568">Nguyễn Văn A</td></tr>
               <tr style="background:#E8F5F4"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">KY</td><td style="padding:3px 7px">Kỳ đánh giá</td><td style="padding:3px 7px;color:#4A5568">Quý 1/2025</td></tr>
-              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2025-03-31</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2026-03-31</td></tr>
             </table>
             <div style="margin-top:7px;font-size:10.5px;color:#006B68">⚠ Mỗi hàng = 1 cán bộ × 1 chỉ tiêu. Cùng MA_CB → nhóm thành 1 phân giao.</div>
           </div>
@@ -704,7 +704,7 @@ textarea.fc{resize:vertical;min-height:60px;}
               <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">GHI_CHU</td><td style="padding:3px 7px">Ghi chú CT</td><td style="padding:3px 7px;color:#4A5568"></td></tr>
               <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">NGUOI_GIAO</td><td style="padding:3px 7px">Người giao</td><td style="padding:3px 7px;color:#4A5568">Nguyễn Văn A</td></tr>
               <tr style="background:#E0F4F0"><td style="padding:3px 7px;font-family:monospace;color:#4A5568">KY</td><td style="padding:3px 7px">Kỳ đánh giá</td><td style="padding:3px 7px;color:#4A5568">Quý 1/2025</td></tr>
-              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2025-03-31</td></tr>
+              <tr><td style="padding:3px 7px;font-family:monospace;color:#4A5568">HAN</td><td style="padding:3px 7px">Hạn hoàn thành</td><td style="padding:3px 7px;color:#4A5568">2026-03-31</td></tr>
             </table>
             <div style="margin-top:7px;font-size:10.5px;color:#087A70">⚠ Mỗi hàng = 1 đơn vị × 1 chỉ tiêu. Cùng DON_VI → nhóm thành 1 phân giao.</div>
           </div>
@@ -1230,6 +1230,12 @@ function renderBSC() {
   }).join('') : '<tr><td colspan="5"><div class="empty">Không có dữ liệu</div></td></tr>';
   renderPag('bscPag', pages, bscPg, p => { bscPg=p; renderBSC(); });
 }
+
+const ROLES = {
+  admin:  { label:'Quản trị viên', color:'#E31837' },
+  truong: { label:'Trưởng đơn vị', color:'#006B68' },
+  canbo:  { label:'Cán bộ',        color:'#8096A7' },
+};
 
 function hasRole(...roles) {
   return CURRENT_USER && roles.includes(CURRENT_USER.role);
@@ -2160,8 +2166,8 @@ async function confirmImportKH() {
 
 function downloadKHSample(type) {
   const wb = XLSX.utils.book_new();
-  const KY_DEFAULT = 'Quý 1/2025';
-  const HAN_DEFAULT = '2025-03-31';
+  const KY_DEFAULT = 'Quý 1/2026';
+  const HAN_DEFAULT = '2026-03-31';
 
   // ── Hàm tạo style cell ──────────────────────────────────────
   function makeSheet(aoa) {
