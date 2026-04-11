@@ -1118,15 +1118,23 @@ function renderDash() {
     `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="ph">${m}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
   // Cảnh báo chưa giao đủ
   const wKyEl=document.getElementById('warnKy');
-  if(wKyEl){const aKys=[...new Set(PG.map(p=>p.ky).filter(Boolean))].sort();const cKy=wKyEl.value;wKyEl.innerHTML='<option value="">-- Chọn kỳ --</option>'+aKys.map(k=>`<option value="${k}"${k===cKy?' selected':''}>${k}</option>`).join('');if(!cKy&&aKys.length)wKyEl.value=aKys[aKys.length-1];}
-  const wKy=document.getElementById('warnKy')?.value||'';
+  const _aKys=[...new Set(PG.map(p=>p.ky).filter(Boolean))].sort();
+  if(wKyEl){
+    const cKy=wKyEl.value;
+    wKyEl.innerHTML='<option value="">-- Chọn kỳ --</option>'+_aKys.map(k=>`<option value="${k}"${k===cKy?' selected':''}>${k}</option>`).join('');
+    // Tự động chọn kỳ gần nhất nếu chưa chọn
+    if(!wKyEl.value && _aKys.length) wKyEl.value=_aKys[_aKys.length-1];
+  }
+  const wKy=wKyEl?.value || (_aKys.length?_aKys[_aKys.length-1]:'');
   const uPh=CURRENT_USER?.role==='truong'?CURRENT_USER.phong:'';
   const cbCheck=CB.filter(c=>c.trangThai==='HOAT_DONG'&&(!uPh||c.phong===uPh));
   const pgKPI=PG.filter(p=>p.boCT==='KPI'&&(!wKy||p.ky===wKy));
   const warns=[];
   cbCheck.forEach(cb=>{
     const cbPG=pgKPI.filter(p=>p.target===cb.maCB||p.target===cb.tenCB);
-    if(!cbPG.length) warns.push({type:'miss',cb,msg:'Chưa có phân giao KPI',phong:cb.phong});
+    if(!cbPG.length) {
+      warns.push({type:'miss',cb,msg:'Chưa có phân giao KPI',phong:cb.phong,pgId:null});
+    }
     else{const nhap=cbPG.reduce((s,p)=>s+(p.khCount||0),0),tong=cbPG.reduce((s,p)=>s+(p.ctCount||0),0);if(nhap<tong)warns.push({type:'partial',cb,msg:`Chưa nhập đủ: ${nhap}/${tong} CT`,phong:cb.phong});}
   });
   const wBody=document.getElementById('warnBody');
@@ -1142,7 +1150,7 @@ function renderDash() {
         <tbody>${ws.map(w=>`<tr style="border-bottom:1px solid #E8F5F4">
           <td style="padding:5px 8px;font-size:12px;font-weight:700">${w.cb.tenCB}</td>
           <td style="padding:5px 8px"><span class="vt" style="font-size:10px">${w.cb.viTri}</span></td>
-          <td style="padding:5px 8px;font-size:11.5px;color:${w.type==='miss'?'#E31837':'#C09500'}">${w.type==='miss'?'❌':'⚠'} ${w.msg}</td>
+          <td style="padding:5px 8px;font-size:11.5px;color:${w.type==='miss'?'#E31837':w.type==='unchot'?'#006B68':'#C09500'}">${w.type==='miss'?'❌':w.type==='unchot'?'🔓':'⚠'} ${w.msg}</td>
           <td style="padding:5px 8px;text-align:center"><button class="btn btn-blue btn-xs" onclick="goGiao('${w.cb.maCB}','${esc(w.cb.tenCB)}','${esc(w.cb.phong)}','${esc(w.cb.viTri)}')">→ Giao ngay</button></td>
         </tr>`).join('')}</tbody></table>`).join('');
     }
@@ -2703,11 +2711,22 @@ function statusBadge(p) {
 
 async function setPGStatus(id, newStatus) {
   const p = PG.find(x=>x.id===id); if(!p) return;
-  if(newStatus==='chot' && p.status!=='da_duyet') {
-    // Cảnh báo trước khi chốt
+  if(newStatus==='chot') {
+    // CHẶN nếu còn chỉ tiêu chưa nhập số KH
+    const missing = (p.khCount||0) < (p.ctCount||0);
+    if(missing) {
+      const lack = (p.ctCount||0) - (p.khCount||0);
+      alert(`❌ Không thể chốt!
+
+Phân giao của ${p.target} còn ${lack} chỉ tiêu chưa nhập số kế hoạch (${p.khCount||0}/${p.ctCount||0}).
+
+Vui lòng nhập đủ số KH trước khi chốt.`);
+      return;
+    }
+    // Cảnh báo tính hợp lý KPI-BSC (vẫn cho chốt sau khi xác nhận)
     const warns = getValidationWarnings([p]);
     if(warns.length) {
-      const msg = '⚠ Phân giao này có cảnh báo:\n\n' + warns.join('\n') + '\n\nVẫn tiếp tục chốt?';
+      const msg = '⚠ Phân giao này có cảnh báo tính hợp lý:\n\n' + warns.join('\n') + '\n\nVẫn tiếp tục chốt?';
       if(!confirm(msg)) return;
     }
   }
@@ -2759,6 +2778,13 @@ async function chotHangLoat() {
     return cb?.phong===phong;
   });
   if(!phongPG.length){alert('Không có phân giao nào cần chốt');return;}
+  // Kiểm tra PG chưa nhập đủ số KH
+  const incomplete = phongPG.filter(p=>(p.khCount||0)<(p.ctCount||0));
+  if(incomplete.length) {
+    const names = incomplete.map(p=>`• ${p.target}: ${p.khCount||0}/${p.ctCount||0} chỉ tiêu`).join('\n');
+    alert(`❌ Không thể đẩy chốt!\n\nCó ${incomplete.length} phân giao chưa nhập đủ số kế hoạch:\n${names}\n\nVui lòng nhập đủ số KH trước khi chốt.`);
+    return;
+  }
   const warns=getValidationWarnings(phongPG);
   let msg = `Sẽ chốt ${phongPG.length} phân giao KPI của phòng ${phong}.`;
   if(warns.length) msg += '\n\n⚠ CẢNH BÁO CÁC CHỈ TIÊU CHƯA HỢP LÝ:\n' + warns.join('\n');
