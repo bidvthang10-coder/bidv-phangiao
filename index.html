@@ -230,7 +230,7 @@ textarea.fc{resize:vertical;min-height:60px;}
     </div>
   </div>
 
-<div class="app">
+<div class="app" style="display:none">
 
 <!-- SIDEBAR -->
 <div class="sb">
@@ -375,7 +375,20 @@ textarea.fc{resize:vertical;min-height:60px;}
       <div class="wst" id="ws4"><div class="wsn">4</div><div class="wsl">Xác nhận & lưu</div></div>
     </div>
     <div id="wz1">
-      <div class="card"><div class="card-h"><div class="card-t">Bước 1 · Chọn bộ chỉ tiêu</div></div>
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">Bước 1 · Chọn bộ chỉ tiêu</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <label style="font-size:12px;font-weight:700;color:#005452;white-space:nowrap">📅 Kỳ:</label>
+            <select id="wzKy" style="padding:6px 10px;border:1.5px solid #B8D8D6;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#1A1A2E" onchange="WZ.ky=this.value;if(WZ.target)renderTargets();">
+              <option value="Quý 1/2025">Quý 1/2025</option>
+              <option value="Quý 2/2025">Quý 2/2025</option>
+              <option value="Quý 3/2025">Quý 3/2025</option>
+              <option value="Quý 4/2025">Quý 4/2025</option>
+              <option value="Cả năm 2025">Cả năm 2025</option>
+            </select>
+          </div>
+        </div>
         <div class="card-b"><div class="boco-g">
           <div class="boco" id="boK" onclick="pickBC('KPI')">
             <div class="boco-ck" id="ckK"></div><div class="boco-ic">🎯</div>
@@ -394,7 +407,10 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div id="wz2" style="display:none">
       <div class="card">
         <div class="card-h">
-          <div class="card-t" id="wz2T">Bước 2 · Chọn cán bộ</div>
+          <div>
+            <div class="card-t" id="wz2T">Bước 2 · Chọn cán bộ</div>
+            <div id="wz2KyHint" style="font-size:11.5px;color:#006B68;margin-top:2px"></div>
+          </div>
           <div class="srch" style="width:230px"><span class="srch-ic">🔍</span><input id="wzSQ" placeholder="Tìm..." oninput="renderTargets()"></div>
         </div>
         <div style="max-height:440px;overflow-y:auto" id="targetList"></div>
@@ -537,10 +553,8 @@ textarea.fc{resize:vertical;min-height:60px;}
             <div class="fg"><label class="fl">Người giao <span class="req">*</span></label>
               <input type="text" class="fc" id="pgNG" placeholder="Họ tên người giao..."></div>
             <div class="fg"><label class="fl">Kỳ đánh giá</label>
-              <select class="fc" id="pgKy">
-                <option>Quý 1/2025</option><option>Quý 2/2025</option>
-                <option>Quý 3/2025</option><option>Quý 4/2025</option><option>Cả năm 2025</option>
-              </select></div>
+              <div id="pgKyShow" style="padding:8px 12px;background:#EDF7F6;border-radius:8px;font-weight:700;color:#005452;font-size:13px"></div>
+              <input type="hidden" id="pgKy"></div>
             <div class="fg"><label class="fl">Hạn hoàn thành</label>
               <input type="date" class="fc" id="pgHan"></div>
             <div class="fg"><label class="fl">Ghi chú</label>
@@ -863,6 +877,7 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="mbd" id="mPGB"></div>
     <div class="mft">
       <button class="btn btn-red btn-sm" id="mDel">🗑 Xóa</button>
+      <button class="btn btn-blue btn-sm" id="mSave" style="display:none" onclick="savePGInline()">💾 Lưu số KH</button>
       <button class="btn btn-green btn-sm" id="mExp">⬇ Xuất Excel</button>
       <button class="btn btn-gray" onclick="closeM('ov-pg')">Đóng</button>
     </div>
@@ -1102,7 +1117,7 @@ function renderDash() {
   const rec = [...PG].reverse().slice(0, 8);
   document.getElementById('pgRecent').innerHTML = rec.length ? rec.map(p => `
     <tr class="row-c" onclick="viewPG('${p.id}')">
-      <td><strong>${p.target}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
+      <td><strong>${resolvePGTarget(p)}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
       <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
       <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
       <td>${p.ctCount}</td>
@@ -1230,7 +1245,7 @@ function doLogout() {
 // status: '' | 'da_duyet' | 'chot'
 // PG có thêm field: status, nguoiDuyet, ngayDuyet
 
-let WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[] };
+let WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[], ky:'' };
 
 function pickBC(t) {
   if(t==='BSC'&&CURRENT_USER?.role==='truong'){gsBar('warn','⚠ Trưởng đơn vị không có quyền giao BSC. BSC do Admin giao.');return;}
@@ -1302,9 +1317,16 @@ function renderTargets() {
       cbs.map(c => {
         const sel = WZ.target === c.maCB;
         const ctN = (VT[c.viTri]||[]).length;
+        const kyNow = WZ.ky || document.getElementById('wzKy')?.value || '';
+        const exPG = PG.filter(p=>p.boCT==='KPI'&&p.target===c.maCB&&(!kyNow||p.ky===kyNow));
+        const dKH  = exPG.reduce((s,p)=>s+(p.khCount||0),0);
+        const dCT  = exPG.reduce((s,p)=>s+(p.ctCount||0),0);
+        const pgTag = dCT>0
+          ? `<span style="font-size:10px;padding:1px 6px;border-radius:3px;font-weight:700;margin-left:4px;background:${dKH===dCT?'#E0F4F0':'#FFFBEC'};color:${dKH===dCT?'#006B68':'#C09500'}">${dKH===dCT?'✓':'⚠'} ${dKH}/${dCT} CT</span>`
+          : `<span style="font-size:10px;padding:1px 5px;border-radius:3px;background:#FDECEA;color:#E31837;margin-left:4px">Chưa giao</span>`;
         return `<div class="tp${sel?' sel':''}" onclick="pickTargetKPI('${esc(c.maCB)}','${esc(c.tenCB)}','${esc(c.phong)}','${esc(c.viTri)}')">
           <div class="tp-av" style="background:${sel?'#006B68':'#E8F5F4'};color:${sel?'#fff':'#006B68'}">${c.tenCB.charAt(0)}</div>
-          <div style="flex:1"><div class="tp-nm">${c.tenCB}</div>
+          <div style="flex:1"><div class="tp-nm">${c.tenCB}${pgTag}</div>
           <div class="tp-sb">${c.maCB} · <span class="vt" style="font-size:10px">${c.viTri}</span> · ${ctN} chỉ tiêu</div></div>
           ${sel ? '<span style="color:#006B68;font-size:18px;font-weight:700">✓</span>' : ''}
         </div>`;
@@ -1337,7 +1359,23 @@ function renderTargets() {
 function pickTargetKPI(maCB, tenCB, phong, viTri) {
   WZ.target = maCB; WZ.targetName = tenCB; WZ.targetSub = phong;
   WZ.targetKey = viTri; WZ.ctList = VT[viTri]||[];
+  WZ.ky = document.getElementById('wzKy')?.value || WZ.ky || '';
   document.getElementById('btnW2').disabled = false;
+  const hint = document.getElementById('wz2KyHint');
+  if(hint) {
+    const exPG = PG.filter(p=>p.boCT==='KPI'&&p.target===maCB&&(!WZ.ky||p.ky===WZ.ky));
+    if(exPG.length) {
+      const dKH=exPG.reduce((s,p)=>s+(p.khCount||0),0);
+      const dCT=exPG.reduce((s,p)=>s+(p.ctCount||0),0);
+      const dCTs=exPG.flatMap(p=>(p.items||[]).filter(it=>it.soKH).map(it=>it.chiTieu));
+      hint.innerHTML='📅 Kỳ: <b>'+WZ.ky+'</b> &nbsp;|&nbsp; '
+        +'Đã giao: <b style="color:'+(dKH===dCT?'#006B68':'#C09500')+'">'
+        +dKH+'/'+dCT+' CT nhập số</b>'
+        +(dCTs.length?'<br><span style="font-size:10.5px;color:#8096A7">Đã nhập: '+dCTs.slice(0,3).join(', ')+(dCTs.length>3?' ...':'')+' </span>':'');
+    } else {
+      hint.innerHTML='📅 Kỳ: <b>'+WZ.ky+'</b> &nbsp;|&nbsp; <span style="color:#E31837">Chưa có phân giao trong kỳ này</span>';
+    }
+  }
   renderTargets();
 }
 function pickTargetBSC(phong, maBCT) {
@@ -1348,6 +1386,7 @@ function pickTargetBSC(phong, maBCT) {
 }
 
 function buildStep3() {
+  WZ.ky = document.getElementById('wzKy')?.value || WZ.ky || '';
   document.getElementById('wz3Sub').textContent =
     (WZ.boCT==='KPI' ? WZ.targetName + ' · Vị trí: ' + WZ.targetKey : WZ.targetName + ' · Mã BCT: ' + WZ.targetKey)
     + ' · ' + WZ.ctList.length + ' chỉ tiêu';
@@ -1512,6 +1551,9 @@ function clearVals() {
 }
 
 function buildStep4() {
+  const kyVal = WZ.ky || document.getElementById('wzKy')?.value || '';
+  const pgKy = document.getElementById('pgKy'); if(pgKy) pgKy.value = kyVal;
+  const pgKyShow = document.getElementById('pgKyShow'); if(pgKyShow) pgKyShow.textContent = kyVal || 'Chưa chọn';
   const khCnt = WZ.vals.filter(v => v.soKH).length;
   document.getElementById('wz4N').textContent = WZ.vals.length + ' chỉ tiêu';
   document.getElementById('wz4Tb').innerHTML = WZ.vals.map((v,i) => {
@@ -1572,6 +1614,15 @@ async function savePG() {
 // ═══════════════════════════════════════════════════════════════
 // DANH SÁCH PG
 // ═══════════════════════════════════════════════════════════════
+// Resolve target name: KPI=tên cán bộ, BSC=tên phòng
+function resolvePGTarget(p) {
+  if(p.boCT==='KPI') {
+    const cb = CB.find(c=>c.maCB===p.target);
+    return cb ? cb.tenCB : p.target;
+  }
+  return p.target; // BSC: target là tên phòng
+}
+
 function renderDS() {
   const q  = document.getElementById('dsSQ').value||'';
   const bo = document.getElementById('dsBo').value||'';
@@ -1605,7 +1656,7 @@ function renderDS() {
   document.getElementById('dsTb').innerHTML = list.length ? [...list].reverse().map(p => `
     <tr class="row-c" onclick="viewPG('${p.id}')">
       <td><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></td>
-      <td><strong>${p.target}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
+<td><strong>${resolvePGTarget(p)}</strong><br><small style="color:#8096A7">${p.targetSub||''}</small></td>
       <td><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></td>
       <td style="font-size:11.5px">${p.ky||'—'}</td>
       <td>${p.ctCount}</td>
@@ -1624,13 +1675,14 @@ function viewPG(id) {
     if(p.boCT==='BSC' && p.target!==uPh){gsBar('warn','⚠ Không có quyền xem BSC phòng khác.');return;}
     if(p.boCT==='KPI'){const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);if(cb&&cb.phong!==uPh){gsBar('warn','⚠ Không có quyền xem KPI phòng khác.');return;}}
   }
-  document.getElementById('mPGT').textContent = `${p.boCT} · ${p.target} · ${p.targetKey}`;
+  document.getElementById('mPGT').textContent = `${p.boCT} · ${resolvePGTarget(p)} · ${p.targetKey}`;
+  const canEdit = p.status !== 'chot' && (CURRENT_USER?.role==='admin' || CURRENT_USER?.role==='truong');
   document.getElementById('mPGB').innerHTML = `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#EDF7F6;border-radius:10px;padding:14px;margin-bottom:16px">
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Bộ CT</div>
         <div style="margin-top:3px"><span class="badge ${p.boCT==='KPI'?'bk':'bb'}">${p.boCT}</span></div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">${p.boCT==='KPI'?'Cán bộ':'Phòng'}</div>
-        <div style="font-weight:700;margin-top:3px">${p.target}</div></div>
+        <div style="font-weight:700;margin-top:3px">${resolvePGTarget(p)}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">${p.boCT==='KPI'?'Vị trí':'Mã BCT'}</div>
         <div style="margin-top:3px"><span class="${p.boCT==='KPI'?'vt':'ph'}">${p.targetKey}</span></div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Người giao</div>
@@ -1645,26 +1697,24 @@ function viewPG(id) {
         <div style="font-size:22px;font-weight:800;color:${p.khCount===p.ctCount?'#0A7A6E':'#C09500'};margin-top:2px">${p.khCount||0}/${p.ctCount}</div></div>
     </div>
     ${p.ghiChu ? `<div style="background:#FFFBEC;border:1px solid #FFDB7A;border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12.5px"><strong>📝 Ghi chú:</strong> ${p.ghiChu}</div>` : ''}
+    ${canEdit ? `<div style="background:#E8F5F4;border-radius:8px;padding:8px 13px;margin-bottom:10px;font-size:12px;color:#005452">
+      ✏️ Nhập số KH trực tiếp vào bảng bên dưới, rồi nhấn <strong>💾 Lưu số KH</strong>. Ô màu vàng = chưa có số.
+    </div>` : ''}
     <div class="tw"><table>
-      <thead><tr><th>#</th><th>Tên chỉ tiêu</th><th style="text-align:right;background:#FFFBEC;color:#C09500">Số gợi ý (PP2)</th><th style="text-align:right">Số KH đã giao</th><th>Tỷ lệ KH/GY</th><th>Đơn vị</th><th>Ghi chú CT</th></tr></thead>
-      <tbody>${(p.items||[]).map((v,i) => {
-        const sg = v.soGoiY;
-        const sgTxt = (sg !== null && sg !== undefined && !isNaN(sg)) ? fmtSuggest(sg) : '—';
-        const entered = parseFloat((v.soKH||'').replace(/[^0-9.-]/g,'')) || null;
-        let rTxt='—', rColor='#8096A7', rNote='';
-        if(entered && sg && sg>0){ const r=entered/sg; rTxt=(r*100).toFixed(0)+'%'; rColor=r>=0.9&&r<=1.1?'#0A7A6E':r>=0.7?'#C09500':'#c0392b'; rNote=r>=0.9&&r<=1.1?'✓':r>1.1?'↑':'↓'; }
-        return `<tr>
-          <td style="color:#8096A7;font-size:11px">${i+1}</td>
-          <td style="font-size:12.5px">${v.chiTieu}</td>
-          <td style="text-align:right;font-size:12px;color:#C09500;background:#fffdf0">${sgTxt}</td>
-          <td style="text-align:right;font-weight:700;color:${v.soKH?'#006B68':'#8096A7'};font-size:13px">${v.soKH||'—'}</td>
-          <td style="font-size:12px;font-weight:700;color:${rColor}">${rTxt} ${rNote}</td>
-          <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
-          <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
-        </tr>`;
-      }).join('')}
+      <thead><tr>
+        <th>#</th><th>Tên chỉ tiêu</th>
+        <th style="text-align:right;min-width:130px">Số KH ${canEdit?'<small style="color:#C09500">(nhập trực tiếp)</small>':''}</th>
+        <th>Đơn vị</th><th style="min-width:100px">Ghi chú CT</th>
+      </tr></thead>
+      <tbody>${(p.items||[]).map((v,i) => mkPGRow(v,i,canEdit)).join('')}
       </tbody>
     </table></div>`;
+  // Nút Lưu số KH — hiện khi có thể sửa
+  const saveBtn=document.getElementById('mSave');
+  if(saveBtn) saveBtn.style.display=canEdit?'':'none';
+  // Lưu id PG đang xem để savePGInline dùng
+  document.getElementById('ov-pg').dataset.pgId=id;
+
   const delBtn=document.getElementById('mDel');
   if(delBtn){
     const canDel=CURRENT_USER?.role==='admin' && p.status!=='chot';
@@ -2005,7 +2055,7 @@ function parseKHKPI(rows, hdr, col) {
     Object.assign(DK_DATA[maCB], ctMap);
   });
   if(Object.keys(dkUpdates).length) saveDKLocal();
-  _impKHData = Object.values(groups).map(g=>({ boCT:'KPI', target:g.tenCB, targetKey:g.viTri,
+  _impKHData = Object.values(groups).map(g=>({ boCT:'KPI', target:g.maCB, targetKey:g.viTri,
     targetSub:g.phong, nguoiGiao:g.nguoiGiao, ky:g.ky, han:g.han, items:g.items }));
   showKHPreview('KPI', errors);
 }
@@ -2099,7 +2149,7 @@ async function confirmImportKH() {
     PG.push(newPG);
     try { await gsSavePG(newPG); saved++; } catch(e) { failed++; }
   }
-  updBadges(); renderDash(); _impKHData=[];
+  updBadges(); renderDash(); renderDS(); _impKHData=[];
   document.getElementById('impKHPreviewCard').style.display='none';
   btn.disabled=false; btn.innerHTML='✅ Xác nhận import';
   document.getElementById('impKHAlert').innerHTML=`<div class="alert ${saved>0?'a-ok':'a-err'}">${
@@ -2292,6 +2342,9 @@ function downloadKHSample(type) {
 // ═══════════════════════════════════════════════════════════════
 // AUTH — USERS nhúng sẵn trong HTML (an toàn cơ bản)
 // ═══════════════════════════════════════════════════════════════
+// Auth state — load từ localStorage
+let CURRENT_USER = JSON.parse(localStorage.getItem('pg_user')||'null');
+
 const D_USERS = [
   {username:'admin',   password:'bidv2025', role:'admin',  phong:'',      ten:'Admin Chi nhánh'},
   {username:'tpcambin',password:'bidv2025', role:'truong', phong:'CẨM BÌNH',   ten:'Trưởng PGD Cẩm Bình'},
@@ -2312,8 +2365,15 @@ const D_USERS = [
 function showLogin() {
   const ov = document.getElementById('loginOv');
   if(ov) ov.style.display = 'flex';
-  document.querySelector('.app').style.display = 'none';
-  setTimeout(()=>{ const u=document.getElementById('lgUser'); if(u) u.focus(); },100);
+  const app = document.querySelector('.app');
+  if(app) app.style.display = 'none';
+  // Reset form
+  const lgU = document.getElementById('lgUser');
+  const lgP = document.getElementById('lgPass');
+  if(lgU) { lgU.value=''; setTimeout(()=>lgU.focus(),100); }
+  if(lgP) lgP.value='';
+  const err = document.getElementById('lgErr');
+  if(err) err.textContent='';
 }
 
 function showApp() {
@@ -2682,20 +2742,71 @@ function exportBaocaoHL() {
 
 // ─── Trạng thái PG: duyệt/hủy/chốt/mở ───────────────────────
 // status: '' | 'da_duyet' | 'chot'
+function mkPGRow(v, i, editable) {
+  const hasKH = v.soKH && v.soKH.trim();
+  let khCell;
+  if(editable) {
+    const inp = document.createElement('input');
+    inp.type='text'; inp.value=v.soKH||''; inp.id='pgKH_'+i;
+    inp.placeholder='Nhập số...'; inp.inputMode='decimal';
+    inp.style.cssText='width:110px;padding:4px 8px;border:1.5px solid '+(hasKH?'#B8D8D6':'#FFC62F')+';border-radius:6px;font-size:13px;text-align:right;font-weight:700;outline:none;font-family:inherit';
+    khCell = inp.outerHTML;
+  } else {
+    khCell = '<span style="font-weight:700;color:'+(hasKH?'#006B68':'#C09500')+'">'+(v.soKH||'—')+'</span>';
+  }
+  return '<tr style="background:'+(!hasKH&&editable?'#FFFBEC':'')+'">'
+    +'<td style="color:#8096A7;font-size:11px">'+(i+1)+'</td>'
+    +'<td style="font-size:12.5px;'+(!hasKH?'font-weight:700;color:#C09500':'')+'">'
+      +v.chiTieu+(!hasKH?' ⚠':'')+'</td>'
+    +'<td style="text-align:right">'+khCell+'</td>'
+    +'<td style="font-size:11.5px;color:#4A5568">'+(v.donVi||'—')+'</td>'
+    +'<td style="font-size:11px;color:#8096A7">'+(v.ghiChu||'')+'</td>'
+    +'</tr>';
+}
+
+function savePGInline() {
+  const id = document.getElementById('ov-pg').dataset.pgId;
+  const p  = PG.find(x=>x.id===id); if(!p) return;
+  let changed=0;
+  (p.items||[]).forEach((v,i) => {
+    const inp = document.getElementById('pgKH_'+i);
+    if(inp) {
+      const newVal = inp.value.trim();
+      if(newVal !== (v.soKH||'')) { v.soKH=newVal; changed++; }
+    }
+  });
+  // Cập nhật khCount
+  p.khCount = (p.items||[]).filter(v=>v.soKH&&v.soKH.trim()).length;
+  // Lưu lên GSheet
+  gsPost({action:'updatePGItems', id, items:p.items, khCount:p.khCount}).catch(()=>{});
+  // Lưu localStorage backup
+  const raw = localStorage.getItem('pg_backup')||'{}';
+  try { const bk=JSON.parse(raw); bk[id]=p; localStorage.setItem('pg_backup',JSON.stringify(bk)); } catch(e){}
+  gsBar('ok',`✅ Đã lưu số KH cho ${p.target} (${p.khCount}/${p.ctCount} chỉ tiêu)`);
+  renderDS();
+  updBadges();
+  renderDash();
+  // Refresh modal
+  viewPG(id);
+}
+
 function renderPGActions(p) {
   const r = CURRENT_USER?.role;
   let btns = '';
   const isChot = p.status==='chot';
   const isDuyet = p.status==='da_duyet';
 
+  const needKH = (p.khCount||0) < (p.ctCount||0); // còn CT chưa nhập số KH
   if(r==='admin') {
     btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
+    if(!isChot && needKH) btns += `<button class="btn btn-gold btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Nhập số KH còn thiếu">✏</button>`;
     if(!isChot) btns += `<button class="btn btn-red btn-xs" onclick="event.stopPropagation();delPG('${p.id}')" title="Xóa">🗑</button>`;
     if(isChot) btns += `<button class="btn btn-green btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','')" title="Mở chốt">🔓</button>`;
     else btns += `<button class="btn btn-blue btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','chot')" title="Chốt">🔒</button>`;
   } else if(r==='truong') {
     btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
-    if(!isChot && !isDuyet) btns += `<button class="btn btn-green btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','da_duyet')" title="Duyệt">✅</button>`;
+    if(!isChot && needKH) btns += `<button class="btn btn-gold btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Nhập số KH còn thiếu">✏</button>`;
+    if(!isChot && !isDuyet && !needKH) btns += `<button class="btn btn-green btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','da_duyet')" title="Duyệt">✅</button>`;
     if(isDuyet && !isChot) btns += `<button class="btn btn-gold btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','')" title="Hủy duyệt">↩</button>`;
   } else {
     btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
