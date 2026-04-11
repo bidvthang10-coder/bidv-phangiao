@@ -291,6 +291,23 @@ textarea.fc{resize:vertical;min-height:60px;}
   <!-- DASHBOARD -->
   <div class="sec show" id="sec-dash">
     <div class="stats" id="statRow"></div>
+    <!-- Cảnh báo chưa giao đủ -->
+    <div class="card" style="margin-bottom:14px" id="warnCard">
+      <div class="card-h">
+        <div>
+          <div class="card-t">⚠ Cảnh báo chưa giao đủ kế hoạch</div>
+          <div style="font-size:11.5px;color:#8096A7;margin-top:2px">Cán bộ chưa có phân giao KPI hoặc chưa nhập đủ số KH trong kỳ</div>
+        </div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <select id="warnKy" class="flt" style="min-width:140px" onchange="renderDash()">
+            <option value="">-- Chọn kỳ --</option>
+          </select>
+          <button class="btn btn-blue btn-sm" onclick="go(document.querySelector('[data-s=tao]'))" style="white-space:nowrap">+ Tạo phân giao</button>
+          <button class="btn btn-gray btn-sm" onclick="document.getElementById('warnCard').style.display='none'">✕ Tắt</button>
+        </div>
+      </div>
+      <div id="warnBody" style="padding:0 14px 10px"></div>
+    </div>
     <div style="display:grid;grid-template-columns:3fr 1fr;gap:14px">
       <div class="card">
         <div class="card-h"><div class="card-t">📋 Phân giao gần đây</div>
@@ -327,11 +344,27 @@ textarea.fc{resize:vertical;min-height:60px;}
   <div class="sec" id="sec-bsc">
     <div class="fbar">
       <div class="srch"><span class="srch-ic">🔍</span><input id="bscSQ" placeholder="Tìm chỉ tiêu..." oninput="renderBSC()"></div>
-      <select class="fsel" id="bscMF" onchange="renderBSC()"><option value="">Tất cả mã BCT</option></select>
+<select class="fsel" id="bscMF" onchange="renderBSC()"><option value="">Tất cả mã BCT</option></select>
     </div>
     <div class="card">
-      <div class="card-h"><div class="card-t">📐 Chỉ tiêu BSC theo Mã BCT</div><span id="bscCnt" style="font-size:11px;color:#8096A7"></span></div>
-      <div class="tw"><table><thead><tr><th>#</th><th>Mã BCT</th><th>Tên chỉ tiêu</th></tr></thead><tbody id="bscTb"></tbody></table></div>
+      <div class="card-h">
+        <div class="card-t">📐 Chỉ tiêu BSC theo Mã BCT</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="bscCnt" style="font-size:11px;color:#8096A7"></span>
+          <span class="badge" style="background:#005452;color:#fff;font-size:11px" id="bscBBCount"></span>
+          <span class="badge" style="background:#006B68;color:#fff;font-size:11px" id="bscBLCount"></span>
+        </div>
+      </div>
+      <div class="tw"><table>
+        <thead><tr>
+          <th style="width:36px">#</th>
+          <th style="width:80px">Khối</th>
+          <th style="width:80px">Mã BCT</th>
+          <th>Tên chỉ tiêu</th>
+          <th style="width:80px;text-align:center">Phòng áp dụng</th>
+        </tr></thead>
+        <tbody id="bscTb"></tbody>
+      </table></div>
       <div class="pag" id="bscPag"></div>
     </div>
   </div>
@@ -540,7 +573,7 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="card">
       <div class="card-h"><div class="card-t">📋 Danh sách phân giao</div><span id="dsCnt" style="font-size:11px;color:#8096A7"></span></div>
       <div class="tw"><table>
-        <thead><tr><th>Bộ CT</th><th>Cán bộ / Phòng</th><th>Vị trí / Mã BCT</th><th>Kỳ</th><th>Số CT</th><th>Đã nhập KH</th><th>Người giao</th><th>Ngày lập</th><th></th></tr></thead>
+        <thead><tr><th>Bộ CT</th><th>Cán bộ / Phòng</th><th>Vị trí / Mã BCT</th><th>Kỳ</th><th>Số CT</th><th>Đã nhập KH</th><th>Người giao</th><th>Ngày lập</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
         <tbody id="dsTb"></tbody>
       </table></div>
     </div>
@@ -737,6 +770,9 @@ textarea.fc{resize:vertical;min-height:60px;}
           <div style="font-size:11.5px;color:#8096A7;margin-top:3px">Kiểm tra tổng KH KPI của đơn vị so với KH BSC — theo 17 cặp chỉ tiêu</div>
         </div>
         <div style="display:flex;gap:7px;align-items:center">
+          <select id="hlKy" onchange="renderBaocaoHL()" class="flt" style="min-width:140px">
+            <option value="">-- Chọn kỳ --</option>
+          </select>
           <select id="hlPhong" onchange="renderBaocaoHL()" class="flt">
             <option value="">Tất cả phòng</option>
           </select>
@@ -859,6 +895,14 @@ let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || '';
 
 // Dữ liệu RAM — khởi tạo từ default, ghi đè khi sync từ GSheet
 let CB  = JSON.parse(JSON.stringify(D_CB));
+// Nhãn khối bán buôn/bán lẻ cho từng mã BSC
+const BSC_KHOI_LABEL = {
+  'KHDN': '🏢 Bán buôn',
+  'KHCN': '🏪 Bán lẻ',
+  'KHƯT': '🏪 Bán lẻ',
+  'PGD':  '🔀 Bán buôn + Bán lẻ',
+};
+
 let VT  = JSON.parse(JSON.stringify(D_VT));
 let BSC = JSON.parse(JSON.stringify(D_BSC));
 let PB  = JSON.parse(JSON.stringify(D_PB));
@@ -1060,6 +1104,21 @@ function updBadges() {
 // ═══════════════════════════════════════════════════════════════
 // DASHBOARD
 // ═══════════════════════════════════════════════════════════════
+// Shortcut: từ cảnh báo dashboard → mở wizard và chọn sẵn CB
+function goGiao(maCB, tenCB, phong, viTri) {
+  go(document.querySelector('[data-s=tao]'));
+  // Chọn KPI và CB sẵn
+  setTimeout(()=>{
+    pickBC('KPI');
+    const srch = document.getElementById('wzSQ');
+    if(srch){ srch.value = tenCB; }
+    renderTargets();
+    setTimeout(()=>{
+      pickTargetKPI(maCB, tenCB, phong, viTri);
+    }, 100);
+  }, 150);
+}
+
 function renderDash() {
   const totK = Object.values(VT).reduce((a,v) => a+v.length, 0);
   const totB = Object.values(BSC).reduce((a,v) => a+v.length, 0);
@@ -1085,6 +1144,80 @@ function renderDash() {
     `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="vt">${vt}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
   document.getElementById('bscStat').innerHTML = Object.entries(BSC).map(([m,cts]) =>
     `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="ph">${m}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
+
+  // ─ Cảnh báo chưa giao đủ ─────────────────────────────────
+  const warnKyEl = document.getElementById('warnKy');
+  if(warnKyEl) {
+    const allKys = [...new Set(PG.map(p=>p.ky).filter(Boolean))].sort();
+    const curWKy = warnKyEl.value;
+    warnKyEl.innerHTML = '<option value="">-- Chọn kỳ --</option>' +
+      allKys.map(k=>`<option value="${k}"${k===curWKy?' selected':''}>${k}</option>`).join('');
+    if(!curWKy && allKys.length) warnKyEl.value = allKys[allKys.length-1];
+  }
+  const warnKy = document.getElementById('warnKy')?.value||'';
+  const userPh = CURRENT_USER?.role==='truong' ? CURRENT_USER.phong : '';
+
+  // CB cần hiển thị (lọc theo phòng nếu truong)
+  const cbToCheck = CB.filter(c=>c.trangThai==='HOAT_DONG' && (!userPh||c.phong===userPh));
+
+  // PG KPI trong kỳ đang xem
+  const pgKPI = PG.filter(p=>p.boCT==='KPI' && (!warnKy||p.ky===warnKy));
+
+  const warns = [];
+  cbToCheck.forEach(cb=>{
+    const cbPG = pgKPI.filter(p=>p.target===cb.maCB||p.target===cb.tenCB);
+    if(!cbPG.length) {
+      // Chưa có phân giao nào
+      warns.push({type:'miss', cb, msg:'Chưa có phân giao KPI', phong:cb.phong});
+    } else {
+      // Kiểm tra xem đã nhập đủ số KH chưa
+      const totalCT = (VT[cb.viTri]||[]).length;
+      const nhapKH  = cbPG.reduce((s,p)=>s+(p.khCount||0),0);
+      const soNhap  = cbPG.reduce((s,p)=>s+(p.ctCount||0),0);
+      if(nhapKH < soNhap) {
+        warns.push({type:'partial', cb, msg:`Chưa nhập đủ số KH: ${nhapKH}/${soNhap} chỉ tiêu`, phong:cb.phong});
+      }
+    }
+  });
+
+  const warnBody = document.getElementById('warnBody');
+  if(warnBody) {
+    if(!warnKy) {
+      warnBody.innerHTML = '<div style="padding:10px 0;color:#8096A7;font-size:12px">← Chọn kỳ để xem cảnh báo</div>';
+    } else if(!warns.length) {
+      warnBody.innerHTML = '<div style="padding:10px 0;color:#006B68;font-size:12.5px;font-weight:700">✅ Tất cả cán bộ đã được giao kế hoạch đầy đủ trong kỳ này</div>';
+    } else {
+      // Nhóm theo phòng
+      const byPh = {};
+      warns.forEach(w=>{ if(!byPh[w.phong]) byPh[w.phong]=[]; byPh[w.phong].push(w); });
+      warnBody.innerHTML = Object.entries(byPh).map(([ph,ws])=>`
+        <div style="font-weight:700;font-size:11.5px;color:#005452;padding:6px 0 3px">${ph} — ${ws.length} cảnh báo</div>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:6px">
+          <thead><tr style="background:#EDF7F6">
+            <th style="padding:4px 8px;text-align:left;font-size:11px">Cán bộ</th>
+            <th style="padding:4px 8px;text-align:left;font-size:11px">Vị trí</th>
+            <th style="padding:4px 8px;text-align:left;font-size:11px">Tình trạng</th>
+            <th style="padding:4px 8px;font-size:11px">Thao tác</th>
+          </tr></thead>
+          <tbody>${ws.map(w=>`<tr style="border-bottom:1px solid #E8F5F4">
+            <td style="padding:5px 8px;font-size:12px;font-weight:700">${w.cb.tenCB}</td>
+            <td style="padding:5px 8px"><span class="vt" style="font-size:10px">${w.cb.viTri}</span></td>
+            <td style="padding:5px 8px;font-size:11.5px;color:${w.type==='miss'?'#E31837':'#C09500'}">
+              ${w.type==='miss'?'❌':'⚠'} ${w.msg}
+            </td>
+            <td style="padding:5px 8px;text-align:center">
+              <button class="btn btn-blue btn-xs"
+                onclick="goGiao('${w.cb.maCB}','${w.cb.tenCB}','${w.cb.phong}','${w.cb.viTri}')">
+                → Giao ngay
+              </button>
+            </td>
+          </tr>`).join('')}</tbody>
+        </table>`).join('');
+    }
+    // Hiện badge tổng số cảnh báo trên stat
+    const warnCard = document.getElementById('warnCard');
+    if(warnCard && warnKy) warnCard.style.display='';
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1114,11 +1247,14 @@ function renderKPI() {
 }
 
 function renderBSC() {
-  const q = document.getElementById('bscSQ').value||'';
-  const mf = document.getElementById('bscMF').value||'';
-  const ms = Object.keys(BSC);
-  const el = document.getElementById('bscMF'), cur = el.value;
-  el.innerHTML = '<option value="">Tất cả mã BCT</option>' + ms.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m}</option>`).join('');
+  const q    = document.getElementById('bscSQ').value||'';
+  const mf   = document.getElementById('bscMF').value||'';
+  const ms   = Object.keys(BSC);
+  const elMF = document.getElementById('bscMF'), cur = elMF.value;
+  elMF.innerHTML = '<option value="">Tất cả mã BCT</option>' +
+    ms.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m} — ${BSC_KHOI_LABEL[m]||''}</option>`).join('');
+  const phongByBCT = {};
+  Object.entries(PB).forEach(([ph,bct])=>{ if(!phongByBCT[bct]) phongByBCT[bct]=[]; phongByBCT[bct].push(ph); });
   let rows = [];
   Object.entries(BSC).forEach(([m,cts]) => {
     if (mf && m !== mf) return;
@@ -1128,47 +1264,25 @@ function renderBSC() {
   const pages = Math.max(1, Math.ceil(rows.length/30));
   if (bscPg > pages) bscPg = 1;
   const sl = rows.slice((bscPg-1)*30, bscPg*30);
-  document.getElementById('bscTb').innerHTML = sl.length ? sl.map((r,i) =>
-    `<tr><td style="color:#8096A7;font-size:11px">${(bscPg-1)*30+i+1}</td><td><span class="ph">${r.maBCT}</span></td><td>${r.chiTieu}</td></tr>`).join('')
-    : '<tr><td colspan="3"><div class="empty">Không có dữ liệu</div></td></tr>';
+  const khoiStyle = {
+    'KHDN':['#005452','#E8F5F4','🏢 Bán buôn'],
+    'KHCN':['#006B68','#E0F4F0','🏪 Bán lẻ'],
+    'KHƯT':['#006B68','#E0F4F0','🏪 Bán lẻ'],
+    'PGD': ['#7A5200','#FFFBEC','🔀 BB + BL'],
+  };
+  document.getElementById('bscTb').innerHTML = sl.length ? sl.map((r,i) => {
+    const [kc,kbg,kLabel] = khoiStyle[r.maBCT]||['#8096A7','#F8FAFB',r.maBCT];
+    const phongs = (phongByBCT[r.maBCT]||[]).map(p=>`<span class="ph" style="font-size:10px">${p}</span>`).join(' ');
+    return `<tr>
+      <td style="color:#8096A7;font-size:11px">${(bscPg-1)*30+i+1}</td>
+      <td><span style="background:${kbg};color:${kc};padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap">${kLabel}</span></td>
+      <td><span class="ph">${r.maBCT}</span></td>
+      <td style="font-size:12.5px">${r.chiTieu}</td>
+      <td style="font-size:10.5px;text-align:center">${phongs}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5"><div class="empty">Không có dữ liệu</div></td></tr>';
   renderPag('bscPag', pages, bscPg, p => { bscPg=p; renderBSC(); });
 }
-
-// ═══════════════════════════════════════════════════════════════
-// WIZARD PHÂN GIAO
-// ═══════════════════════════════════════════════════════════════
-
-// ── Quy tắc kiểm tra tính hợp lý KPI vs BSC ──────────────
-const VALID_RULES = [
-  {kpi:'Dư nợ cuối kỳ',                                             bsc:'Dư nợ tín dụng cuối kỳ',                                     t:0.9},
-  {kpi:'Huy động vốn cuối kỳ',                                      bsc:'Huy động vốn cuối kỳ',                                       t:0.9},
-  {kpi:'Huy động vốn không kỳ hạn bình quân',                       bsc:'Huy động vốn KKH bình quân',                                  t:0.9},
-  {kpi:'Số lượng KHCN mới có quan hệ tín dụng mới',                 bsc:'Số lượng KHCN mới có quan hệ tín dụng mới',                   t:1.0},
-  {kpi:'Số lượng TCKT mới có quan hệ tín dụng',                     bsc:'Số lượng khách hàng TCKT mới quan hệ tín dụng',               t:1.0},
-  {kpi:'Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch',bsc:'Số lượng thẻ tín dụng mới có phát sinh giao dịch',            t:1.0},
-  {kpi:'Thu dịch vụ bảo hiểm',                                      bsc:'Hoa hồng bảo hiểm (Bic, Metlife)',                            t:1.0},
-  {kpi:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)',bsc:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)',t:0.9},
-  {kpi:'Thu dịch vụ BHNT (BML)',                                     bsc:'Thu dịch vụ BHNT (BML)',                                      t:1.0},
-  {kpi:'Thu KDNT&PS',                                                bsc:'Thu kinh doanh ngoại tệ và phái sinh',                        t:1.0},
-  {kpi:'Thu phí Sản phẩm đầu tư',                                   bsc:'Thu phí sản phẩm đầu tư',                                     t:1.0},
-  {kpi:'Thu dịch vụ ròng',                                          bsc:'Thu dịch vụ ròng',                                            t:0.9},
-  {kpi:'Thu nợ HTNB',                                               bsc:'Thu nợ hạch toán ngoại bảng',                                 t:1.0},
-  {kpi:'Số lượng khách hàng cao cấp lũy kế',                        bsc:'Số lượng khách hàng cao cấp lũy kế',                          t:1.0},
-  {kpi:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên',bsc:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên',t:1.0},
-  {kpi:'Thu nhập thuần từ hoạt động ngân hàng số',                  bsc:'Thu nhập ròng từ hoạt động Ngân hàng số',                     t:0.9},
-  {kpi:'Thu nhập từ bảo lãnh',                                      bsc:'Thu bảo lãnh',                                                t:1.0},
-];
-
-// ── Hệ thống phân quyền ────────────────────────────────────
-// USERS lưu trên GSheet sheet "USERS": USERNAME|PASSWORD|ROLE|PHONG|TEN
-// ROLE: admin | truong | canbo
-let CURRENT_USER = JSON.parse(localStorage.getItem('pg_user')||'null');
-
-const ROLES = {
-  admin:  { label:'Admin',         color:'#E31837' },
-  truong: { label:'Trưởng đơn vị', color:'#006B68' },
-  canbo:  { label:'Cán bộ',        color:'#8096A7' },
-};
 
 function hasRole(...roles) {
   return CURRENT_USER && roles.includes(CURRENT_USER.role);
@@ -1187,6 +1301,10 @@ function doLogout() {
 let WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[] };
 
 function pickBC(t) {
+  if(t==='BSC' && CURRENT_USER?.role==='truong') {
+    gsBar('warn','⚠ Trưởng đơn vị không có quyền giao BSC. BSC do Admin chi nhánh giao.');
+    return;
+  }
   WZ.boCT = t;
   document.getElementById('boK').className = 'boco' + (t==='KPI' ? ' sk' : '');
   document.getElementById('boB').className = 'boco' + (t==='BSC' ? ' sb' : '');
@@ -1216,15 +1334,15 @@ function wzNext(step) {
     wzStep(3); buildStep3();
   } else if (step === 3) {
     WZ.vals = WZ.ctList.map((ct,i) => {
-      const sgEl = document.getElementById('sg_'+i);
-      const sgVal = sgEl ? parseFloat(sgEl.dataset.val||'') : NaN;
-      return {
-        chiTieu: ct,
-        soKH:    document.getElementById('v_'+i).value.trim(),
-        donVi:   document.getElementById('u_'+i).value.trim(),
-        ghiChu:  document.getElementById('n_'+i).value.trim(),
-        soGoiY:  !isNaN(sgVal) ? sgVal : null
-      };
+      const thN1=document.getElementById("thn1_"+i)?.value.trim()||"";
+      const bgV=document.getElementById("bg_"+i)?.value.trim()||"";
+      const soBB=document.getElementById("bb_"+i)?.value.trim()||"";
+      const soBL=document.getElementById("bl_"+i)?.value.trim()||"";
+      const dauKy=(thN1||bgV)?String((parseFloat(thN1)||0)+(parseFloat(bgV)||0)):"";
+      return {chiTieu:ct,soKH:document.getElementById("v_"+i)?.value.trim()||"",
+        donVi:document.getElementById("u_"+i)?.value.trim()||"",
+        ghiChu:document.getElementById("n_"+i)?.value.trim()||"",
+        soGoiY:null,thN1,bangGiao:bgV,dauKy,soBB,soBL};
     });
     document.getElementById('wz3').style.display = 'none';
     document.getElementById('wz4').style.display = '';
@@ -1265,7 +1383,7 @@ function renderTargets() {
         </div>`;
       }).join('')).join('');
   } else {
-    const userPhB = (CURRENT_USER?.role==='truong') ? CURRENT_USER.phong : '';
+        const userPhB = (CURRENT_USER?.role==='truong') ? CURRENT_USER.phong : '';
     const list = Object.entries(PB).filter(([ph]) =>
       (!userPhB || ph === userPhB) &&
       (!q || has(ph,q)));
@@ -1273,11 +1391,17 @@ function renderTargets() {
     else html = list.map(([ph, maBCT]) => {
       const sel = WZ.target === ph;
       const ctN = (BSC[maBCT]||[]).length;
+      const kLabel = BSC_KHOI_LABEL[maBCT]||maBCT;
+      const kColor = maBCT==='KHDN'?'#005452':maBCT==='PGD'?'#7A5200':'#006B68';
+      const kBg    = maBCT==='KHDN'?'#E8F5F4':maBCT==='PGD'?'#FFFBEC':'#E0F4F0';
+      const icon   = maBCT==='KHDN'?'🏢':maBCT==='PGD'?'🔀':'🏪';
       return `<div class="tp${sel?' sel':''}" onclick="pickTargetBSC('${esc(ph)}','${esc(maBCT)}')">
-        <div class="tp-av" style="background:${sel?'#0A7A6E':'#E0F4F0'};color:${sel?'#fff':'#0A7A6E'};font-size:18px">🏢</div>
+        <div class="tp-av" style="background:${sel?kColor:kBg};color:${sel?'#fff':kColor};font-size:15px">${icon}</div>
         <div style="flex:1"><div class="tp-nm">${ph}</div>
-        <div class="tp-sb">Mã BCT: <span class="ph" style="font-size:10px">${maBCT}</span> · ${ctN} chỉ tiêu</div></div>
-        ${sel ? '<span style="color:#0A7A6E;font-size:18px;font-weight:700">✓</span>' : ''}
+        <div class="tp-sb">Mã BCT: <span class="ph" style="font-size:10px">${maBCT}</span>
+          · <span style="color:${kColor};font-weight:700;font-size:10.5px">${kLabel}</span>
+          · ${ctN} chỉ tiêu</div></div>
+        ${sel?`<span style="color:${kColor};font-size:18px;font-weight:700">✓</span>`:''}
       </div>`;
     }).join('');
   }
@@ -1303,7 +1427,8 @@ function buildStep3() {
     + ' · ' + WZ.ctList.length + ' chỉ tiêu';
   document.getElementById('defUnit').value = '';
   // PP2 đã được thay thế bằng TH n-1 / Bàn giao / Đầu kỳ
-  // Render rows
+  const isBSC = WZ.boCT === 'BSC';
+  document.querySelectorAll('.col-bb,.col-bl').forEach(el=>el.style.display=isBSC?'':'none');
   // Lấy số liệu đầu kỳ đã nhập (từ DK_DATA)
   const dkMap = getDKMap(WZ.target, WZ.boCT);
   document.getElementById('wz3Tb').innerHTML = WZ.ctList.map((ct,i) => {
@@ -1324,6 +1449,7 @@ function buildStep3() {
         <input type="text" class="vi" id="bg_${i}" value="${bg}" placeholder="0" autocomplete="off" inputmode="decimal" style="width:100px;background:transparent;" oninput="onDKChange(${i})">
       </td>
       <td style="text-align:right;font-weight:700;color:${dkColor};background:#E0F4F0;min-width:100px" id="dk_${i}">${dkDisp}</td>
+<td class="col-bb" style="background:#EEF3FC"><input type="text" class="vi" id="bb_${i}" placeholder="0" autocomplete="off" inputmode="decimal" style="width:100px;background:transparent" oninput="onBBBLChange(${i})"></td><td class="col-bl" style="background:#EEF7F2"><input type="text" class="vi" id="bl_${i}" placeholder="0" autocomplete="off" inputmode="decimal" style="width:100px;background:transparent" oninput="onBBBLChange(${i})"></td>
       <td><input type="text" class="vi" id="v_${i}" placeholder="Nhập số KH..." autocomplete="off" inputmode="decimal"></td>
       <td><input type="text" class="ui" id="u_${i}" placeholder="Đơn vị" autocomplete="off"></td>
       <td><input type="text" class="ni" id="n_${i}" placeholder="Ghi chú" autocomplete="off"></td>
@@ -1563,10 +1689,7 @@ function renderDS() {
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
       <td>${statusBadge(p)}</td>
-      <td><div style="display:flex;gap:3px">
-        <button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button>
-        <button class="btn btn-red btn-xs" onclick="event.stopPropagation();delPG('${p.id}')">🗑</button>
-      </div></td>
+      <td><div style="display:flex;gap:3px">${renderPGActions(p)}</div></td>
     </tr>`).join('') : '<tr><td colspan="9"><div class="empty">📭<p>Chưa có phân giao</p></div></td></tr>';
 }
 
@@ -1967,10 +2090,17 @@ function parseKHBSC(rows, hdr, col) {
   const iDV=col('DON_VI'), iCT=col('CHI_TIEU'), iSK=col('SO_KH');
   if (iDV<0||iCT<0||iSK<0) throw new Error('Thiếu cột bắt buộc: DON_VI, CHI_TIEU, SO_KH. Header hiện tại: '+hdr.join(', '));
   const iDVT=col('DON_VI_TINH'), iGC=col('GHI_CHU'), iNG=col('NGUOI_GIAO'), iKY=col('KY'), iHAN=col('HAN');
+  const iBB=col('SO_KH_BAN_BUON'), iBL=col('SO_KH_BAN_LE'), iTONG=col('SO_KH_TONG');
   const groups={}, errors=[];
   for (let i=1; i<rows.length; i++) {
     const r=rows[i];
-    const donVi=String(r[iDV]||'').trim(), chiTieu=String(r[iCT]||'').trim(), soKH=String(r[iSK]||'').trim();
+    const donVi=String(r[iDV]||'').trim(), chiTieu=String(r[iCT]||'').trim();
+    const soBBr = iBB>=0 ? String(r[iBB]||'').trim() : '';
+    const soBLr = iBL>=0 ? String(r[iBL]||'').trim() : '';
+    const soTong = iTONG>=0 ? String(r[iTONG]||'').trim() : '';
+    // SO_KH = Tổng nếu có, nếu không tự tính từ BB+BL, nếu không thì lấy SO_KH cũ
+    const autoTotal = (soBBr||soBLr) ? String((parseFloat(soBBr)||0)+(parseFloat(soBLr)||0)) : '';
+    const soKH = soTong || autoTotal || String(r[iSK]||'').trim();
     if (!donVi&&!chiTieu) continue;
     if (!donVi)   { errors.push(`Hàng ${i+1}: thiếu DON_VI`); continue; }
     if (!chiTieu) { errors.push(`Hàng ${i+1}: thiếu CHI_TIEU`); continue; }
@@ -1986,7 +2116,7 @@ function parseKHBSC(rows, hdr, col) {
     const thN1b = iTN1b>=0 ? String(r[iTN1b]||'').trim() : '';
     if(thN1b && !DK_DATA[donVi]) DK_DATA[donVi]={};
     if(thN1b) { if(!DK_DATA[donVi][matchCT]) DK_DATA[donVi][matchCT]={}; DK_DATA[donVi][matchCT].thN1=thN1b; saveDKLocal(); }
-    groups[donVi].items.push({ chiTieu:matchCT, soKH, donVi:iDVT>=0?String(r[iDVT]||'').trim():'',
+    groups[donVi].items.push({ chiTieu:matchCT, soKH, soBB:soBBr, soBL:soBLr, donVi:iDVT>=0?String(r[iDVT]||'').trim():'',
       ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, thN1:thN1b, bangGiao:'', dauKy:thN1b,
       _matched:bscCTs.some(ct=>vna(ct)===vna(chiTieu)) });
   }
@@ -2167,7 +2297,7 @@ function downloadKHSample(type) {
   } else {
     // ── Sheet 1: BSC nhập KH ───────────────────────────────────
     const dataRows = [
-      ['DON_VI','MA_BCT','CHI_TIEU','TH_N1','SO_KH','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']
+      ['DON_VI','MA_BCT','CHI_TIEU','TH_N1','SO_KH_BAN_BUON','SO_KH_BAN_LE','SO_KH_TONG','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']
     ];
     Object.entries(PB).sort().forEach(([dv, maBCT])=>{
       const cts = BSC[maBCT]||[];
@@ -2178,7 +2308,9 @@ function downloadKHSample(type) {
           maBCT,            // MA_BCT — tham khảo
           ct,               // CHI_TIEU — KHÔNG SỬA
           dkBsc.thN1||'',   // TH_N1 — Số thực hiện 31/12 năm trước
-          '',               // SO_KH — KẾ HOẠCH — ĐIỀN VÀO ĐÂY
+          '',               // SO_KH_BAN_BUON — KH phần bán buôn
+          '',               // SO_KH_BAN_LE  — KH phần bán lẻ
+          '',               // SO_KH_TONG    — Tự tính = BB + BL (hoặc nhập thẳng)
           '',               // DON_VI_TINH
           '',               // GHI_CHU
           i===0?'':'',      // NGUOI_GIAO
@@ -2188,7 +2320,7 @@ function downloadKHSample(type) {
       });
     });
     const wsData = XLSX.utils.aoa_to_sheet(dataRows);
-    wsData['!cols'] = [18,10,65,14,14,16,20,20,14,14].map(w=>({wch:w}));
+    wsData['!cols'] = [18,10,65,14,14,14,14,16,20,20,14,14].map(w=>({wch:w}));
     XLSX.utils.book_append_sheet(wb, wsData, 'BSC_NhapKH');
 
     // ── Sheet 2: Danh mục đơn vị (tham chiếu) ─────────────────
@@ -2225,7 +2357,9 @@ function downloadKHSample(type) {
       ['MA_BCT','Tham khảo','Mã bộ chỉ tiêu — chỉ để đọc'],
       ['CHI_TIEU','✅ Không sửa','Tên chỉ tiêu BSC — đã điền sẵn'],
       ['TH_N1','Tùy chọn','Số THỰC HIỆN tại 31/12 năm trước (để tham chiếu)'],
-      ['SO_KH','✅ ĐIỀN VÀO ĐÂY','Số KẾ HOẠCH kỳ này (số thuần)'],
+      ['SO_KH_BAN_BUON','Tùy chọn','Số KH phần KHDN/bán buôn — để trống nếu không tách'],
+      ['SO_KH_BAN_LE','Tùy chọn','Số KH phần KHCN+KHƯT/bán lẻ — để trống nếu không tách'],
+      ['SO_KH_TONG','✅ ĐIỀN VÀO ĐÂY','Tổng KH (= BB + BL). Nếu để trống, hệ thống tự tính từ BB+BL'],
       ['DON_VI_TINH','Tùy chọn','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
       ['GHI_CHU','Tùy chọn','Ghi chú cho chỉ tiêu này'],
       ['NGUOI_GIAO','Tùy chọn','Người giao — điền 1 lần/đơn vị'],
@@ -2333,7 +2467,11 @@ function applyRoleUI() {
   const btnChot=document.getElementById('btnChotHangLoat');
   if(btnChot) btnChot.style.display=(r==='truong')?'':'none';
   const boBcard=document.getElementById('boB');
-  if(boBcard){boBcard.style.opacity=(r==='truong')?'0.38':'';boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';}
+  if(boBcard){
+    boBcard.style.opacity=(r==='truong')?'0.4':'1';
+    boBcard.style.cursor=(r==='truong')?'not-allowed':'pointer';
+    boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';
+  }
 }
 
 // ─── DK_DATA: lưu số liệu đầu kỳ theo phòng/cán bộ ──────────
@@ -2347,6 +2485,13 @@ function getDKMap(target, boCT) {
   return DK_DATA[target] || {};
 }
 
+function onBBBLChange(i) {
+  if(WZ.boCT!=="BSC") return;
+  const bb=parseFloat(document.getElementById("bb_"+i)?.value||0)||0;
+  const bl=parseFloat(document.getElementById("bl_"+i)?.value||0)||0;
+  const vEl=document.getElementById("v_"+i);
+  if(vEl&&(document.getElementById("bb_"+i)?.value.trim()||document.getElementById("bl_"+i)?.value.trim())){vEl.value=bb+bl||"";vEl.style.color="#006B68";}
+}
 function onDKChange(i) {
   const thn1 = (document.getElementById('thn1_'+i)?.value||'').trim();
   const bg   = (document.getElementById('bg_'+i)?.value||'').trim();
@@ -2498,9 +2643,21 @@ function renderBaocaoHL() {
   // Lấy danh sách phòng cần kiểm tra
   const phongs = filterPhong ? [filterPhong] : Object.keys(PB);
 
-  // Lấy KH BSC của từng phòng: từ PG records có boCT=BSC
-  const bscKH = {}; // bscKH[phong][chiTieuBSC] = soKH (số)
-  PG.filter(p=>p.boCT==='BSC').forEach(p=>{
+  // Cập nhật dropdown kỳ
+  const hlKyEl = document.getElementById('hlKy');
+  if(hlKyEl) {
+    const allKys = [...new Set(PG.map(p=>p.ky).filter(Boolean))].sort();
+    const curKy  = hlKyEl.value;
+    hlKyEl.innerHTML = '<option value="">-- Chọn kỳ --</option>' +
+      allKys.map(k=>`<option value="${k}"${k===curKy?' selected':''}>${k}</option>`).join('');
+    // Nếu chưa chọn kỳ, tự động chọn kỳ gần nhất
+    if(!curKy && allKys.length) hlKyEl.value = allKys[allKys.length-1];
+  }
+  const filterKy = document.getElementById('hlKy')?.value||'';
+
+  // Lấy KH BSC của từng phòng: từ PG records có boCT=BSC (lọc theo kỳ)
+  const bscKH = {};
+  PG.filter(p=>p.boCT==='BSC' && (!filterKy||p.ky===filterKy)).forEach(p=>{
     if(!bscKH[p.target]) bscKH[p.target]={};
     (p.items||[]).forEach(it=>{
       const v=parseFloat(it.soKH)||0;
@@ -2510,7 +2667,7 @@ function renderBaocaoHL() {
 
   // Lấy KH KPI của từng cán bộ theo phòng: PG records có boCT=KPI
   const kpiKH = {}; // kpiKH[phong][chiTieuKPI][maCB] = soKH
-  PG.filter(p=>p.boCT==='KPI').forEach(p=>{
+  PG.filter(p=>p.boCT==='KPI' && (!filterKy||p.ky===filterKy)).forEach(p=>{
     const cb = CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
     if(!cb) return;
     const phong = cb.phong;
