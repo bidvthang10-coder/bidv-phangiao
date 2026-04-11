@@ -163,9 +163,73 @@ textarea.fc{resize:vertical;min-height:60px;}
 .gs-num{width:24px;height:24px;border-radius:50%;background:#006B68;color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
 .gs-step-t{font-size:12.5px;color:#005452;line-height:1.6;}
 .gs-step-t b{color:#006B68;}
+/* ── LOGIN ─────────────────────────────────────────────── */
+.login-ov{position:fixed;inset:0;background:linear-gradient(160deg,#003836 0%,#006B68 50%,#0A9E8A 100%);z-index:9999;display:flex;align-items:center;justify-content:center;}
+.login-wrap{display:flex;align-items:stretch;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);width:800px;max-width:95vw;max-height:95vh;}
+.login-left{background:linear-gradient(160deg,#004440 0%,#006B68 100%);width:300px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 32px;position:relative;overflow:hidden;}
+.login-left::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;border:38px solid rgba(255,255,255,.06);top:-60px;right:-80px;pointer-events:none;}
+.login-left::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;border:28px solid rgba(255,255,255,.05);bottom:-40px;left:-50px;pointer-events:none;}
+.ln-logo{font-size:50px;font-weight:900;color:#fff;letter-spacing:3px;line-height:1;}
+.ln-sub{font-size:9.5px;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;margin-top:5px;text-align:center;}
+.ln-div{width:36px;height:3px;background:#FFC62F;border-radius:2px;margin:18px auto;}
+.ln-name{font-size:13px;color:rgba(255,255,255,.88);text-align:center;line-height:1.65;font-weight:700;}
+.ln-cn{font-size:11px;color:rgba(255,255,255,.45);text-align:center;margin-top:5px;}
+.login-right{background:#fff;flex:1;padding:44px 40px;display:flex;flex-direction:column;justify-content:center;}
+.ln-title{font-size:21px;font-weight:800;color:#1A1A2E;margin-bottom:5px;}
+.ln-desc{font-size:12px;color:#8096A7;margin-bottom:28px;}
+.ln-field{margin-bottom:16px;}
+.ln-lbl{font-size:11.5px;font-weight:700;color:#4A5568;margin-bottom:5px;display:block;letter-spacing:.3px;text-transform:uppercase;}
+.login-inp{width:100%;padding:11px 14px;border:1.5px solid #C8D8E8;border-radius:9px;font-size:13.5px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;color:#1A1A2E;}
+.login-inp:focus{border-color:#006B68;box-shadow:0 0 0 3px rgba(0,107,104,.1);}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,#006B68,#004440);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;margin-top:4px;transition:opacity .15s;}
+.login-btn:hover{opacity:.88;}
+.login-err{color:#E31837;font-size:12px;margin-top:10px;min-height:16px;}
+.ln-footer{font-size:11px;color:#B8D8D6;text-align:center;margin-top:22px;}
+/* ── USER INFO TOPBAR ───────────────────────────────────── */
+.user-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(0,84,82,.08);border:1px solid rgba(0,107,104,.15);border-radius:20px;padding:4px 12px 4px 6px;cursor:default;}
+.user-chip .uc-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0;}
+.user-chip .uc-info{display:flex;flex-direction:column;line-height:1.2;}
+.user-chip .uc-name{font-size:12px;font-weight:700;color:#1A1A2E;}
+.user-chip .uc-role{font-size:10.5px;color:#8096A7;}
+/* ── STATUS BADGES ──────────────────────────────────────── */
+.st-duyet{background:#E0F4F0;color:#006B68;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;}
+.st-chot{background:#FFC62F22;color:#B08000;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;}
+.st-none{background:#F0F6FC;color:#8096A7;padding:2px 8px;border-radius:4px;font-size:11px;}
+.vld-ok{background:#E0F4F0;color:#006B68;}
+.vld-warn{background:#FFF3CD;color:#B08000;}
+.vld-err{background:#FDECEA;color:#E31837;}
 </style>
 </head>
 <body>
+
+  <!-- LOGIN OVERLAY -->
+  <div class="login-ov" id="loginOv">
+    <div class="login-wrap">
+      <div class="login-left">
+        <div class="ln-logo">BIDV</div>
+        <div class="ln-sub">Ngân hàng TMCP Đầu tư &amp; PTVN</div>
+        <div class="ln-div"></div>
+        <div class="ln-name">Hệ thống Phân Giao<br>Chỉ Tiêu KPI &amp; BSC</div>
+        <div class="ln-cn">Chi nhánh Cẩm Phả</div>
+      </div>
+      <div class="login-right">
+        <div class="ln-title">Đăng nhập hệ thống</div>
+        <div class="ln-desc">Nhập tài khoản được cấp bởi quản trị viên</div>
+        <div class="ln-field">
+          <label class="ln-lbl" for="lgUser">Tên đăng nhập</label>
+          <input class="login-inp" id="lgUser" type="text" placeholder="username..." autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lgPass').focus()">
+        </div>
+        <div class="ln-field">
+          <label class="ln-lbl" for="lgPass">Mật khẩu</label>
+          <input class="login-inp" id="lgPass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="login-btn" onclick="doLogin()">Đăng nhập →</button>
+        <div class="login-err" id="lgErr"></div>
+        <div class="ln-footer">BIDV Chi nhánh Cẩm Phả · Phiên bản 4.2 · 2025</div>
+      </div>
+    </div>
+  </div>
+
 <div class="app">
 
 <!-- SIDEBAR -->
@@ -190,7 +254,10 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="sb-a" data-s="exp" onclick="go(this)"><span class="sb-ic">📤</span>Xuất dữ liệu</div>
     <div class="sb-a" data-s="gscfg" onclick="go(this)"><span class="sb-ic">🔗</span>Google Sheets<span id="gsStatusDot" style="margin-left:auto;font-size:10px">⚪</span></div>
   </nav>
-  <div class="sb-ft">v4.1 · Google Sheets</div>
+  <div id="btnChotHangLoat" style="display:none;padding:8px 12px">
+    <button style="width:100%;background:#FFC62F;color:#1A1A2E;font-weight:700;font-size:12px;border:none;border-radius:8px;padding:9px;cursor:pointer;font-family:inherit" onclick="chotHangLoat()">🔒 Đẩy chốt KH phòng</button>
+  </div>
+  <div class="sb-ft">v4.2 · KPI+BSC+Auth</div>
 </div>
 
 <!-- MAIN -->
@@ -202,6 +269,14 @@ textarea.fc{resize:vertical;min-height:60px;}
     </div>
     <div class="top-r">
       <span id="todayTxt" style="font-size:11px;color:#8096A7;margin-right:6px"></span>
+      <div id="userChip" class="user-chip" style="display:none;margin-right:8px">
+        <div id="ucAv" class="uc-av">A</div>
+        <div class="uc-info">
+          <span id="ucName" class="uc-name">Admin</span>
+          <span id="ucRole" class="uc-role">Quản trị viên</span>
+        </div>
+      </div>
+      <button class="btn btn-gray btn-sm" id="btnLogout" style="display:none" onclick="doLogout()" title="Đăng xuất">⎋</button>
       <div id="gsBar" style="font-size:11.5px;padding:4px 10px;border-radius:6px;border:1px solid transparent;max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
       <button class="btn btn-gray btn-sm" onclick="loadFromGSheet()" title="Tải lại từ Google Sheets">🔄 Đồng bộ</button>
       <button class="btn btn-blue btn-sm" onclick="go(document.querySelector('[data-s=tao]'))">📨 Phân giao mới</button>
@@ -304,10 +379,6 @@ textarea.fc{resize:vertical;min-height:60px;}
           <div><div class="card-t" id="wz3T">Bước 3 · Nhập số kế hoạch</div>
             <div style="font-size:11.5px;color:#8096A7;margin-top:2px" id="wz3Sub"></div></div>
           <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-            <button class="btn btn-gray btn-sm" onclick="toggleParamBox()" id="btnParam">⚙ Thông số PP2 ▾</button>
-            <button class="btn btn-gold btn-sm" onclick="calcSuggest()">💡 Tính số gợi ý</button>
-            <button class="btn btn-blue btn-sm" onclick="fillAllSuggest()">↙ Điền tất cả gợi ý</button>
-            <span style="font-size:11.5px;color:#4A5568">|</span>
             <span style="font-size:11.5px;color:#4A5568">Đơn vị mặc định:</span>
             <input type="text" id="defUnit" placeholder="vd: Triệu đồng" style="width:130px;padding:5px 8px;border:1.5px solid #B8D8D6;border-radius:6px;font-size:12px;font-family:inherit;outline:none">
             <button class="btn btn-gray btn-sm" onclick="applyUnit()">Áp dụng</button>
@@ -315,7 +386,7 @@ textarea.fc{resize:vertical;min-height:60px;}
           </div>
         </div>
         <!-- PARAM BOX PP2 -->
-        <div id="paramBox" style="display:none;padding:14px 16px;background:#f8fbff;border-bottom:1.5px solid #B8D8D6">
+        <div id="paramBox" style="display:none !important;padding:14px 16px;background:#f8fbff;border-bottom:1.5px solid #B8D8D6">
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
             <!-- Cột 1: KH Chi nhánh -->
             <div class="param-box">
@@ -404,9 +475,11 @@ textarea.fc{resize:vertical;min-height:60px;}
         <div style="overflow-y:auto;max-height:480px">
           <table class="at"><thead><tr>
             <th style="width:36px">#</th><th>Tên chỉ tiêu</th>
-            <th style="width:140px;text-align:right;background:#FFFBEC;color:#C09500">💡 Số gợi ý (PP2)</th>
-            <th style="width:150px;text-align:right">Số KH nhập</th>
-            <th style="width:110px">Đơn vị</th><th style="min-width:110px">Ghi chú</th>
+            <th style="width:120px;text-align:right;background:#E8F5F4;color:#006B68">TH năm trước</th>
+            <th style="width:120px;text-align:right;background:#EDF7F6;color:#006B68">Nhận bàn giao</th>
+            <th style="width:120px;text-align:right;background:#E0F4F0;color:#005452;font-weight:900">Số đầu kỳ</th>
+            <th style="width:140px;text-align:right">Số KH nhập</th>
+            <th style="width:100px">Đơn vị</th><th style="min-width:100px">Ghi chú</th>
           </tr></thead><tbody id="wz3Tb"></tbody></table>
         </div>
         <div style="padding:8px 14px;background:#f9fbfc;border-top:1px solid #E8F5F4;font-size:11.5px;color:#4A5568">
@@ -625,6 +698,52 @@ textarea.fc{resize:vertical;min-height:60px;}
         <table><thead id="impKHPreviewHead"></thead><tbody id="impKHPreviewTb"></tbody></table>
       </div>
       <div style="padding:10px 14px;background:#EDF7F6;border-top:1px solid #E8F5F4;font-size:12px" id="impKHPreviewNote"></div>
+    </div>
+  </div>
+
+
+  <!-- SỐ LIỆU ĐẦU KỲ -->
+  <div class="sec" id="sec-daukp">
+    <div class="card">
+      <div class="card-h">
+        <div>
+          <div class="card-t">📅 Số liệu đầu kỳ</div>
+          <div style="font-size:11.5px;color:#8096A7;margin-top:3px">Nhập số TH năm trước (31/12 n-1) và số nhận bàn giao cho từng cán bộ theo từng chỉ tiêu</div>
+        </div>
+        <div style="display:flex;gap:7px">
+          <select id="dkPhong" onchange="renderDaukp()" class="flt">
+            <option value="">-- Chọn phòng --</option>
+          </select>
+          <button class="btn btn-blue btn-sm" onclick="saveDaukp()">💾 Lưu đầu kỳ</button>
+          <button class="btn btn-gray btn-sm" onclick="exportDaukp()">⬇ Xuất Excel</button>
+        </div>
+      </div>
+      <div class="card-b" id="daukpBody">
+        <div class="empty">Chọn phòng để nhập số liệu</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BÁO CÁO TÍNH HỢP LÝ -->
+  <div class="sec" id="sec-baocaoHL">
+    <div class="card">
+      <div class="card-h">
+        <div>
+          <div class="card-t">📊 Báo cáo tính hợp lý kế hoạch</div>
+          <div style="font-size:11.5px;color:#8096A7;margin-top:3px">Kiểm tra tổng KH KPI của đơn vị so với KH BSC — theo 17 cặp chỉ tiêu</div>
+        </div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <select id="hlPhong" onchange="renderBaocaoHL()" class="flt">
+            <option value="">Tất cả phòng</option>
+          </select>
+          <button class="btn btn-green btn-sm" onclick="renderBaocaoHL()">🔄 Tính toán</button>
+          <button class="btn btn-gray btn-sm" onclick="exportBaocaoHL()">⬇ Xuất Excel</button>
+        </div>
+      </div>
+      <div id="hlSummary" style="display:flex;gap:10px;padding:10px 14px;background:#EDF7F6;border-bottom:1px solid #B8D8D6;flex-wrap:wrap"></div>
+      <div class="tw" style="overflow-x:auto" id="hlTableWrap">
+        <div class="empty">Nhấn "Tính toán" để xem báo cáo</div>
+      </div>
     </div>
   </div>
 
@@ -897,11 +1016,13 @@ const esc = s => (s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
 // ═══════════════════════════════════════════════════════════════
 const NT = { dash:'Dashboard', kpi:'Chỉ tiêu KPI', bsc:'Chỉ tiêu BSC',
   tao:'Tạo phân giao', ds:'Danh sách phân giao', cb:'Cán bộ',
-  imp:'Import Excel', exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
+  imp:'Import Excel', daukp:'Số liệu đầu kỳ', baocaoHL:'Báo cáo hợp lý', exp:'Xuất dữ liệu', gscfg:'Google Sheets' };
 const NS = { dash:'Tổng quan', kpi:'Theo vị trí', bsc:'Theo mã BCT',
   tao:'Phân giao số kế hoạch cụ thể', ds:'Lịch sử phân giao',
   cb:'Danh sách cán bộ AM', imp:'Import bộ chỉ tiêu từ file Excel',
   impkh:'Import số kế hoạch hàng loạt cho nhiều cán bộ / đơn vị',
+  daukp:'Nhập số TH năm trước và bàn giao theo từng cán bộ',
+  baocaoHL:'Kiểm tra tính hợp lý tổng KPI so với BSC Phòng',
   exp:'Xuất Excel', gscfg:'Cấu hình kết nối Google Sheets' };
 
 function go(el) {
@@ -914,7 +1035,7 @@ function go(el) {
   document.getElementById('topS').textContent = NS[s] || '';
   const fn = { dash:renderDash, kpi:renderKPI, bsc:renderBSC, ds:renderDS,
                cb:renderCB, exp:renderExpPreview, gscfg:renderGsCfgStatus,
-               impkh:updateImpKHHint };
+               impkh:updateImpKHHint, daukp:renderDaukp, baocaoHL:renderBaocaoHL };
   (fn[s] || function(){})();
 }
 
@@ -953,7 +1074,7 @@ function renderDash() {
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ky||''}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
-      <td><button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button></td>
+      <td><button class="btn btn-gray btn-xs" div style="display:flex;gap:3px">${renderPGActions(p)}</div></td>
     </tr>`).join('') : '<tr><td colspan="9"><div class="empty">📭<p>Chưa có phân giao</p></div></td></tr>';
   document.getElementById('vtStat').innerHTML = Object.entries(VT).map(([vt,cts]) =>
     `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #E8F5F4"><span class="vt">${vt}</span><span style="color:#4A5568">${cts.length} CT</span></div>`).join('');
@@ -1011,6 +1132,53 @@ function renderBSC() {
 // ═══════════════════════════════════════════════════════════════
 // WIZARD PHÂN GIAO
 // ═══════════════════════════════════════════════════════════════
+
+// ── Quy tắc kiểm tra tính hợp lý KPI vs BSC ──────────────
+const VALID_RULES = [
+  {kpi:'Dư nợ cuối kỳ',                                             bsc:'Dư nợ tín dụng cuối kỳ',                                     t:0.9},
+  {kpi:'Huy động vốn cuối kỳ',                                      bsc:'Huy động vốn cuối kỳ',                                       t:0.9},
+  {kpi:'Huy động vốn không kỳ hạn bình quân',                       bsc:'Huy động vốn KKH bình quân',                                  t:0.9},
+  {kpi:'Số lượng KHCN mới có quan hệ tín dụng mới',                 bsc:'Số lượng KHCN mới có quan hệ tín dụng mới',                   t:1.0},
+  {kpi:'Số lượng TCKT mới có quan hệ tín dụng',                     bsc:'Số lượng khách hàng TCKT mới quan hệ tín dụng',               t:1.0},
+  {kpi:'Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch',bsc:'Số lượng thẻ tín dụng mới có phát sinh giao dịch',            t:1.0},
+  {kpi:'Thu dịch vụ bảo hiểm',                                      bsc:'Hoa hồng bảo hiểm (Bic, Metlife)',                            t:1.0},
+  {kpi:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)',bsc:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)',t:0.9},
+  {kpi:'Thu dịch vụ BHNT (BML)',                                     bsc:'Thu dịch vụ BHNT (BML)',                                      t:1.0},
+  {kpi:'Thu KDNT&PS',                                                bsc:'Thu kinh doanh ngoại tệ và phái sinh',                        t:1.0},
+  {kpi:'Thu phí Sản phẩm đầu tư',                                   bsc:'Thu phí sản phẩm đầu tư',                                     t:1.0},
+  {kpi:'Thu dịch vụ ròng',                                          bsc:'Thu dịch vụ ròng',                                            t:0.9},
+  {kpi:'Thu nợ HTNB',                                               bsc:'Thu nợ hạch toán ngoại bảng',                                 t:1.0},
+  {kpi:'Số lượng khách hàng cao cấp lũy kế',                        bsc:'Số lượng khách hàng cao cấp lũy kế',                          t:1.0},
+  {kpi:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên',bsc:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên',t:1.0},
+  {kpi:'Thu nhập thuần từ hoạt động ngân hàng số',                  bsc:'Thu nhập ròng từ hoạt động Ngân hàng số',                     t:0.9},
+  {kpi:'Thu nhập từ bảo lãnh',                                      bsc:'Thu bảo lãnh',                                                t:1.0},
+];
+
+// ── Hệ thống phân quyền ────────────────────────────────────
+// USERS lưu trên GSheet sheet "USERS": USERNAME|PASSWORD|ROLE|PHONG|TEN
+// ROLE: admin | truong | canbo
+let CURRENT_USER = JSON.parse(localStorage.getItem('pg_user')||'null');
+
+const ROLES = {
+  admin:  { label:'Admin',         color:'#E31837' },
+  truong: { label:'Trưởng đơn vị', color:'#006B68' },
+  canbo:  { label:'Cán bộ',        color:'#8096A7' },
+};
+
+function hasRole(...roles) {
+  return CURRENT_USER && roles.includes(CURRENT_USER.role);
+}
+function userPhong() { return CURRENT_USER?.phong || ''; }
+function doLogout() {
+  localStorage.removeItem('pg_user');
+  CURRENT_USER = null;
+  showLogin();
+}
+
+// ── Trạng thái phân giao ────────────────────────────────────
+// status: '' | 'da_duyet' | 'chot'
+// PG có thêm field: status, nguoiDuyet, ngayDuyet
+
 let WZ = { boCT:null, target:null, targetName:'', targetSub:'', targetKey:'', ctList:[], vals:[] };
 
 function pickBC(t) {
@@ -1071,7 +1239,11 @@ function renderTargets() {
   const q = document.getElementById('wzSQ').value||'';
   let html = '';
   if (WZ.boCT === 'KPI') {
-    const list = CB.filter(c => !q || has(c.tenCB,q) || has(c.maCB,q) || has(c.phong,q) || has(c.viTri,q));
+    // Lọc theo phòng nếu role=truong
+    const userPh = (CURRENT_USER?.role==='truong') ? CURRENT_USER.phong : '';
+    const list = CB.filter(c =>
+      (!userPh || c.phong === userPh) &&
+      (!q || has(c.tenCB,q) || has(c.maCB,q) || has(c.phong,q) || has(c.viTri,q)));
     const byPh = {};
     list.forEach(c => { if (!byPh[c.phong]) byPh[c.phong]=[]; byPh[c.phong].push(c); });
     if (!Object.keys(byPh).length) { html = '<div class="empty">Không tìm thấy</div>'; }
@@ -1088,7 +1260,10 @@ function renderTargets() {
         </div>`;
       }).join('')).join('');
   } else {
-    const list = Object.entries(PB).filter(([ph]) => !q || has(ph,q));
+    const userPhB = (CURRENT_USER?.role==='truong') ? CURRENT_USER.phong : '';
+    const list = Object.entries(PB).filter(([ph]) =>
+      (!userPhB || ph === userPhB) &&
+      (!q || has(ph,q)));
     if (!list.length) { html = '<div class="empty">Không tìm thấy</div>'; }
     else html = list.map(([ph, maBCT]) => {
       const sel = WZ.target === ph;
@@ -1122,34 +1297,32 @@ function buildStep3() {
     (WZ.boCT==='KPI' ? WZ.targetName + ' · Vị trí: ' + WZ.targetKey : WZ.targetName + ' · Mã BCT: ' + WZ.targetKey)
     + ' · ' + WZ.ctList.length + ' chỉ tiêu';
   document.getElementById('defUnit').value = '';
-  document.getElementById('paramBox').style.display = 'none';
-  document.getElementById('btnParam').textContent = '⚙ Thông số PP2 ▾';
-  // Reset param inputs
-  ['pp_khCN','pp_thCN','pp_thP','pp_pcCN','pp_pcP','pp_thCB'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
-  });
-  ['pp_h1','pp_h2'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '1.0';
-  });
-  const el_pcCB = document.getElementById('pp_pcCB'); if(el_pcCB) el_pcCB.value = '1';
-  // Auto-fill PC cán bộ nếu KPI (lấy từ D_CB nếu có trường hvt)
-  if(WZ.boCT === 'KPI') {
-    const cb = CB.find(c => c.maCB === WZ.target);
-    if(cb && cb.hvt) { const el=document.getElementById('pp_pcCB'); if(el) el.value=cb.hvt; }
-  }
+  // PP2 đã được thay thế bằng TH n-1 / Bàn giao / Đầu kỳ
   // Render rows
-  document.getElementById('wz3Tb').innerHTML = WZ.ctList.map((ct,i) => `
+  // Lấy số liệu đầu kỳ đã nhập (từ DK_DATA)
+  const dkMap = getDKMap(WZ.target, WZ.boCT);
+  document.getElementById('wz3Tb').innerHTML = WZ.ctList.map((ct,i) => {
+    const dk = dkMap[ct] || {};
+    const thn1 = dk.thN1 ?? '';
+    const bg   = dk.bangGiao ?? '';
+    const dkVal = (thn1 !== '' || bg !== '') ? ((parseFloat(thn1)||0) + (parseFloat(bg)||0)) : '';
+    const dkDisp = dkVal !== '' ? fmtSuggest(dkVal) : '—';
+    const dkColor = dkVal !== '' ? '#005452' : '#8096A7';
+    return `
     <tr id="row_${i}">
       <td style="color:#8096A7;font-size:11px">${i+1}</td>
-      <td style="font-size:12.5px;max-width:240px">${ct}</td>
-      <td style="text-align:right">
-        <span class="suggest" id="sg_${i}" onclick="fillSuggest(${i})" title="Nhấn để điền vào ô KH">—</span>
-        <div class="ratio-bar" id="rb_${i}"><div class="ratio-fill" id="rf_${i}" style="width:0%;background:#FFC62F"></div></div>
+      <td style="font-size:12.5px;max-width:200px">${ct}</td>
+      <td style="text-align:right;background:#E8F5F4">
+        <input type="text" class="vi" id="thn1_${i}" value="${thn1}" placeholder="0" autocomplete="off" inputmode="decimal" style="width:100px;background:transparent;" oninput="onDKChange(${i})">
       </td>
-      <td><input type="text" class="vi" id="v_${i}" placeholder="Nhập số..." autocomplete="off" inputmode="decimal" oninput="onValChange(${i})"></td>
+      <td style="text-align:right;background:#EDF7F6">
+        <input type="text" class="vi" id="bg_${i}" value="${bg}" placeholder="0" autocomplete="off" inputmode="decimal" style="width:100px;background:transparent;" oninput="onDKChange(${i})">
+      </td>
+      <td style="text-align:right;font-weight:700;color:${dkColor};background:#E0F4F0;min-width:100px" id="dk_${i}">${dkDisp}</td>
+      <td><input type="text" class="vi" id="v_${i}" placeholder="Nhập số KH..." autocomplete="off" inputmode="decimal"></td>
       <td><input type="text" class="ui" id="u_${i}" placeholder="Đơn vị" autocomplete="off"></td>
       <td><input type="text" class="ni" id="n_${i}" placeholder="Ghi chú" autocomplete="off"></td>
-    </tr>`).join('');
+    </tr>`;}).join('');
   setTimeout(() => { const e = document.getElementById('v_0'); if(e) e.focus(); }, 100);
 }
 
@@ -1287,24 +1460,16 @@ function buildStep4() {
   const khCnt = WZ.vals.filter(v => v.soKH).length;
   document.getElementById('wz4N').textContent = WZ.vals.length + ' chỉ tiêu';
   document.getElementById('wz4Tb').innerHTML = WZ.vals.map((v,i) => {
-    // Lấy số gợi ý đã tính ở bước 3
-    const sgEl = document.getElementById('sg_'+i);
-    const sgVal = sgEl ? parseFloat(sgEl.dataset.val||'') : NaN;
-    const sgTxt = (!isNaN(sgVal) && sgVal) ? fmtSuggest(sgVal) : '—';
-    const entered = parseFloat((v.soKH||'').replace(/[^0-9.-]/g,'')) || null;
-    let ratioTxt = '—', ratioColor = '#8096A7', ratioNote = '';
-    if(entered && !isNaN(sgVal) && sgVal > 0) {
-      const r = entered / sgVal;
-      ratioTxt = (r*100).toFixed(0) + '%';
-      ratioColor = r>=0.9&&r<=1.1 ? '#0A7A6E' : r>=0.7 ? '#C09500' : '#c0392b';
-      ratioNote = r>=0.9&&r<=1.1 ? '✓' : r>1.1 ? '↑' : '↓';
-    }
+    const dkN = parseFloat(v.dauKy||'') || null;
+    const dkDisp = dkN !== null ? fmtSuggest(dkN) : '—';
+    const dummy = 0; // placeholder
     return `<tr>
       <td style="color:#8096A7;font-size:11px">${i+1}</td>
-      <td style="font-size:12.5px;max-width:220px">${v.chiTieu}</td>
-      <td style="text-align:right;font-size:12px;color:#C09500;background:#FFFBEC">${sgTxt}</td>
+      <td style="font-size:12.5px;max-width:200px">${v.chiTieu}</td>
+      <td style="text-align:right;font-size:12px;color:#006B68;background:#E8F5F4">${v.thN1||'—'}</td>
+      <td style="text-align:right;font-size:12px;color:#006B68;background:#EDF7F6">${v.bangGiao||'—'}</td>
+      <td style="text-align:right;font-weight:700;color:#005452;background:#E0F4F0">${dkDisp}</td>
       <td style="text-align:right;font-weight:700;color:${v.soKH?'#006B68':'#8096A7'}">${v.soKH||'—'}</td>
-      <td style="font-size:11.5px;font-weight:700;color:${ratioColor}">${ratioTxt} ${ratioNote}</td>
       <td style="font-size:11.5px;color:#4A5568">${v.donVi||'—'}</td>
       <td style="font-size:11px;color:#8096A7">${v.ghiChu||''}</td>
     </tr>`;
@@ -1359,9 +1524,28 @@ function renderDS() {
   const kys = [...new Set(PG.map(p => p.ky).filter(Boolean))];
   const kyEl = document.getElementById('dsKy'), curKy = kyEl.value;
   kyEl.innerHTML = '<option value="">Tất cả kỳ</option>' + kys.map(k=>`<option value="${k}"${k===curKy?' selected':''}>${k}</option>`).join('');
-  const list = PG.filter(p =>
-    (!q  || has(p.target,q) || has(p.nguoiGiao||'',q) || has(p.targetKey,q)) &&
-    (!bo || p.boCT === bo) && (!ky || p.ky === ky));
+  const userPhDS = (CURRENT_USER?.role==='truong') ? CURRENT_USER.phong : '';
+  const list = PG.filter(p => {
+    // Truong chỉ thấy PG của phòng mình
+    if(userPhDS) {
+      if(p.boCT==='BSC' && p.target!==userPhDS) return false;
+      if(p.boCT==='KPI') {
+        const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
+        if(!cb || cb.phong!==userPhDS) return false;
+      }
+    }
+    // Canbo chỉ thấy PG của phòng mình (không lọc theo cá nhân - xem toàn phòng)
+    const userPhCB = (CURRENT_USER?.role==='canbo') ? CURRENT_USER.phong : '';
+    if(userPhCB) {
+      if(p.boCT==='KPI') {
+        const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
+        if(!cb || cb.phong!==userPhCB) return false;
+      }
+      if(p.boCT==='BSC' && p.target!==userPhCB) return false;
+    }
+    return (!q || has(p.target,q) || has(p.nguoiGiao||'',q) || has(p.targetKey,q)) &&
+           (!bo || p.boCT === bo) && (!ky || p.ky === ky);
+  });
   document.getElementById('dsCnt').textContent = list.length + ' phân giao';
   document.getElementById('dsTb').innerHTML = list.length ? [...list].reverse().map(p => `
     <tr class="row-c" onclick="viewPG('${p.id}')">
@@ -1373,6 +1557,7 @@ function renderDS() {
       <td style="color:${p.khCount?'#006B68':'#8096A7'}">${p.khCount||0}/${p.ctCount}</td>
       <td>${p.nguoiGiao||'—'}</td>
       <td style="font-size:11px">${p.ngayGiao||''}</td>
+      <td>${statusBadge(p)}</td>
       <td><div style="display:flex;gap:3px">
         <button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')">👁</button>
         <button class="btn btn-red btn-xs" onclick="event.stopPropagation();delPG('${p.id}')">🗑</button>
@@ -1382,6 +1567,11 @@ function renderDS() {
 
 function viewPG(id) {
   const p = PG.find(x => x.id === id); if (!p) return;
+  const uPh=CURRENT_USER?.phong;
+  if(CURRENT_USER?.role==='truong' && uPh) {
+    if(p.boCT==='BSC' && p.target!==uPh){gsBar('warn','⚠ Không có quyền xem BSC phòng khác.');return;}
+    if(p.boCT==='KPI'){const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);if(cb&&cb.phong!==uPh){gsBar('warn','⚠ Không có quyền xem KPI phòng khác.');return;}}
+  }
   document.getElementById('mPGT').textContent = `${p.boCT} · ${p.target} · ${p.targetKey}`;
   document.getElementById('mPGB').innerHTML = `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#EDF7F6;border-radius:10px;padding:14px;margin-bottom:16px">
@@ -1423,7 +1613,12 @@ function viewPG(id) {
       }).join('')}
       </tbody>
     </table></div>`;
-  document.getElementById('mDel').onclick = () => { if(confirm('Xóa phân giao này?')) { delPG(id); closeM('ov-pg'); } };
+  const delBtn=document.getElementById('mDel');
+  if(delBtn){
+    const canDel=CURRENT_USER?.role==='admin' && p.status!=='chot';
+    delBtn.style.display=canDel?'':'none';
+    if(canDel) delBtn.onclick=()=>{if(confirm('Xóa phân giao này?')){delPG(id);closeM('ov-pg');}};
+  }
   document.getElementById('mExp').onclick = () => exportSinglePG(id);
   openM('ov-pg');
 }
@@ -1721,9 +1916,10 @@ function importFileKH(file) {
 
 function parseKHKPI(rows, hdr, col) {
   const iMA=col('MA_CB'), iCT=col('CHI_TIEU'), iSK=col('SO_KH');
-  if (iMA<0||iCT<0||iSK<0) throw new Error('Thiếu cột bắt buộc: MA_CB, CHI_TIEU, SO_KH. Header hiện tại: '+hdr.join(', '));
+  if (iMA<0||iCT<0||iSK<0) throw new Error('Thiếu cột bắt buộc: MA_CB, CHI_TIEU, SO_KH. Header: '+hdr.join(', '));
   const iDV=col('DON_VI'), iGC=col('GHI_CHU'), iNG=col('NGUOI_GIAO'), iKY=col('KY'), iHAN=col('HAN');
-  const groups={}, errors=[];
+  const iTN1=col('TH_N1'), iBG=col('BANG_GIAO');  // Số liệu đầu kỳ tích hợp
+  const groups={}, errors=[], dkUpdates={}; // dkUpdates: lưu TH_N1/BANG_GIAO
   for (let i=1; i<rows.length; i++) {
     const r=rows[i];
     const maCB=String(r[iMA]||'').trim(), chiTieu=String(r[iCT]||'').trim(), soKH=String(r[iSK]||'').trim();
@@ -1739,9 +1935,24 @@ function parseKHKPI(rows, hdr, col) {
     }
     const vtCTs = VT[groups[maCB].viTri]||[];
     const matchCT = vtCTs.find(ct=>vna(ct)===vna(chiTieu))||chiTieu;
+    const thN1   = iTN1>=0 ? String(r[iTN1]||'').trim() : '';
+    const bangGiao = iBG>=0 ? String(r[iBG]||'').trim() : '';
+    // Lưu vào DK_DATA nếu có
+    if(thN1||bangGiao) {
+      if(!dkUpdates[maCB]) dkUpdates[maCB]={};
+      dkUpdates[maCB][matchCT] = { thN1, bangGiao };
+    }
+    const dauKy = (thN1||bangGiao) ? String((parseFloat(thN1)||0)+(parseFloat(bangGiao)||0)) : '';
     groups[maCB].items.push({ chiTieu:matchCT, soKH, donVi:iDV>=0?String(r[iDV]||'').trim():'',
-      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, _matched:vtCTs.some(ct=>vna(ct)===vna(chiTieu)) });
+      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, thN1, bangGiao, dauKy,
+      _matched:vtCTs.some(ct=>vna(ct)===vna(chiTieu)) });
   }
+  // Cập nhật DK_DATA từ file import
+  Object.entries(dkUpdates).forEach(([maCB, ctMap])=>{
+    if(!DK_DATA[maCB]) DK_DATA[maCB]={};
+    Object.assign(DK_DATA[maCB], ctMap);
+  });
+  if(Object.keys(dkUpdates).length) saveDKLocal();
   _impKHData = Object.values(groups).map(g=>({ boCT:'KPI', target:g.tenCB, targetKey:g.viTri,
     targetSub:g.phong, nguoiGiao:g.nguoiGiao, ky:g.ky, han:g.han, items:g.items }));
   showKHPreview('KPI', errors);
@@ -1766,8 +1977,13 @@ function parseKHBSC(rows, hdr, col) {
     }
     const bscCTs=BSC[groups[donVi].maBCT]||[];
     const matchCT=bscCTs.find(ct=>vna(ct)===vna(chiTieu))||chiTieu;
+    const iTN1b=col('TH_N1');
+    const thN1b = iTN1b>=0 ? String(r[iTN1b]||'').trim() : '';
+    if(thN1b && !DK_DATA[donVi]) DK_DATA[donVi]={};
+    if(thN1b) { if(!DK_DATA[donVi][matchCT]) DK_DATA[donVi][matchCT]={}; DK_DATA[donVi][matchCT].thN1=thN1b; saveDKLocal(); }
     groups[donVi].items.push({ chiTieu:matchCT, soKH, donVi:iDVT>=0?String(r[iDVT]||'').trim():'',
-      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, _matched:bscCTs.some(ct=>vna(ct)===vna(chiTieu)) });
+      ghiChu:iGC>=0?String(r[iGC]||'').trim():'', soGoiY:null, thN1:thN1b, bangGiao:'', dauKy:thN1b,
+      _matched:bscCTs.some(ct=>vna(ct)===vna(chiTieu)) });
   }
   _impKHData = Object.values(groups).map(g=>({ boCT:'BSC', target:g.donVi, targetKey:g.maBCT,
     targetSub:'Mã BCT: '+g.maBCT, nguoiGiao:g.nguoiGiao, ky:g.ky, han:g.han, items:g.items }));
@@ -1840,65 +2056,674 @@ async function confirmImportKH() {
 }
 
 function downloadKHSample(type) {
-  const wb=XLSX.utils.book_new();
-  if (type==='KPI') {
-    const rows=[['MA_CB','CHI_TIEU','SO_KH','DON_VI','GHI_CHU','NGUOI_GIAO','KY','HAN']];
-    CB.slice(0,3).forEach(c=>(VT[c.viTri]||[]).slice(0,3).forEach(ct=>rows.push([c.maCB,ct,'','Triệu đồng','','','Quý 1/2025','2025-03-31'])));
-    const ws=XLSX.utils.aoa_to_sheet(rows); ws['!cols']=[12,55,14,16,20,20,14,14].map(w=>({wch:w}));
-    XLSX.utils.book_append_sheet(wb,ws,'KPI_KH');
-    const guide=[['HƯỚNG DẪN IMPORT KẾ HOẠCH KPI'],[''],
-      ['Cột','Bắt buộc','Mô tả'],
-      ['MA_CB','✅','Mã cán bộ — lấy từ sheet CB trong Google Sheets'],
-      ['CHI_TIEU','✅','Tên chỉ tiêu — phải khớp chính xác với bộ chỉ tiêu'],
-      ['SO_KH','✅','Số kế hoạch (số thuần, không có đơn vị)'],
-      ['DON_VI','','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
-      ['GHI_CHU','','Ghi chú riêng cho chỉ tiêu này'],
-      ['NGUOI_GIAO','','Tên người giao (mỗi cán bộ chỉ cần điền 1 lần)'],
-      ['KY','','Kỳ đánh giá: Quý 1/2025, Quý 2/2025...'],
-      ['HAN','','Hạn hoàn thành: định dạng YYYY-MM-DD'],[''],
-      ['Lưu ý:'],
-      ['• Mỗi hàng = 1 cán bộ × 1 chỉ tiêu'],
-      ['• Các hàng cùng MA_CB được nhóm thành 1 phân giao'],
-      ['• Để lại SO_KH trống nếu chưa có số'],
-    ];
-    const wsG=XLSX.utils.aoa_to_sheet(guide); wsG['!cols']=[{wch:20},{wch:10},{wch:60}];
-    XLSX.utils.book_append_sheet(wb,wsG,'Hướng dẫn');
-    XLSX.writeFile(wb,'Mau_Import_KH_KPI.xlsx');
-  } else {
-    const rows=[['DON_VI','CHI_TIEU','SO_KH','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']];
-    Object.entries(PB).slice(0,3).forEach(([dv,maBCT])=>(BSC[maBCT]||[]).slice(0,3).forEach(ct=>rows.push([dv,ct,'','Triệu đồng','','','Quý 1/2025','2025-03-31'])));
-    const ws=XLSX.utils.aoa_to_sheet(rows); ws['!cols']=[20,55,14,16,20,20,14,14].map(w=>({wch:w}));
-    XLSX.utils.book_append_sheet(wb,ws,'BSC_KH');
-    const guide=[['HƯỚNG DẪN IMPORT KẾ HOẠCH BSC'],[''],
-      ['Cột','Bắt buộc','Mô tả'],
-      ['DON_VI','✅','Tên phòng / PGD — phải khớp chính xác'],
-      ['CHI_TIEU','✅','Tên chỉ tiêu BSC'],
-      ['SO_KH','✅','Số kế hoạch'],
-      ['DON_VI_TINH','','Đơn vị tính'],
-      ['GHI_CHU','','Ghi chú'],
-      ['NGUOI_GIAO','','Người giao'],
-      ['KY','','Kỳ đánh giá'],
-      ['HAN','','Hạn hoàn thành YYYY-MM-DD'],[''],
-      ['Danh sách đơn vị hợp lệ:'],
-      ...Object.entries(PB).map(([dv,bct])=>[dv,'→ Mã BCT: '+bct,'']),
-    ];
-    const wsG=XLSX.utils.aoa_to_sheet(guide); wsG['!cols']=[{wch:25},{wch:15},{wch:55}];
-    XLSX.utils.book_append_sheet(wb,wsG,'Hướng dẫn');
-    XLSX.writeFile(wb,'Mau_Import_KH_BSC.xlsx');
+  const wb = XLSX.utils.book_new();
+  const KY_DEFAULT = 'Quý 1/2025';
+  const HAN_DEFAULT = '2025-03-31';
+
+  // ── Hàm tạo style cell ──────────────────────────────────────
+  function makeSheet(aoa) {
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    return ws;
   }
+
+  if (type === 'KPI') {
+    // ── Sheet 1: Dữ liệu nhập ──────────────────────────────────
+    // Cấu trúc: mỗi cán bộ + tất cả chỉ tiêu của vị trí đó
+    const dataRows = [
+      ['MA_CB','TEN_CB','PHONG','VI_TRI','CHI_TIEU','TH_N1','BANG_GIAO','SO_KH','DON_VI','GHI_CHU','NGUOI_GIAO','KY','HAN']
+    ];
+    // Nhóm theo phòng, trong phòng theo cán bộ
+    const byPhong = {};
+    CB.filter(c=>c.trangThai==='HOAT_DONG').forEach(c=>{
+      if(!byPhong[c.phong]) byPhong[c.phong]=[];
+      byPhong[c.phong].push(c);
+    });
+    Object.keys(byPhong).sort().forEach(ph=>{
+      byPhong[ph].forEach(c=>{
+        const cts = VT[c.viTri]||[];
+        if(!cts.length) return;
+        cts.forEach((ct,i)=>{
+          // Lấy số liệu đầu kỳ đã có (nếu có)
+          const dk = (DK_DATA[c.maCB]||{})[ct]||{};
+          dataRows.push([
+            c.maCB,      // MA_CB — khóa định danh, KHÔNG SỬA
+            c.tenCB,     // TEN_CB — tham khảo
+            c.phong,     // PHONG — tham khảo
+            c.viTri,     // VI_TRI — tham khảo
+            ct,          // CHI_TIEU — đã điền sẵn, KHÔNG SỬA
+            dk.thN1||'', // TH_N1 — Số thực hiện 31/12 năm trước
+            dk.bangGiao||'', // BANG_GIAO — Số nhận bàn giao (+ hoặc -)
+            '',          // SO_KH — KẾ HOẠCH — ĐIỀN VÀO ĐÂY
+            '',          // DON_VI
+            '',          // GHI_CHU
+            i===0?'':'', // NGUOI_GIAO
+            i===0?KY_DEFAULT:'',
+            i===0?HAN_DEFAULT:'',
+          ]);
+        });
+      });
+    });
+    const wsData = XLSX.utils.aoa_to_sheet(dataRows);
+    wsData['!cols'] = [12,22,14,14,60,14,14,14,14,20,20,14,14].map(w=>({wch:w}));
+    // Freeze header row
+    wsData['!freeze'] = {xSplit:0, ySplit:1};
+    XLSX.utils.book_append_sheet(wb, wsData, 'KPI_NhapKH');
+
+    // ── Sheet 2: Danh mục cán bộ (tham chiếu) ─────────────────
+    const cbRows = [['STT','MA_CB','TEN_CB','PHONG','VI_TRI','SO_CT']];
+    CB.filter(c=>c.trangThai==='HOAT_DONG').sort((a,b)=>a.phong.localeCompare(b.phong)).forEach((c,i)=>{
+      cbRows.push([i+1, c.maCB, c.tenCB, c.phong, c.viTri, (VT[c.viTri]||[]).length]);
+    });
+    const wsCB = XLSX.utils.aoa_to_sheet(cbRows);
+    wsCB['!cols'] = [{wch:5},{wch:12},{wch:25},{wch:18},{wch:16},{wch:8}];
+    XLSX.utils.book_append_sheet(wb, wsCB, 'DanhMuc_CanBo');
+
+    // ── Sheet 3: Danh mục chỉ tiêu theo vị trí (tham chiếu) ───
+    const vtRows = [['STT','VI_TRI','CHI_TIEU']];
+    let stt=1;
+    Object.entries(VT).forEach(([vt,cts])=>{
+      cts.forEach(ct=>{ vtRows.push([stt++, vt, ct]); });
+    });
+    const wsVT = XLSX.utils.aoa_to_sheet(vtRows);
+    wsVT['!cols'] = [{wch:5},{wch:16},{wch:70}];
+    XLSX.utils.book_append_sheet(wb, wsVT, 'DanhMuc_ChiTieu_KPI');
+
+    // ── Sheet 4: Hướng dẫn ────────────────────────────────────
+    const guide = [
+      ['HƯỚNG DẪN IMPORT KẾ HOẠCH KPI','',''],['','',''],
+      ['⚠ CHÚ Ý QUAN TRỌNG:','',''],
+      ['• File này đã điền sẵn đầy đủ cán bộ và chỉ tiêu. Chỉ cần điền số vào cột SO_KH (cột F).','',''],
+      ['• KHÔNG thay đổi MA_CB và CHI_TIEU — hệ thống dùng 2 cột này để nhận diện.','',''],
+      ['• Các cột TEN_CB, PHONG, VI_TRI chỉ để tham khảo, không ảnh hưởng khi import.','',''],
+      ['• NGUOI_GIAO và KY chỉ cần điền 1 lần ở hàng đầu tiên của mỗi cán bộ.','',''],
+      ['• Để trống SO_KH = không giao chỉ tiêu đó.','',''],
+      ['','',''],
+      ['Cột','Bắt buộc','Mô tả'],
+      ['MA_CB','✅ Không sửa','Mã cán bộ — đã điền sẵn'],
+      ['TEN_CB','Tham khảo','Tên cán bộ — chỉ để đọc'],
+      ['PHONG','Tham khảo','Phòng/PGD — chỉ để đọc'],
+      ['VI_TRI','Tham khảo','Vị trí — chỉ để đọc'],
+      ['CHI_TIEU','✅ Không sửa','Tên chỉ tiêu — đã điền sẵn theo vị trí'],
+      ['TH_N1','Tùy chọn','Số THỰC HIỆN tại 31/12 năm trước liền kề (dùng tính đầu kỳ)'],
+      ['BANG_GIAO','Tùy chọn','Số NHẬN BÀN GIAO (+ nếu nhận, - nếu bàn giao đi)'],
+      ['SO_KH','✅ ĐIỀN VÀO ĐÂY','Số KẾ HOẠCH kỳ này (số thuần, không ghi đơn vị)'],
+      ['DON_VI','Tùy chọn','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
+      ['GHI_CHU','Tùy chọn','Ghi chú cho chỉ tiêu này'],
+      ['NGUOI_GIAO','Tùy chọn','Tên người giao — điền 1 lần/cán bộ'],
+      ['KY','Tùy chọn','Kỳ đánh giá — điền 1 lần/cán bộ, VD: Quý 1/2025'],
+      ['HAN','Tùy chọn','Hạn hoàn thành — định dạng YYYY-MM-DD'],
+    ];
+    const wsG = XLSX.utils.aoa_to_sheet(guide);
+    wsG['!cols'] = [{wch:16},{wch:18},{wch:65}];
+    XLSX.utils.book_append_sheet(wb, wsG, 'HuongDan');
+
+    XLSX.writeFile(wb, 'Mau_Import_KH_KPI.xlsx');
+
+  } else {
+    // ── Sheet 1: BSC nhập KH ───────────────────────────────────
+    const dataRows = [
+      ['DON_VI','MA_BCT','CHI_TIEU','TH_N1','SO_KH','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']
+    ];
+    Object.entries(PB).sort().forEach(([dv, maBCT])=>{
+      const cts = BSC[maBCT]||[];
+      cts.forEach((ct,i)=>{
+        const dkBsc = (DK_DATA[dv]||{})[ct]||{};
+        dataRows.push([
+          dv,               // DON_VI — KHÔNG SỬA
+          maBCT,            // MA_BCT — tham khảo
+          ct,               // CHI_TIEU — KHÔNG SỬA
+          dkBsc.thN1||'',   // TH_N1 — Số thực hiện 31/12 năm trước
+          '',               // SO_KH — KẾ HOẠCH — ĐIỀN VÀO ĐÂY
+          '',               // DON_VI_TINH
+          '',               // GHI_CHU
+          i===0?'':'',      // NGUOI_GIAO
+          i===0?KY_DEFAULT:'',
+          i===0?HAN_DEFAULT:'',
+        ]);
+      });
+    });
+    const wsData = XLSX.utils.aoa_to_sheet(dataRows);
+    wsData['!cols'] = [18,10,65,14,14,16,20,20,14,14].map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, wsData, 'BSC_NhapKH');
+
+    // ── Sheet 2: Danh mục đơn vị (tham chiếu) ─────────────────
+    const dvRows = [['STT','DON_VI','MA_BCT','SO_CT_BSC']];
+    Object.entries(PB).sort().forEach(([dv,bct],i)=>{
+      dvRows.push([i+1, dv, bct, (BSC[bct]||[]).length]);
+    });
+    const wsDV = XLSX.utils.aoa_to_sheet(dvRows);
+    wsDV['!cols'] = [{wch:5},{wch:20},{wch:10},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, wsDV, 'DanhMuc_DonVi');
+
+    // ── Sheet 3: Danh mục chỉ tiêu BSC (tham chiếu) ───────────
+    const bscRows = [['STT','MA_BCT','CHI_TIEU_BSC']];
+    let stt=1;
+    Object.entries(BSC).forEach(([maBCT,cts])=>{
+      cts.forEach(ct=>{ bscRows.push([stt++, maBCT, ct]); });
+    });
+    const wsBSC = XLSX.utils.aoa_to_sheet(bscRows);
+    wsBSC['!cols'] = [{wch:5},{wch:10},{wch:70}];
+    XLSX.utils.book_append_sheet(wb, wsBSC, 'DanhMuc_ChiTieu_BSC');
+
+    // ── Sheet 4: Hướng dẫn ────────────────────────────────────
+    const guide = [
+      ['HƯỚNG DẪN IMPORT KẾ HOẠCH BSC','',''],['','',''],
+      ['⚠ CHÚ Ý QUAN TRỌNG:','',''],
+      ['• File này đã điền sẵn đầy đủ đơn vị và chỉ tiêu BSC. Chỉ cần điền số vào cột SO_KH (cột D).','',''],
+      ['• KHÔNG thay đổi DON_VI và CHI_TIEU — hệ thống dùng 2 cột này để nhận diện.','',''],
+      ['• Cột MA_BCT chỉ để tham khảo.','',''],
+      ['• NGUOI_GIAO và KY chỉ cần điền 1 lần ở hàng đầu tiên của mỗi đơn vị.','',''],
+      ['• Để trống SO_KH = không giao chỉ tiêu đó.','',''],
+      ['','',''],
+      ['Cột','Bắt buộc','Mô tả'],
+      ['DON_VI','✅ Không sửa','Tên phòng/PGD — đã điền sẵn'],
+      ['MA_BCT','Tham khảo','Mã bộ chỉ tiêu — chỉ để đọc'],
+      ['CHI_TIEU','✅ Không sửa','Tên chỉ tiêu BSC — đã điền sẵn'],
+      ['TH_N1','Tùy chọn','Số THỰC HIỆN tại 31/12 năm trước (để tham chiếu)'],
+      ['SO_KH','✅ ĐIỀN VÀO ĐÂY','Số KẾ HOẠCH kỳ này (số thuần)'],
+      ['DON_VI_TINH','Tùy chọn','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
+      ['GHI_CHU','Tùy chọn','Ghi chú cho chỉ tiêu này'],
+      ['NGUOI_GIAO','Tùy chọn','Người giao — điền 1 lần/đơn vị'],
+      ['KY','Tùy chọn','Kỳ đánh giá — VD: Quý 1/2025'],
+      ['HAN','Tùy chọn','Hạn hoàn thành — YYYY-MM-DD'],
+    ];
+    const wsG = XLSX.utils.aoa_to_sheet(guide);
+    wsG['!cols'] = [{wch:16},{wch:18},{wch:65}];
+    XLSX.utils.book_append_sheet(wb, wsG, 'HuongDan');
+
+    XLSX.writeFile(wb, 'Mau_Import_KH_BSC.xlsx');
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// AUTH — USERS nhúng sẵn trong HTML (an toàn cơ bản)
+// ═══════════════════════════════════════════════════════════════
+const D_USERS = [
+  {username:'admin',   password:'bidv2025', role:'admin',  phong:'',      ten:'Admin Chi nhánh'},
+  {username:'tpcambin',password:'bidv2025', role:'truong', phong:'CẨM BÌNH',   ten:'Trưởng PGD Cẩm Bình'},
+  {username:'tpcamphu',password:'bidv2025', role:'truong', phong:'CẨM PHÚ',    ten:'Trưởng PGD Cẩm Phú'},
+  {username:'tpcamthuy',password:'bidv2025',role:'truong', phong:'CẨM THỦY',   ten:'Trưởng PGD Cẩm Thủy'},
+  {username:'tpmongduong',password:'bidv2025',role:'truong',phong:'MÔNG DƯƠNG',ten:'Trưởng PGD Mông Dương'},
+  {username:'tpquanghanh',password:'bidv2025',role:'truong',phong:'QUANG HANH',ten:'Trưởng PGD Quang Hanh'},
+  {username:'tpvandlon',password:'bidv2025', role:'truong', phong:'VÂN ĐỒN',   ten:'Trưởng PGD Vân Đồn'},
+  {username:'tpkhcn',  password:'bidv2025', role:'truong', phong:'KHCN',       ten:'Trưởng Phòng KHCN'},
+  {username:'tpkhdn',  password:'bidv2025', role:'truong', phong:'KHDN',       ten:'Trưởng Phòng KHDN'},
+  {username:'tpkhut',  password:'bidv2025', role:'truong', phong:'KHƯT',       ten:'Trưởng Phòng KHƯT'},
+  // Cán bộ: thêm theo từng phòng, trường phong xác định phòng được xem
+  {username:'cb_khcn',  password:'bidv2025', role:'canbo',  phong:'KHCN',       ten:'Cán bộ KHCN'},
+  {username:'cb_khdn',  password:'bidv2025', role:'canbo',  phong:'KHDN',       ten:'Cán bộ KHDN'},
+  {username:'cb_pgd',   password:'bidv2025', role:'canbo',  phong:'CẨM BÌNH',   ten:'Cán bộ Cẩm Bình'},
+];
+
+function showLogin() {
+  const ov = document.getElementById('loginOv');
+  if(ov) ov.style.display = 'flex';
+  document.querySelector('.app').style.display = 'none';
+  setTimeout(()=>{ const u=document.getElementById('lgUser'); if(u) u.focus(); },100);
+}
+
+function showApp() {
+  const ov = document.getElementById('loginOv');
+  if(ov) ov.style.display = 'none';
+  document.querySelector('.app').style.display = 'flex';
+  // Cập nhật topbar
+  const chip = document.getElementById('userChip');
+  const bl   = document.getElementById('btnLogout');
+  if(chip && CURRENT_USER) {
+    chip.style.display = 'inline-flex';
+    const roleColor = ROLES[CURRENT_USER.role]?.color || '#8096A7';
+    const roleLabel = ROLES[CURRENT_USER.role]?.label || CURRENT_USER.role;
+    const name = CURRENT_USER.ten || CURRENT_USER.username;
+    const av = document.getElementById('ucAv');
+    if(av) { av.textContent = name.charAt(0).toUpperCase(); av.style.background = roleColor; }
+    const nm = document.getElementById('ucName');
+    if(nm) nm.textContent = name;
+    const rl = document.getElementById('ucRole');
+    if(rl) { rl.textContent = roleLabel + (CURRENT_USER.phong ? ' · ' + CURRENT_USER.phong : ''); }
+  }
+  if(bl) bl.style.display = 'inline-block';
+  applyRoleUI();
+  populatePhongSelects();
+}
+
+function doLogin() {
+  const uname = (document.getElementById('lgUser')?.value||'').trim().toLowerCase();
+  const pass  = (document.getElementById('lgPass')?.value||'').trim();
+  const err   = document.getElementById('lgErr');
+  const user  = D_USERS.find(u => u.username === uname && u.password === pass);
+  if(!user) { if(err) err.textContent = '❌ Sai tên đăng nhập hoặc mật khẩu'; return; }
+  CURRENT_USER = user;
+  localStorage.setItem('pg_user', JSON.stringify(user));
+  if(err) err.textContent = '';
+  showApp();
+}
+
+function doLogout() {
+  localStorage.removeItem('pg_user');
+  CURRENT_USER = null;
+  showLogin();
+}
+
+// Role UI: ẩn/hiện menu và nút theo role
+function applyRoleUI() {
+  const r = CURRENT_USER?.role;
+  const ph = CURRENT_USER?.phong;
+  // Sidebar: admin thấy tất cả; truong thấy trừ gscfg/imp/impkh; canbo chỉ xem ds
+  document.querySelectorAll('.sb-a').forEach(el => {
+    const s = el.dataset.s;
+    let show = true;
+    if(r === 'truong') show = !['imp','gscfg'].includes(s);  // truong thấy impkh, exp, daukp, baocaoHL
+    if(r === 'canbo')  show = ['ds','dash','baocaoHL'].includes(s);
+    el.style.display = show ? '' : 'none';
+  });
+  // Nút tạo phân giao: chỉ admin/truong
+  const btnTao = document.querySelector('.sb-a[data-s="tao"]');
+  if(btnTao && r === 'canbo') btnTao.style.display = 'none';
+  // Trưởng: chỉ xem phòng mình trong danh sách
+  if(r === 'truong' && ph) {
+    // Filter sẽ được áp dụng trong renderDS
+    const dsBoEl = document.getElementById('dsKy');
+  }
+  const btnChot=document.getElementById('btnChotHangLoat');
+  if(btnChot) btnChot.style.display=(r==='truong')?'':'none';
+  const boBcard=document.getElementById('boB');
+  if(boBcard){boBcard.style.opacity=(r==='truong')?'0.38':'';boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';}
+}
+
+// ─── DK_DATA: lưu số liệu đầu kỳ theo phòng/cán bộ ──────────
+// Cấu trúc: DK_DATA[phong_or_maCB][chiTieu] = {thN1, bangGiao}
+let DK_DATA = JSON.parse(localStorage.getItem('pg_dkdata')||'{}');
+
+function saveDKLocal() { localStorage.setItem('pg_dkdata', JSON.stringify(DK_DATA)); }
+
+function getDKMap(target, boCT) {
+  // target = maCB (KPI) hoặc phong (BSC)
+  return DK_DATA[target] || {};
+}
+
+function onDKChange(i) {
+  const thn1 = (document.getElementById('thn1_'+i)?.value||'').trim();
+  const bg   = (document.getElementById('bg_'+i)?.value||'').trim();
+  const v1 = parseFloat(thn1)||0, v2 = parseFloat(bg)||0;
+  const dkEl = document.getElementById('dk_'+i);
+  if(dkEl) {
+    if(thn1 || bg) {
+      dkEl.textContent = fmtSuggest(v1+v2);
+      dkEl.style.color = '#005452';
+    } else {
+      dkEl.textContent = '—';
+      dkEl.style.color = '#8096A7';
+    }
+  }
+}
+
+// ─── Màn hình Số liệu đầu kỳ ─────────────────────────────────
+function populatePhongSelects() {
+  const phongs = Object.keys(PB);
+  ['dkPhong','hlPhong'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    const cur = el.value;
+    el.innerHTML = (id==='hlPhong'?'<option value="">Tất cả phòng</option>':'<option value="">-- Chọn phòng --</option>')
+      + phongs.map(p=>`<option value="${p}"${p===cur?' selected':''}>${p}</option>`).join('');
+    // Nếu là trưởng đơn vị: chỉ hiện phòng mình
+    if(CURRENT_USER?.role==='truong' && CURRENT_USER?.phong) {
+      el.innerHTML = `<option value="${CURRENT_USER.phong}">${CURRENT_USER.phong}</option>`;
+      el.value = CURRENT_USER.phong;
+    }
+  });
+}
+
+function renderDaukp() {
+  const phong = document.getElementById('dkPhong')?.value;
+  const body  = document.getElementById('daukpBody');
+  if(!body) return;
+  if(!phong) { body.innerHTML = '<div class="empty">Chọn phòng để nhập số liệu đầu kỳ</div>'; return; }
+  const maBCT = PB[phong]||'';
+  const cbList = CB.filter(c => c.phong===phong && c.trangThai==='HOAT_DONG');
+  if(!cbList.length) { body.innerHTML = '<div class="empty">Không có cán bộ nào trong phòng này</div>'; return; }
+  // Lấy tất cả chỉ tiêu có thể (union của VT các vị trí trong phòng)
+  const allCTs = [...new Set(cbList.flatMap(c => VT[c.viTri]||[]))];
+  // Build bảng: dòng = chỉ tiêu, cột = cán bộ
+  let html = `<div style="overflow-x:auto"><table class="at"><thead><tr>
+    <th style="width:36px">#</th>
+    <th>Chỉ tiêu</th>
+    ${cbList.map(c=>`<th style="font-size:11px;text-align:center;min-width:160px">
+      <div style="font-weight:700">${c.tenCB}</div>
+      <div style="color:#8096A7;font-weight:400">${c.viTri}</div>
+      <div style="display:flex;gap:2px;justify-content:center;margin-top:3px">
+        <span style="font-size:9px;padding:1px 5px;background:#E8F5F4;border-radius:3px;color:#006B68">TH n-1</span>
+        <span style="font-size:9px;padding:1px 5px;background:#EDF7F6;border-radius:3px;color:#006B68">Bàn giao</span>
+        <span style="font-size:9px;padding:1px 5px;background:#E0F4F0;border-radius:3px;color:#005452">Đầu kỳ</span>
+      </div>
+    </th>`).join('')}
+  </tr></thead><tbody>`;
+
+  allCTs.forEach((ct,ri) => {
+    html += `<tr><td style="color:#8096A7;font-size:11px">${ri+1}</td>
+      <td style="font-size:12px;max-width:220px">${ct}</td>`;
+    cbList.forEach(c => {
+      const dk = (DK_DATA[c.maCB]||{})[ct]||{};
+      const hasCT = (VT[c.viTri]||[]).includes(ct);
+      if(!hasCT) {
+        html += '<td style="background:#F8FAFB;text-align:center;color:#C8D8E8">—</td>';
+      } else {
+        const thn1 = dk.thN1||'', bg = dk.bangGiao||'';
+        const dkVal = (thn1||bg) ? ((parseFloat(thn1)||0)+(parseFloat(bg)||0)) : '';
+        html += `<td style="text-align:center;padding:4px 2px">
+          <div style="display:flex;gap:2px;justify-content:center">
+            <input type="text" value="${thn1}" data-cb="${c.maCB}" data-ct="${ct.replace(/"/g,'&quot;')}" data-type="thN1"
+              style="width:62px;padding:3px 4px;border:1px solid #B8D8D6;border-radius:4px;font-size:11px;text-align:right;outline:none;background:#E8F5F4;"
+              oninput="onDKCellChange(this)" placeholder="0">
+            <input type="text" value="${bg}" data-cb="${c.maCB}" data-ct="${ct.replace(/"/g,'&quot;')}" data-type="bangGiao"
+              style="width:62px;padding:3px 4px;border:1px solid #B8D8D6;border-radius:4px;font-size:11px;text-align:right;outline:none;background:#EDF7F6;"
+              oninput="onDKCellChange(this)" placeholder="0">
+            <span data-cb="${c.maCB}" data-ct="${ct.replace(/"/g,'&quot;')}" id="dksum_${c.maCB}_${ri}"
+              style="width:62px;padding:3px 4px;font-size:11px;text-align:right;font-weight:700;color:#005452;background:#E0F4F0;border-radius:4px;display:inline-block">
+              ${dkVal!==''?fmtSuggest(dkVal):'—'}
+            </span>
+          </div>
+        </td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  body.innerHTML = html;
+}
+
+function onDKCellChange(inp) {
+  const maCB = inp.dataset.cb, ct = inp.dataset.ct, type = inp.dataset.type;
+  if(!DK_DATA[maCB]) DK_DATA[maCB] = {};
+  if(!DK_DATA[maCB][ct]) DK_DATA[maCB][ct] = {};
+  DK_DATA[maCB][ct][type] = inp.value.trim();
+  // Cập nhật sum cell
+  const rowEl = inp.closest('td');
+  const inputs = rowEl.querySelectorAll('input');
+  const v1 = parseFloat(inputs[0]?.value||0)||0;
+  const v2 = parseFloat(inputs[1]?.value||0)||0;
+  const sumEl = rowEl.querySelector('span[data-cb]');
+  if(sumEl) sumEl.textContent = (v1||v2) ? fmtSuggest(v1+v2) : '—';
+}
+
+function saveDaukp() {
+  // Thu thập tất cả inputs trong bảng
+  document.querySelectorAll('#daukpBody input[data-cb]').forEach(inp => {
+    const maCB = inp.dataset.cb, ct = inp.dataset.ct, type = inp.dataset.type;
+    if(!DK_DATA[maCB]) DK_DATA[maCB]={};
+    if(!DK_DATA[maCB][ct]) DK_DATA[maCB][ct]={};
+    DK_DATA[maCB][ct][type] = inp.value.trim();
+  });
+  saveDKLocal();
+  gsBar('ok','✅ Đã lưu số liệu đầu kỳ vào bộ nhớ cục bộ');
+}
+
+function exportDaukp() {
+  const phong = document.getElementById('dkPhong')?.value;
+  if(!phong){alert('Chọn phòng trước'); return;}
+  saveDaukp();
+  const wb = XLSX.utils.book_new();
+  const cbList = CB.filter(c=>c.phong===phong&&c.trangThai==='HOAT_DONG');
+  const allCTs = [...new Set(cbList.flatMap(c=>VT[c.viTri]||[]))];
+  const hdr = ['STT','Chỉ tiêu'];
+  cbList.forEach(c=>{hdr.push(c.tenCB+' — TH n-1',c.tenCB+' — Bàn giao',c.tenCB+' — Đầu kỳ');});
+  const rows=[hdr];
+  allCTs.forEach((ct,ri)=>{
+    const row=[ri+1,ct];
+    cbList.forEach(c=>{
+      const dk=(DK_DATA[c.maCB]||{})[ct]||{};
+      const hasCT=(VT[c.viTri]||[]).includes(ct);
+      if(hasCT){const t=parseFloat(dk.thN1||0)||0,b=parseFloat(dk.bangGiao||0)||0;row.push(t,b,t+b);}
+      else row.push('','','');
+    });
+    rows.push(row);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb,ws,'SoLieuDauKy_'+phong.replace(/\s/g,'_'));
+  XLSX.writeFile(wb,'SoLieu_DauKy_'+phong.replace(/\s/g,'_')+'.xlsx');
+}
+
+// ─── Báo cáo tính hợp lý ─────────────────────────────────────
+function renderBaocaoHL() {
+  const filterPhong = document.getElementById('hlPhong')?.value||'';
+  const wrap = document.getElementById('hlTableWrap');
+  const sumDiv = document.getElementById('hlSummary');
+  if(!wrap) return;
+
+  // Lấy danh sách phòng cần kiểm tra
+  const phongs = filterPhong ? [filterPhong] : Object.keys(PB);
+
+  // Lấy KH BSC của từng phòng: từ PG records có boCT=BSC
+  const bscKH = {}; // bscKH[phong][chiTieuBSC] = soKH (số)
+  PG.filter(p=>p.boCT==='BSC').forEach(p=>{
+    if(!bscKH[p.target]) bscKH[p.target]={};
+    (p.items||[]).forEach(it=>{
+      const v=parseFloat(it.soKH)||0;
+      bscKH[p.target][it.chiTieu]=(bscKH[p.target][it.chiTieu]||0)+v;
+    });
+  });
+
+  // Lấy KH KPI của từng cán bộ theo phòng: PG records có boCT=KPI
+  const kpiKH = {}; // kpiKH[phong][chiTieuKPI][maCB] = soKH
+  PG.filter(p=>p.boCT==='KPI').forEach(p=>{
+    const cb = CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
+    if(!cb) return;
+    const phong = cb.phong;
+    if(!kpiKH[phong]) kpiKH[phong]={};
+    (p.items||[]).forEach(it=>{
+      if(!kpiKH[phong][it.chiTieu]) kpiKH[phong][it.chiTieu]={};
+      const v=parseFloat(it.soKH)||0;
+      kpiKH[phong][it.chiTieu][p.target]=(kpiKH[phong][it.chiTieu][p.target]||0)+v;
+    });
+  });
+
+  // Tổng hợp theo VALID_RULES x phong
+  let totalRules=0,passRules=0,warnRules=0,failRules=0;
+  let tableRows='';
+
+  phongs.forEach(phong=>{
+    const maBCT=PB[phong]||'';
+    const cbList=CB.filter(c=>c.phong===phong&&c.trangThai==='HOAT_DONG');
+    if(!cbList.length) return;
+
+    // Các quy tắc áp dụng cho phòng này
+    const rules = VALID_RULES.filter(r=>{
+      const bscCTs=BSC[maBCT]||[];
+      return bscCTs.some(ct=>vna(ct)===vna(r.bsc));
+    });
+    if(!rules.length) return;
+
+    // Header phòng
+    const cbHeaders = cbList.map(c=>
+      `<th style="font-size:10.5px;text-align:right;min-width:90px">${c.tenCB}<br><span style="color:#8096A7;font-weight:400">${c.viTri}</span></th>`
+    ).join('');
+    tableRows+=`<tr style="background:#005452"><td colspan="${6+cbList.length}" style="color:#fff;font-weight:700;font-size:12px;padding:6px 12px">🏢 ${phong} (${maBCT})</td></tr>`;
+    tableRows+=`<tr style="background:#E0F4F0"><td></td><td>Chỉ tiêu KPI / BSC</td><td style="text-align:right">KH Phòng (BSC)</td>${cbHeaders}<td style="text-align:right">Tổng KPI giao</td><td style="text-align:right">Tỷ lệ</td><td>Cảnh báo</td></tr>`;
+
+    rules.forEach((rule,ri)=>{
+      totalRules++;
+      const bscVal=Object.values(bscKH[phong]||{}).find((_,ki)=>vna(Object.keys(bscKH[phong]||{})[ki])===vna(rule.bsc))||0;
+      // Tổng KPI giao
+      const kpiRow = kpiKH[phong]?.[rule.kpi]||{};
+      const totalKPI = Object.values(kpiRow).reduce((a,b)=>a+b,0);
+      const ratio = bscVal>0 ? totalKPI/bscVal : null;
+      const threshLabel = rule.t===0.9?'≥90%':'≥100%';
+      let cls='',warn='',ratioTxt='—';
+      if(ratio===null){ cls=''; warn='⚠ Chưa có KH BSC'; }
+      else if(ratio>=rule.t){ cls='vld-ok'; warn='✓ Đạt'; passRules++; }
+      else if(ratio>=rule.t*0.8){ cls='vld-warn'; warn=`⚠ Thiếu ${((rule.t-ratio)*100).toFixed(1)}%`; warnRules++; }
+      else { cls='vld-err'; warn=`❌ Thiếu ${((rule.t-ratio)*100).toFixed(1)}%`; failRules++; }
+      if(ratio!==null) ratioTxt=(ratio*100).toFixed(1)+'%';
+
+      const cbCells = cbList.map(c=>{
+        const v=kpiRow[c.maCB]||kpiRow[c.tenCB]||0;
+        return `<td style="text-align:right;font-size:12px">${v?fmtSuggest(v):'—'}</td>`;
+      }).join('');
+
+      tableRows+=`<tr>
+        <td style="color:#8096A7;font-size:11px;text-align:center">${ri+1}</td>
+        <td style="font-size:11.5px"><div style="font-weight:700">${rule.kpi}</div><div style="font-size:10.5px;color:#8096A7">${rule.bsc} (${threshLabel})</div></td>
+        <td style="text-align:right;font-weight:700;color:#005452">${bscVal?fmtSuggest(bscVal):'—'}</td>
+        ${cbCells}
+        <td style="text-align:right;font-weight:700;color:${totalKPI?'#006B68':'#8096A7'}">${totalKPI?fmtSuggest(totalKPI):'—'}</td>
+        <td style="text-align:right;font-weight:700" class="${cls}">${ratioTxt}</td>
+        <td style="font-size:11.5px" class="${cls}">${warn}</td>
+      </tr>`;
+    });
+  });
+
+  if(!tableRows){ wrap.innerHTML='<div class="empty">Chưa có dữ liệu phân giao KPI hoặc BSC</div>'; return; }
+
+  // Summary stats
+  sumDiv.innerHTML=`
+    <div style="padding:6px 16px;background:#E0F4F0;border-radius:8px;text-align:center">
+      <div style="font-size:10px;color:#8096A7">Tổng quy tắc</div>
+      <div style="font-size:22px;font-weight:900;color:#005452">${totalRules}</div>
+    </div>
+    <div style="padding:6px 16px;background:#E0F4F0;border-radius:8px;text-align:center">
+      <div style="font-size:10px;color:#8096A7">✓ Đạt</div>
+      <div style="font-size:22px;font-weight:900;color:#006B68">${passRules}</div>
+    </div>
+    <div style="padding:6px 16px;background:#FFF3CD;border-radius:8px;text-align:center">
+      <div style="font-size:10px;color:#8096A7">⚠ Cảnh báo</div>
+      <div style="font-size:22px;font-weight:900;color:#B08000">${warnRules}</div>
+    </div>
+    <div style="padding:6px 16px;background:#FDECEA;border-radius:8px;text-align:center">
+      <div style="font-size:10px;color:#8096A7">❌ Không đạt</div>
+      <div style="font-size:22px;font-weight:900;color:#E31837">${failRules}</div>
+    </div>`;
+
+  wrap.innerHTML=`<table class="at" style="min-width:800px">
+    <thead><tr>
+      <th style="width:36px">#</th><th>Chỉ tiêu KPI / BSC (ngưỡng)</th>
+      <th style="text-align:right">KH BSC</th>
+      <th colspan="99">KH KPI từng CB</th>
+      <th style="text-align:right">Tổng KPI</th>
+      <th style="text-align:right">Tỷ lệ</th>
+      <th>Cảnh báo</th>
+    </tr></thead>
+    <tbody>${tableRows}</tbody></table>`;
+}
+
+function exportBaocaoHL() {
+  renderBaocaoHL();
+  const tbl=document.querySelector('#hlTableWrap table');
+  if(!tbl){alert('Chưa có dữ liệu');return;}
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.table_to_sheet(tbl);
+  XLSX.utils.book_append_sheet(wb,ws,'BaoCaoHopLy');
+  XLSX.writeFile(wb,'BaoCao_TinhHopLy_KH.xlsx');
+}
+
+// ─── Trạng thái PG: duyệt/hủy/chốt/mở ───────────────────────
+// status: '' | 'da_duyet' | 'chot'
+function renderPGActions(p) {
+  const r = CURRENT_USER?.role;
+  let btns = '';
+  const isChot = p.status==='chot';
+  const isDuyet = p.status==='da_duyet';
+
+  if(r==='admin') {
+    btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
+    if(!isChot) btns += `<button class="btn btn-red btn-xs" onclick="event.stopPropagation();delPG('${p.id}')" title="Xóa">🗑</button>`;
+    if(isChot) btns += `<button class="btn btn-green btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','')" title="Mở chốt">🔓</button>`;
+    else btns += `<button class="btn btn-blue btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','chot')" title="Chốt">🔒</button>`;
+  } else if(r==='truong') {
+    btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
+    if(!isChot && !isDuyet) btns += `<button class="btn btn-green btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','da_duyet')" title="Duyệt">✅</button>`;
+    if(isDuyet && !isChot) btns += `<button class="btn btn-gold btn-xs" onclick="event.stopPropagation();setPGStatus('${p.id}','')" title="Hủy duyệt">↩</button>`;
+  } else {
+    btns += `<button class="btn btn-gray btn-xs" onclick="event.stopPropagation();viewPG('${p.id}')" title="Xem">👁</button>`;
+  }
+  return btns;
+}
+
+function statusBadge(p) {
+  if(p.status==='chot')     return '<span class="st-chot">🔒 Đã chốt</span>';
+  if(p.status==='da_duyet') return '<span class="st-duyet">✅ Đã duyệt</span>';
+  return '<span class="st-none">Chờ duyệt</span>';
+}
+
+async function setPGStatus(id, newStatus) {
+  const p = PG.find(x=>x.id===id); if(!p) return;
+  if(newStatus==='chot' && p.status!=='da_duyet') {
+    // Cảnh báo trước khi chốt
+    const warns = getValidationWarnings([p]);
+    if(warns.length) {
+      const msg = '⚠ Phân giao này có cảnh báo:\n\n' + warns.join('\n') + '\n\nVẫn tiếp tục chốt?';
+      if(!confirm(msg)) return;
+    }
+  }
+  p.status = newStatus;
+  p.nguoiDuyet = CURRENT_USER?.ten||'';
+  p.ngayDuyet = new Date().toLocaleDateString('vi-VN');
+  try { await gsPost({action:'updatePGStatus',id,status:newStatus,nguoiDuyet:p.nguoiDuyet,ngayDuyet:p.ngayDuyet}); } catch(e){}
+  renderDS();
+}
+
+// Kiểm tra cảnh báo hợp lý cho 1 phân giao
+function getValidationWarnings(pgList) {
+  const warns = [];
+  // Group by phong
+  const byPhong = {};
+  pgList.forEach(p => {
+    if(p.boCT!=='KPI') return;
+    const cb = CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
+    if(!cb) return;
+    if(!byPhong[cb.phong]) byPhong[cb.phong]=[];
+    byPhong[cb.phong].push(p);
+  });
+  Object.entries(byPhong).forEach(([phong, pgs])=>{
+    const maBCT=PB[phong];
+    const bscPG = PG.find(p=>p.boCT==='BSC'&&p.target===phong);
+    if(!bscPG) return;
+    VALID_RULES.forEach(rule=>{
+      const bscItem=bscPG.items.find(it=>vna(it.chiTieu)===vna(rule.bsc));
+      if(!bscItem||!bscItem.soKH) return;
+      const bscV=parseFloat(bscItem.soKH)||0;
+      const totalKPI = pgs.reduce((sum,p)=>{
+        const it=p.items.find(i=>vna(i.chiTieu)===vna(rule.kpi));
+        return sum+(it?parseFloat(it.soKH)||0:0);
+      },0);
+      if(bscV>0 && totalKPI/bscV < rule.t)
+        warns.push(`${rule.kpi}: Tổng KPI ${fmtSuggest(totalKPI)} < ${(rule.t*100).toFixed(0)}% BSC ${fmtSuggest(bscV)}`);
+    });
+  });
+  return warns;
+}
+
+// Đẩy chốt hàng loạt cho phòng (từ menu trưởng đơn vị)
+async function chotHangLoat() {
+  const phong = CURRENT_USER?.phong;
+  if(!phong) { alert('Không xác định được phòng'); return; }
+  const pgList = PG.filter(p=>p.boCT==='KPI'&&p.status!=='chot');
+  const phongPG = pgList.filter(p=>{
+    const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);
+    return cb?.phong===phong;
+  });
+  if(!phongPG.length){alert('Không có phân giao nào cần chốt');return;}
+  const warns=getValidationWarnings(phongPG);
+  let msg = `Sẽ chốt ${phongPG.length} phân giao KPI của phòng ${phong}.`;
+  if(warns.length) msg += '\n\n⚠ CẢNH BÁO CÁC CHỈ TIÊU CHƯA HỢP LÝ:\n' + warns.join('\n');
+  msg += '\n\nXác nhận đẩy chốt?';
+  if(!confirm(msg)) return;
+  for(const p of phongPG) await setPGStatus(p.id,'chot');
+  alert('✅ Đã chốt xong!');
 }
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
 document.getElementById('todayTxt').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
-updBadges();
-renderDash();
-updGsDot(false);
-if (SHEET_URL) {
-  loadFromGSheet();
+if(CURRENT_USER) {
+  showApp();
+  updBadges();
+  renderDash();
+  updGsDot(false);
+  if (SHEET_URL) { loadFromGSheet(); }
+  else { gsBar('warn','⚠ Chưa kết nối Google Sheets.'); }
 } else {
-  gsBar('warn', '⚠ Chưa kết nối Google Sheets. Nhấn <b style="cursor:pointer;text-decoration:underline" onclick="go(document.querySelector(\'[data-s=gscfg]\'))">🔗 Google Sheets</b> để cài đặt.');
+  showLogin();
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
