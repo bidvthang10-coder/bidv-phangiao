@@ -2207,7 +2207,7 @@ function downloadKHSample(type) {
   } else {
     // ── Sheet 1: BSC nhập KH ───────────────────────────────────
     const dataRows = [
-      ['DON_VI','MA_BCT','CHI_TIEU','TH_N1','SO_KH_BAN_BUON','SO_KH_BAN_LE','SO_KH_TONG','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']
+      ['DON_VI','MA_BCT','CHI_TIEU','TH_N1','SO_KH','DON_VI_TINH','GHI_CHU','NGUOI_GIAO','KY','HAN']
     ];
     Object.entries(PB).sort().forEach(([dv, maBCT])=>{
       const cts = BSC[maBCT]||[];
@@ -2218,9 +2218,7 @@ function downloadKHSample(type) {
           maBCT,            // MA_BCT — tham khảo
           ct,               // CHI_TIEU — KHÔNG SỬA
           dkBsc.thN1||'',   // TH_N1 — Số thực hiện 31/12 năm trước
-          '',               // SO_KH_BAN_BUON — KH phần bán buôn
-          '',               // SO_KH_BAN_LE  — KH phần bán lẻ
-          '',               // SO_KH_TONG    — Tự tính = BB + BL (hoặc nhập thẳng)
+          '',               // SO_KH — KẾ HOẠCH — ĐIỀN VÀO ĐÂY
           '',               // DON_VI_TINH
           '',               // GHI_CHU
           i===0?'':'',      // NGUOI_GIAO
@@ -2230,7 +2228,7 @@ function downloadKHSample(type) {
       });
     });
     const wsData = XLSX.utils.aoa_to_sheet(dataRows);
-    wsData['!cols'] = [18,10,65,14,14,14,14,16,20,20,14,14].map(w=>({wch:w}));
+    wsData['!cols'] = [18,10,65,14,14,16,20,20,14,14].map(w=>({wch:w}));
     XLSX.utils.book_append_sheet(wb, wsData, 'BSC_NhapKH');
 
     // ── Sheet 2: Danh mục đơn vị (tham chiếu) ─────────────────
@@ -2267,9 +2265,7 @@ function downloadKHSample(type) {
       ['MA_BCT','Tham khảo','Mã bộ chỉ tiêu — chỉ để đọc'],
       ['CHI_TIEU','✅ Không sửa','Tên chỉ tiêu BSC — đã điền sẵn'],
       ['TH_N1','Tùy chọn','Số THỰC HIỆN tại 31/12 năm trước (để tham chiếu)'],
-      ['SO_KH_BAN_BUON','Tùy chọn','Số KH phần KHDN/bán buôn — để trống nếu không tách'],
-      ['SO_KH_BAN_LE','Tùy chọn','Số KH phần KHCN+KHƯT/bán lẻ — để trống nếu không tách'],
-      ['SO_KH_TONG','✅ ĐIỀN VÀO ĐÂY','Tổng KH (= BB + BL). Nếu để trống, hệ thống tự tính từ BB+BL'],
+      ['SO_KH','✅ ĐIỀN VÀO ĐÂY','Số kế hoạch (số thuần, không ghi đơn vị)'],
       ['DON_VI_TINH','Tùy chọn','Đơn vị tính: Triệu đồng, KH, Thẻ...'],
       ['GHI_CHU','Tùy chọn','Ghi chú cho chỉ tiêu này'],
       ['NGUOI_GIAO','Tùy chọn','Người giao — điền 1 lần/đơn vị'],
