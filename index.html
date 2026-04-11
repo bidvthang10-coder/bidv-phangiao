@@ -2744,6 +2744,27 @@ function exportDaukp() {
 }
 
 // ─── Báo cáo tính hợp lý ─────────────────────────────────────
+// ── 17 cặp quy tắc kiểm tra tính hợp lý KPI ↔ BSC ──────────────
+const VALID_RULES = [
+  {kpi:'Dư nợ cuối kỳ',                                              bsc:'Dư nợ tín dụng cuối kỳ',                                     t:0.9},
+  {kpi:'Huy động vốn cuối kỳ',                                       bsc:'Huy động vốn cuối kỳ',                                       t:0.9},
+  {kpi:'Huy động vốn không kỳ hạn bình quân',                        bsc:'Huy động vốn KKH bình quân',                                  t:0.9},
+  {kpi:'Số lượng KHCN mới có quan hệ tín dụng mới',                  bsc:'Số lượng KHCN mới có quan hệ tín dụng mới',                   t:1.0},
+  {kpi:'Số lượng TCKT mới có quan hệ tín dụng',                      bsc:'Số lượng khách hàng TCKT mới quan hệ tín dụng',               t:1.0},
+  {kpi:'Số lượng thẻ tín dụng phát hành mới có phát sinh giao dịch', bsc:'Số lượng thẻ tín dụng mới có phát sinh giao dịch',            t:1.0},
+  {kpi:'Thu dịch vụ bảo hiểm',                                       bsc:'Hoa hồng bảo hiểm (Bic, Metlife)',                            t:1.0},
+  {kpi:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)', bsc:'Thu nhập ròng (không gồm thu nợ HTNB, thu KDNT&PS và lãi dự thu nhóm 1 quá hạn)', t:0.9},
+  {kpi:'Thu dịch vụ BHNT (BML)',                                      bsc:'Thu dịch vụ BHNT (BML)',                                      t:1.0},
+  {kpi:'Thu KDNT&PS',                                                 bsc:'Thu kinh doanh ngoại tệ và phái sinh',                        t:1.0},
+  {kpi:'Thu phí Sản phẩm đầu tư',                                    bsc:'Thu phí sản phẩm đầu tư',                                     t:1.0},
+  {kpi:'Thu dịch vụ ròng',                                           bsc:'Thu dịch vụ ròng',                                            t:0.9},
+  {kpi:'Thu nợ HTNB',                                                bsc:'Thu nợ hạch toán ngoại bảng',                                 t:1.0},
+  {kpi:'Số lượng khách hàng cao cấp lũy kế',                         bsc:'Số lượng khách hàng cao cấp lũy kế',                          t:1.0},
+  {kpi:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên', bsc:'Số lượng khách hàng nâng hạng lên KHCC hạng Premier Elite trở lên', t:1.0},
+  {kpi:'Thu nhập thuần từ hoạt động ngân hàng số',                   bsc:'Thu nhập ròng từ hoạt động Ngân hàng số',                     t:0.9},
+  {kpi:'Thu nhập từ bảo lãnh',                                       bsc:'Thu bảo lãnh',                                                t:1.0},
+];
+
 function renderBaocaoHL() {
   const filterPhong = document.getElementById('hlPhong')?.value||'';
   const wrap = document.getElementById('hlTableWrap');
@@ -2794,8 +2815,6 @@ function renderBaocaoHL() {
       const bscCTs=BSC[maBCT]||[];
       return bscCTs.some(ct=>vna(ct)===vna(r.bsc));
     });
-    if(!rules.length) return;
-
     // Header phòng
     const cbHeaders = cbList.map(c=>
       `<th style="font-size:10.5px;text-align:right;min-width:90px">${c.tenCB}<br><span style="color:#8096A7;font-weight:400">${c.viTri}</span></th>`
