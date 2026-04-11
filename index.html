@@ -257,6 +257,7 @@ textarea.fc{resize:vertical;min-height:60px;}
     <div class="sb-sec">Hệ thống</div>
     <div class="sb-a" data-s="exp" onclick="go(this)"><span class="sb-ic">📤</span>Xuất dữ liệu</div>
     <div class="sb-a" data-s="gscfg" onclick="go(this)"><span class="sb-ic">🔗</span>Google Sheets<span id="gsStatusDot" style="margin-left:auto;font-size:10px">⚪</span></div>
+    <div class="sb-a admin-only" data-s="users" onclick="go(this)"><span class="sb-ic">👤</span>Quản lý User</div>
   </nav>
   <div id="btnChotHangLoat" style="display:none;padding:8px 12px">
     <button style="width:100%;background:#FFC62F;color:#1A1A2E;font-weight:700;font-size:12px;border:none;border-radius:8px;padding:9px;cursor:pointer;font-family:inherit" onclick="chotHangLoat()">🔒 Đẩy chốt KH phòng</button>
@@ -360,6 +361,48 @@ textarea.fc{resize:vertical;min-height:60px;}
         <tbody id="bscTb"></tbody>
       </table></div>
       <div class="pag" id="bscPag"></div>
+    </div>
+  </div>
+
+  <!-- QUẢN LÝ USER -->
+  <div class="sec" id="sec-users">
+    <div class="fbar">
+      <div style="font-weight:700;font-size:15px">👤 Quản lý tài khoản người dùng</div>
+      <button class="btn btn-blue btn-sm" onclick="openUserForm()">+ Thêm tài khoản</button>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-t">Danh sách tài khoản</div><span id="userCnt" style="font-size:11px;color:#8096A7"></span></div>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Username</th><th>Họ tên</th><th>Vai trò</th><th>Phòng</th><th>Thao tác</th></tr></thead>
+        <tbody id="userTb"></tbody>
+      </table></div>
+    </div>
+    <div id="userFormCard" class="card" style="display:none;margin-top:14px">
+      <div class="card-h"><div class="card-t" id="userFormTitle">Thêm tài khoản mới</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">
+        <div class="fg"><label class="fl">Username *</label><input type="text" class="fc" id="uUsername" placeholder="vd: cambinh, tpkhcn..."></div>
+        <div class="fg"><label class="fl">Mật khẩu *</label><input type="password" class="fc" id="uPassword" placeholder="Mật khẩu..."></div>
+        <div class="fg"><label class="fl">Họ tên *</label><input type="text" class="fc" id="uTen" placeholder="Họ và tên đầy đủ..."></div>
+        <div class="fg"><label class="fl">Vai trò *</label>
+          <select class="fc" id="uRole" onchange="document.getElementById('uPhongWrap').style.display=this.value!='admin'?'':'none'">
+            <option value="truong">Trưởng đơn vị</option>
+            <option value="canbo">Cán bộ</option>
+            <option value="admin">Admin</option>
+          </select></div>
+        <div class="fg" id="uPhongWrap"><label class="fl">Phòng / PGD</label>
+          <select class="fc" id="uPhong">
+            <option value="KHCN">KHCN</option><option value="KHDN">KHDN</option>
+            <option value="KHƯT">KHƯT</option><option value="CẨM BÌNH">CẨM BÌNH</option>
+            <option value="CẨM PHÚ">CẨM PHÚ</option><option value="CẨM THỦY">CẨM THỦY</option>
+            <option value="MÔNG DƯƠNG">MÔNG DƯƠNG</option><option value="QUANG HANH">QUANG HANH</option>
+            <option value="VÂN ĐỒN">VÂN ĐỒN</option>
+          </select></div>
+        <input type="hidden" id="uEditIdx">
+        <div style="grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-gray" onclick="closeUserForm()">Hủy</button>
+          <button class="btn btn-blue" onclick="saveUser()">💾 Lưu</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1102,6 +1145,84 @@ function updBadges() {
 // ═══════════════════════════════════════════════════════════════
 // DASHBOARD
 // ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// QUẢN LÝ USER
+// ═══════════════════════════════════════════════════════════════
+function renderUsers() {
+  const tb = document.getElementById('userTb'); if(!tb) return;
+  document.getElementById('userCnt').textContent = D_USERS.length + ' tài khoản';
+  const roleStyle = {admin:['#E31837','Admin'], truong:['#006B68','Trưởng ĐV'], canbo:['#8096A7','Cán bộ']};
+  tb.innerHTML = D_USERS.map((u,i)=>{
+    const [rc,rl] = roleStyle[u.role]||['#8096A7',u.role];
+    return `<tr>
+      <td style="color:#8096A7;font-size:11px">${i+1}</td>
+      <td><strong>${u.username}</strong></td>
+      <td>${u.ten}</td>
+      <td><span class="badge" style="background:${rc}">${rl}</span></td>
+      <td>${u.phong||'—'}</td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-gold btn-xs" onclick="openUserForm(${i})">✏</button>
+        ${u.username==='admin'?'':`<button class="btn btn-red btn-xs" onclick="deleteUser(${i})">🗑</button>`}
+      </div></td>
+    </tr>`;
+  }).join('');
+  try { localStorage.setItem('pg_users', JSON.stringify(D_USERS)); } catch(e){}
+}
+
+function openUserForm(idx) {
+  document.getElementById('userFormCard').style.display='';
+  document.getElementById('uEditIdx').value = idx!==undefined ? idx : '';
+  document.getElementById('userFormTitle').textContent = idx!==undefined ? 'Sửa tài khoản' : 'Thêm tài khoản mới';
+  if(idx !== undefined) {
+    const u = D_USERS[idx];
+    document.getElementById('uUsername').value = u.username;
+    document.getElementById('uPassword').value = u.password;
+    document.getElementById('uTen').value = u.ten;
+    document.getElementById('uRole').value = u.role;
+    document.getElementById('uPhong').value = u.phong||'KHCN';
+    document.getElementById('uPhongWrap').style.display = u.role!=='admin'?'':'none';
+  } else {
+    ['uUsername','uPassword','uTen'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('uRole').value='canbo';
+    document.getElementById('uPhong').value='KHCN';
+    document.getElementById('uPhongWrap').style.display='';
+  }
+  setTimeout(()=>document.getElementById('uUsername').focus(), 50);
+}
+
+function closeUserForm() { document.getElementById('userFormCard').style.display='none'; }
+
+function saveUser() {
+  const username = document.getElementById('uUsername').value.trim().toLowerCase();
+  const password = document.getElementById('uPassword').value.trim();
+  const ten      = document.getElementById('uTen').value.trim();
+  const role     = document.getElementById('uRole').value;
+  const phong    = role==='admin'?'':document.getElementById('uPhong').value;
+  const editIdx  = document.getElementById('uEditIdx').value;
+  if(!username){ gsBar('err','❌ Thiếu username'); return; }
+  if(!password){ gsBar('err','❌ Thiếu mật khẩu'); return; }
+  if(!ten)     { gsBar('err','❌ Thiếu họ tên');   return; }
+  const newUser = {username, password, role, phong, ten};
+  if(editIdx !== '') {
+    D_USERS[parseInt(editIdx)] = newUser;
+    gsBar('ok','✅ Đã cập nhật tài khoản: '+username);
+  } else {
+    if(D_USERS.find(u=>u.username===username)){
+      gsBar('err','❌ Username "'+username+'" đã tồn tại'); return;
+    }
+    D_USERS.push(newUser);
+    gsBar('ok','✅ Đã thêm tài khoản: '+username);
+  }
+  closeUserForm(); renderUsers();
+}
+
+function deleteUser(i) {
+  if(D_USERS[i]?.username==='admin'){gsBar('err','❌ Không thể xóa admin');return;}
+  if(!confirm('Xóa tài khoản "'+D_USERS[i].username+'"?')) return;
+  D_USERS.splice(i,1); renderUsers();
+  gsBar('ok','✅ Đã xóa tài khoản');
+}
+
 function goGiao(maCB,tenCB,phong,viTri){
   go(document.querySelector('[data-s=tao]'));
   setTimeout(()=>{pickBC('KPI');const s=document.getElementById('wzSQ');if(s)s.value=tenCB;renderTargets();setTimeout(()=>pickTargetKPI(maCB,tenCB,phong,viTri),150);},200);
@@ -2350,22 +2471,32 @@ function downloadKHSample(type) {
 // ═══════════════════════════════════════════════════════════════
 // Auth state — load từ localStorage
 let CURRENT_USER = JSON.parse(localStorage.getItem('pg_user')||'null');
+try{const su=localStorage.getItem('pg_users');if(su){const p=JSON.parse(su);if(Array.isArray(p)&&p.length)D_USERS=p;}}catch(e){}
 
-const D_USERS = [
-  {username:'admin',   password:'bidv2025', role:'admin',  phong:'',      ten:'Admin Chi nhánh'},
-  {username:'tpcambin',password:'bidv2025', role:'truong', phong:'CẨM BÌNH',   ten:'Trưởng PGD Cẩm Bình'},
-  {username:'tpcamphu',password:'bidv2025', role:'truong', phong:'CẨM PHÚ',    ten:'Trưởng PGD Cẩm Phú'},
-  {username:'tpcamthuy',password:'bidv2025',role:'truong', phong:'CẨM THỦY',   ten:'Trưởng PGD Cẩm Thủy'},
-  {username:'tpmongduong',password:'bidv2025',role:'truong',phong:'MÔNG DƯƠNG',ten:'Trưởng PGD Mông Dương'},
-  {username:'tpquanghanh',password:'bidv2025',role:'truong',phong:'QUANG HANH',ten:'Trưởng PGD Quang Hanh'},
-  {username:'tpvandlon',password:'bidv2025', role:'truong', phong:'VÂN ĐỒN',   ten:'Trưởng PGD Vân Đồn'},
-  {username:'tpkhcn',  password:'bidv2025', role:'truong', phong:'KHCN',       ten:'Trưởng Phòng KHCN'},
-  {username:'tpkhdn',  password:'bidv2025', role:'truong', phong:'KHDN',       ten:'Trưởng Phòng KHDN'},
-  {username:'tpkhut',  password:'bidv2025', role:'truong', phong:'KHƯT',       ten:'Trưởng Phòng KHƯT'},
-  // Cán bộ: thêm theo từng phòng, trường phong xác định phòng được xem
-  {username:'cb_khcn',  password:'bidv2025', role:'canbo',  phong:'KHCN',       ten:'Cán bộ KHCN'},
-  {username:'cb_khdn',  password:'bidv2025', role:'canbo',  phong:'KHDN',       ten:'Cán bộ KHDN'},
-  {username:'cb_pgd',   password:'bidv2025', role:'canbo',  phong:'CẨM BÌNH',   ten:'Cán bộ Cẩm Bình'},
+// Danh sách user — admin có thể thêm/sửa tại màn hình Quản lý User
+let D_USERS = [
+  // ── ADMIN ─────────────────────────────────────────────────
+  {username:'admin',      password:'bidv2025', role:'admin',  phong:'', ten:'Admin Chi nhánh'},
+  // ── TRƯỞNG ĐƠN VỊ ─────────────────────────────────────────
+  {username:'cambinh',    password:'bidv2025', role:'truong', phong:'CẨM BÌNH',   ten:'Trưởng PGD Cẩm Bình'},
+  {username:'camphu',     password:'bidv2025', role:'truong', phong:'CẨM PHÚ',    ten:'Trưởng PGD Cẩm Phú'},
+  {username:'camthuy',    password:'bidv2025', role:'truong', phong:'CẨM THỦY',   ten:'Trưởng PGD Cẩm Thủy'},
+  {username:'mongduong',  password:'bidv2025', role:'truong', phong:'MÔNG DƯƠNG', ten:'Trưởng PGD Mông Dương'},
+  {username:'quanghanh',  password:'bidv2025', role:'truong', phong:'QUANG HANH', ten:'Trưởng PGD Quang Hanh'},
+  {username:'vandlon',    password:'bidv2025', role:'truong', phong:'VÂN ĐỒN',    ten:'Trưởng PGD Vân Đồn'},
+  {username:'tpkhcn',     password:'bidv2025', role:'truong', phong:'KHCN',       ten:'Trưởng Phòng KHCN'},
+  {username:'tpkhdn',     password:'bidv2025', role:'truong', phong:'KHDN',       ten:'Trưởng Phòng KHDN'},
+  {username:'tpkhut',     password:'bidv2025', role:'truong', phong:'KHƯT',       ten:'Trưởng Phòng KHƯT'},
+  // ── CÁN BỘ ────────────────────────────────────────────────
+  {username:'cbcambinh',  password:'bidv2025', role:'canbo',  phong:'CẨM BÌNH',   ten:'Cán bộ Cẩm Bình'},
+  {username:'cbcamphu',   password:'bidv2025', role:'canbo',  phong:'CẨM PHÚ',    ten:'Cán bộ Cẩm Phú'},
+  {username:'cbcamthuy',  password:'bidv2025', role:'canbo',  phong:'CẨM THỦY',   ten:'Cán bộ Cẩm Thủy'},
+  {username:'cbmongduong',password:'bidv2025', role:'canbo',  phong:'MÔNG DƯƠNG', ten:'Cán bộ Mông Dương'},
+  {username:'cbquanghanh',password:'bidv2025', role:'canbo',  phong:'QUANG HANH', ten:'Cán bộ Quang Hanh'},
+  {username:'cbvandlon',  password:'bidv2025', role:'canbo',  phong:'VÂN ĐỒN',    ten:'Cán bộ Vân Đồn'},
+  {username:'cbkhcn',     password:'bidv2025', role:'canbo',  phong:'KHCN',       ten:'Cán bộ KHCN'},
+  {username:'cbkhdn',     password:'bidv2025', role:'canbo',  phong:'KHDN',       ten:'Cán bộ KHDN'},
+  {username:'cbkhut',     password:'bidv2025', role:'canbo',  phong:'KHƯT',       ten:'Cán bộ KHƯT'},
 ];
 
 function showLogin() {
@@ -2446,6 +2577,7 @@ function applyRoleUI() {
   }
   const btnChot=document.getElementById('btnChotHangLoat');
   if(btnChot) btnChot.style.display=(r==='truong')?'':'none';
+  document.querySelectorAll('.admin-only').forEach(el=>{el.style.display=r==='admin'?'':'none';});
   const boBcard=document.getElementById('boB');
   if(boBcard){boBcard.style.opacity=(r==='truong')?'0.38':'';boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';}
 }
@@ -2455,9 +2587,12 @@ function applyRoleUI() {
 let DK_DATA = JSON.parse(localStorage.getItem('pg_dkdata')||'{}');
   const boBcard=document.getElementById('boB');
   if(boBcard){
-    boBcard.style.opacity=(r==='truong')?'0.4':'1';
-    boBcard.style.cursor=(r==='truong')?'not-allowed':'pointer';
-    boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';
+    // Truong: ẩn hẳn pointer events, opacity thấp, disable onclick
+    const isTruong = r==='truong';
+    boBcard.style.opacity = isTruong?'0.35':'1';
+    boBcard.style.cursor  = isTruong?'not-allowed':'pointer';
+    boBcard.style.pointerEvents = isTruong?'none':'';
+    boBcard.title = isTruong?'Chỉ Admin mới giao BSC':'';
   }
 
 function saveDKLocal() { localStorage.setItem('pg_dkdata', JSON.stringify(DK_DATA)); }
@@ -2670,7 +2805,10 @@ function renderBaocaoHL() {
 
     rules.forEach((rule,ri)=>{
       totalRules++;
-      const bscVal=Object.values(bscKH[phong]||{}).find((_,ki)=>vna(Object.keys(bscKH[phong]||{})[ki])===vna(rule.bsc))||0;
+      // Tra bscVal đúng: tìm key khớp tên BSC chỉ tiêu
+      const bscPhongMap = bscKH[phong]||{};
+      const bscKey = Object.keys(bscPhongMap).find(k=>vna(k)===vna(rule.bsc));
+      const bscVal = bscKey ? (bscPhongMap[bscKey]||0) : 0;
       // Tổng KPI giao
       const kpiRow = kpiKH[phong]?.[rule.kpi]||{};
       const totalKPI = Object.values(kpiRow).reduce((a,b)=>a+b,0);
