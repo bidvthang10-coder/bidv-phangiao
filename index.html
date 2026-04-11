@@ -1803,7 +1803,11 @@ function viewPG(id) {
     if(p.boCT==='KPI'){const cb=CB.find(c=>c.maCB===p.target||c.tenCB===p.target);if(cb&&cb.phong!==uPh){gsBar('warn','⚠ Không có quyền xem KPI phòng khác.');return;}}
   }
   document.getElementById('mPGT').textContent = `${p.boCT} · ${resolvePGTarget(p)} · ${p.targetKey}`;
-  const canEdit = p.status !== 'chot' && (CURRENT_USER?.role==='admin' || CURRENT_USER?.role==='truong');
+  // Chỉ admin mới được edit BSC; truong chỉ edit KPI phòng mình
+  const canEdit = p.status !== 'chot' && (
+    CURRENT_USER?.role==='admin' ||
+    (CURRENT_USER?.role==='truong' && p.boCT==='KPI')
+  );
   document.getElementById('mPGB').innerHTML = `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#EDF7F6;border-radius:10px;padding:14px;margin-bottom:16px">
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Bộ CT</div>
@@ -2579,21 +2583,18 @@ function applyRoleUI() {
   if(btnChot) btnChot.style.display=(r==='truong')?'':'none';
   document.querySelectorAll('.admin-only').forEach(el=>{el.style.display=r==='admin'?'':'none';});
   const boBcard=document.getElementById('boB');
-  if(boBcard){boBcard.style.opacity=(r==='truong')?'0.38':'';boBcard.title=(r==='truong')?'Chỉ Admin mới giao BSC':'';}
+  if(boBcard){
+    const isTruong = r==='truong';
+    boBcard.style.opacity       = isTruong?'0.35':'1';
+    boBcard.style.cursor        = isTruong?'not-allowed':'pointer';
+    boBcard.style.pointerEvents = isTruong?'none':'';
+    boBcard.title               = isTruong?'Chỉ Admin mới giao BSC':'';
+  }
 }
 
 // ─── DK_DATA: lưu số liệu đầu kỳ theo phòng/cán bộ ──────────
 // Cấu trúc: DK_DATA[phong_or_maCB][chiTieu] = {thN1, bangGiao}
 let DK_DATA = JSON.parse(localStorage.getItem('pg_dkdata')||'{}');
-  const boBcard=document.getElementById('boB');
-  if(boBcard){
-    // Truong: ẩn hẳn pointer events, opacity thấp, disable onclick
-    const isTruong = r==='truong';
-    boBcard.style.opacity = isTruong?'0.35':'1';
-    boBcard.style.cursor  = isTruong?'not-allowed':'pointer';
-    boBcard.style.pointerEvents = isTruong?'none':'';
-    boBcard.title = isTruong?'Chỉ Admin mới giao BSC':'';
-  }
 
 function saveDKLocal() { localStorage.setItem('pg_dkdata', JSON.stringify(DK_DATA)); }
 
@@ -2810,11 +2811,8 @@ function renderBaocaoHL() {
     const cbList=CB.filter(c=>c.phong===phong&&c.trangThai==='HOAT_DONG');
     if(!cbList.length) return;
 
-    // Các quy tắc áp dụng cho phòng này
-    const rules = VALID_RULES.filter(r=>{
-      const bscCTs=BSC[maBCT]||[];
-      return bscCTs.some(ct=>vna(ct)===vna(r.bsc));
-    });
+    // Tất cả VALID_RULES -- hiện luôn dù có BSC hay không
+    const rules = VALID_RULES;
     // Header phòng
     const cbHeaders = cbList.map(c=>
       `<th style="font-size:10.5px;text-align:right;min-width:90px">${c.tenCB}<br><span style="color:#8096A7;font-weight:400">${c.viTri}</span></th>`
