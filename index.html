@@ -1927,36 +1927,77 @@ function importFile(file) {
   reader.onload = e => {
     try {
       const wb = XLSX.read(new Uint8Array(e.target.result), { type:'array' });
+
+      // ── Sheet KPI: đọc theo tên cột (không phụ thuộc vị trí) ──
       const wsK = wb.Sheets['KPI'] || wb.Sheets[wb.SheetNames[0]];
-      const kR = XLSX.utils.sheet_to_json(wsK, { header:1, defval:'' });
+      // Lấy hàng header để map tên cột → index
+      const kRaw = XLSX.utils.sheet_to_json(wsK, { header:1, defval:'' });
+      if(!kRaw.length) throw new Error('Sheet KPI trống');
+      const kHdr = kRaw[0].map(h=>String(h||'').trim().toUpperCase().replace(/\s+/g,'_'));
+      // Các tên cột hỗ trợ (cả có và không có dấu cách)
+      const col = name => {
+        const variants = [name, name.replace('_',' '), name.replace(' ','_')];
+        for(const v of variants) { const i=kHdr.indexOf(v); if(i>=0) return i; }
+        return -1;
+      };
+      const iMA=col('MA_CB'), iMAM=col('MA_AM'), iTEN=col('TEN_CB');
+      const iPH=col('PHONG'), iVT=col('VI_TRI'), iTT=col('TRANG_THAI')||col('TRANG THAI');
+      const iCT=col('CHI_TIEU')||col('CHI TIEU');
+      if(iMA<0||iVT<0||iCT<0) throw new Error(`Sheet KPI thiếu cột bắt buộc. Header: ${kHdr.join(', ')}`);
+
       const nCB={}, nVT={};
-      for (let i=1; i<kR.length; i++) {
-        const r=kR[i];
-        const maCB=String(r[0]||''),maAM=String(r[1]||''),tenCB=String(r[2]||''),
-              phong=String(r[4]||''),viTri=String(r[5]||''),tt=String(r[7]||''),ct=String(r[8]||'');
-        if (!ct) continue;
-        if (maCB && !nCB[maCB]) nCB[maCB]={maCB,maAM,tenCB,phong,viTri,trangThai:tt};
-        if (viTri) { if(!nVT[viTri]) nVT[viTri]=[]; if(!nVT[viTri].includes(ct)) nVT[viTri].push(ct); }
+      for(let i=1;i<kRaw.length;i++){
+        const r=kRaw[i];
+        const maCB=String(r[iMA]||'').trim();
+        const maAM=String(iMAM>=0?r[iMAM]||'':'').trim();
+        const tenCB=String(iTEN>=0?r[iTEN]||'':'').trim();
+        const phong=String(iPH>=0?r[iPH]||'':'').trim();
+        const viTri=String(r[iVT]||'').trim();
+        const tt=String(iTT>=0?r[iTT]||'HOAT_DONG':'HOAT_DONG').trim();
+        const ct=String(r[iCT]||'').trim();
+        if(!ct||!viTri) continue;
+        if(maCB && !nCB[maCB]) nCB[maCB]={maCB,maAM,tenCB,phong,viTri,trangThai:tt};
+        if(!nVT[viTri]) nVT[viTri]=[];
+        if(!nVT[viTri].includes(ct)) nVT[viTri].push(ct);
       }
+
+      // ── Sheet BSC: đọc theo tên cột ──
       const wsB = wb.Sheets['BSC'] || (wb.SheetNames.length>1 ? wb.Sheets[wb.SheetNames[1]] : null);
       const nBSC={};
-      if (wsB) {
-        const bR = XLSX.utils.sheet_to_json(wsB, { header:1, defval:'' });
-        for (let i=1; i<bR.length; i++) {
-          const r=bR[i]; const m=String(r[0]||''),ct=String(r[1]||'');
-          if (!ct) continue;
-          if (!nBSC[m]) nBSC[m]=[];
-          if (!nBSC[m].includes(ct)) nBSC[m].push(ct);
+      if(wsB){
+        const bRaw = XLSX.utils.sheet_to_json(wsB, { header:1, defval:'' });
+        if(bRaw.length>1){
+          const bHdr = bRaw[0].map(h=>String(h||'').trim().toUpperCase().replace(/\s+/g,'_'));
+          // Hỗ trợ cả "MÃ BCT" và "MA_BCT"
+          const iMB = bHdr.findIndex(h=>h.replace(/[^A-Z0-9]/g,'').includes('MBCT')||h.includes('MA_BCT')||h.includes('MÃ_BCT')||h.includes('MA BCT')||h.includes('MÃ BCT'));
+          const iBC = bHdr.findIndex(h=>h.includes('CHI_TIEU')||h.includes('CHỈ_TIÊU')||h.includes('CHI TIEU')||h.includes('CHỈ TIÊU'));
+          const iMB2 = iMB>=0 ? iMB : 0;
+          const iBC2 = iBC>=0 ? iBC : 1;
+          for(let i=1;i<bRaw.length;i++){
+            const r=bRaw[i];
+            const m=String(r[iMB2]||'').trim(), ct=String(r[iBC2]||'').trim();
+            if(!ct||!m) continue;
+            if(!nBSC[m]) nBSC[m]=[];
+            if(!nBSC[m].includes(ct)) nBSC[m].push(ct);
+          }
         }
       }
-      const bscKeys = Object.keys(nBSC);
+
+      // ── Cập nhật PB (phòng → mã BCT) ──
+      const bscKeys=Object.keys(nBSC);
       const nPB={};
-      Object.values(nCB).forEach(c => {
-        if (!nPB[c.phong]) nPB[c.phong] = bscKeys.includes(c.phong) ? c.phong : (bscKeys.find(k=>k==='PGD') || bscKeys[0] || 'PGD');
+      Object.values(nCB).forEach(c=>{
+        if(!nPB[c.phong]) {
+          nPB[c.phong] = bscKeys.includes(c.phong) ? c.phong
+            : (bscKeys.find(k=>k==='PGD') || bscKeys[0] || 'PGD');
+        }
       });
+
+      // ── Áp dụng và đồng bộ ──
       CB=Object.values(nCB); VT=nVT; BSC=nBSC; PB=nPB;
-      updBadges(); renderDash();
-      document.getElementById('impAlert').innerHTML = `<div class="alert a-ok">✅ Import thành công: ${CB.length} cán bộ · ${Object.keys(VT).length} vị trí KPI · ${Object.keys(BSC).length} mã BSC.<br>Đang đồng bộ lên Google Sheets...</div>`;
+      updBadges(); renderDash(); renderDS();
+      const summary = `${CB.length} cán bộ · ${Object.keys(VT).length} vị trí KPI (${Object.values(VT).reduce((a,v)=>a+v.length,0)} CT) · ${Object.keys(BSC).length} mã BSC`;
+      document.getElementById('impAlert').innerHTML = `<div class="alert a-ok">✅ Import thành công: ${summary}<br>Đang đồng bộ lên Google Sheets...</div>`;
       syncBoCT();
     } catch(err) {
       document.getElementById('impAlert').innerHTML = `<div class="alert a-err">❌ Lỗi: ${err.message}</div>`;
