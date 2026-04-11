@@ -945,7 +945,7 @@ async function loadFromGSheet() {
     if (d.pb  && Object.keys(d.pb).length)  PB  = d.pb;
     PG = d.pg || [];
     GS_LOADING = false;
-    updBadges(); renderDash();
+    updBadges(); renderDash(); renderDS();
     gsBar('ok', '✅ Đã tải từ Google Sheets — ' + PG.length + ' phân giao · ' + CB.length + ' cán bộ');
     updGsDot(true);
   } catch(e) {
@@ -2749,14 +2749,15 @@ function exportBaocaoHL() {
 // ─── Trạng thái PG: duyệt/hủy/chốt/mở ───────────────────────
 // status: '' | 'da_duyet' | 'chot'
 function mkPGRow(v, i, editable) {
-  const hasKH = v.soKH && v.soKH.trim();
+  const hasKH = v.soKH && String(v.soKH).trim();
   let khCell;
   if(editable) {
-    const inp = document.createElement('input');
-    inp.type='text'; inp.value=v.soKH||''; inp.id='pgKH_'+i;
-    inp.placeholder='Nhập số...'; inp.inputMode='decimal';
-    inp.style.cssText='width:110px;padding:4px 8px;border:1.5px solid '+(hasKH?'#B8D8D6':'#FFC62F')+';border-radius:6px;font-size:13px;text-align:right;font-weight:700;outline:none;font-family:inherit';
-    khCell = inp.outerHTML;
+    const border = hasKH ? '#B8D8D6' : '#FFC62F';
+    const safeVal = String(v.soKH||'').replace(/"/g,'&quot;');
+    khCell = '<input type="text" id="pgKH_'+i+'" value="'+safeVal+'"'
+      +' placeholder="Nhập số..." inputmode="decimal"'
+      +' style="width:110px;padding:4px 8px;border:1.5px solid '+border
+      +';border-radius:6px;font-size:13px;text-align:right;font-weight:700;outline:none;font-family:inherit">';
   } else {
     khCell = '<span style="font-weight:700;color:'+(hasKH?'#006B68':'#C09500')+'">'+(v.soKH||'—')+'</span>';
   }
