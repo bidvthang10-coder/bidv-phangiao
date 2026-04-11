@@ -700,6 +700,7 @@ textarea.fc{resize:vertical;min-height:60px;}
       <div class="card-b" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <button class="btn btn-blue btn-sm" onclick="loadFromGSheet()">🔄 Tải lại từ GSheet</button>
         <button class="btn btn-gold btn-sm" onclick="syncBoCT()">⬆ Đồng bộ bộ CT lên GSheet</button>
+        <button class="btn btn-green btn-sm" onclick="syncFlat()">📊 Đồng bộ KPI_FLAT & BSC_FLAT</button>
         <button class="btn btn-gray btn-sm" onclick="resetDef()">↩ Khôi phục mặc định</button>
         <button class="btn btn-red btn-sm" onclick="clearAllPG()">🗑 Xóa tất cả phân giao</button>
       </div>
@@ -1006,6 +1007,16 @@ async function syncBoCT() {
     await gsPost({ action: 'saveAll', cb: CB, vt: VT, bsc: BSC, pb: PB });
     gsBar('ok', '✅ Đã đồng bộ bộ chỉ tiêu lên Google Sheets!');
   } catch(e) { gsBar('err', '❌ Lỗi: ' + e.message); }
+}
+
+// Đồng bộ KPI_FLAT và BSC_FLAT (rebuild hoàn toàn từ PG + PG_ITEMS)
+async function syncFlat() {
+  if (!SHEET_URL) { gsBar('warn', '⚠ Chưa cấu hình URL GSheet'); return; }
+  gsBar('load', '<span class="spin"></span> Đang rebuild KPI_FLAT & BSC_FLAT...');
+  try {
+    await gsPost({ action: 'syncFlat' });
+    gsBar('ok', '✅ Đã cập nhật KPI_FLAT & BSC_FLAT trên Google Sheets!');
+  } catch(e) { gsBar('err', '❌ Lỗi sync flat: ' + e.message); }
 }
 
 // ── Ghi 1 PG lên GSheet ─────────────────────────────────────────
@@ -2365,6 +2376,8 @@ async function confirmImportKH() {
   }
 
   updBadges(); renderDash(); renderDS(); _impKHData=[];
+  // Auto sync flat sheets sau import
+  if(SHEET_URL && (saved>0||overwritten>0)) syncFlat().catch(()=>{});
   document.getElementById('impKHPreviewCard').style.display='none';
   btn.disabled=false; btn.innerHTML='✅ Xác nhận import';
 
@@ -3052,6 +3065,8 @@ function savePGInline() {
   renderDS();
   updBadges();
   renderDash();
+  // Sync flat sheets
+  if(SHEET_URL) syncFlat().catch(()=>{});
   // Refresh modal
   viewPG(id);
 }
