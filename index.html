@@ -940,7 +940,10 @@ const D_PB  = {"CẨM BÌNH": "PGD", "CẨM PHÚ": "PGD", "CẨM THỦY": "PGD",
 // ═══════════════════════════════════════════════════════════════
 // GOOGLE SHEETS CONFIG
 // ═══════════════════════════════════════════════════════════════
-let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || '';
+// URL Google Apps Script — nhúng sẵn để không cần dán trên máy mới
+// Admin vẫn có thể đổi URL trong mục Google Sheets nếu cần
+const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzwaMxBsbULlx0TGLSLViqJZUbAetw_jcSS4yn-FgzFT5C8wuVzSA8pBjYyUuG-n81L/exec';
+let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || SHEET_URL_DEFAULT;
 
 // Dữ liệu RAM — khởi tạo từ default, ghi đè khi sync từ GSheet
 let CB  = JSON.parse(JSON.stringify(D_CB));
