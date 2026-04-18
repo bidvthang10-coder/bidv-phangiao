@@ -942,7 +942,7 @@ const D_PB  = {"CẨM BÌNH": "PGD", "CẨM PHÚ": "PGD", "CẨM THỦY": "PGD",
 // ═══════════════════════════════════════════════════════════════
 // URL Google Apps Script — nhúng sẵn để không cần dán trên máy mới
 // Admin vẫn có thể đổi URL trong mục Google Sheets nếu cần
-const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycby0VBgz_uBU_2GhC9AsWL0HDGfds-gQfCfPPykWrb16UjLfrJzdD46r2OHTCHnZhTzL/exec';
+const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzbCBMuVToA76nm6pQksL72GrqUTN5HgNVTRwcCHBM-ZshmAwHETsAimXoRCFiw1Nhr/exec';
 let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || SHEET_URL_DEFAULT;
 
 // Dữ liệu RAM — khởi tạo từ default, ghi đè khi sync từ GSheet
@@ -990,7 +990,29 @@ async function loadFromGSheet() {
     if (d.vt  && Object.keys(d.vt).length)  VT  = d.vt;
     if (d.bsc && Object.keys(d.bsc).length) BSC = d.bsc;
     if (d.pb  && Object.keys(d.pb).length)  PB  = d.pb;
-    PG = d.pg || [];
+    // Chỉ overwrite PG nếu GSheet trả về data thực (tránh xóa sạch khi lỗi)
+    if (Array.isArray(d.pg) && d.pg.length > 0) {
+      // Nếu GSheet trả về items=[] cho 1 PG nhưng RAM có items → giữ RAM
+      d.pg.forEach(fp => {
+        if(!fp.items || fp.items.length === 0) {
+          const lp = PG.find(p=>p.id===fp.id);
+          if(lp && lp.items && lp.items.length > 0) {
+            fp.items = lp.items; fp.khCount = lp.khCount;
+            console.warn('PG '+fp.id+': items rỗng từ GSheet → giữ RAM ('+lp.items.length+')');
+          }
+        }
+      });
+      PG = d.pg;
+    } else if (!d.pg || d.pg.length === 0) {
+      // GSheet trả về rỗng — có thể lỗi hoặc thực sự rỗng
+      // Nếu đang có data local thì giữ nguyên, hỏi user
+      if(PG.length > 0) {
+        console.warn('GSheet trả về PG rỗng nhưng local có', PG.length, 'bản ghi — giữ nguyên local');
+        gsBar('warn', '⚠ GSheet trả về danh sách phân giao rỗng. Dữ liệu local được giữ nguyên. Kiểm tra lại GSheet.');
+      } else {
+        PG = [];
+      }
+    }
     GS_LOADING = false;
     updBadges(); renderDash(); renderDS();
     gsBar('ok', '✅ Đã tải từ Google Sheets — ' + PG.length + ' phân giao · ' + CB.length + ' cán bộ');
@@ -1146,8 +1168,9 @@ function go(el) {
   document.getElementById('topT').textContent = NT[s] || s;
   document.getElementById('topS').textContent = NS[s] || '';
   const fn = { dash:renderDash, kpi:renderKPI, bsc:renderBSC, ds:renderDS,
-               cb:renderCB, exp:renderExpPreview, gscfg:renderGsCfgStatus,
-               impkh:updateImpKHHint, daukp:renderDaukp, baocaoHL:renderBaocaoHL };
+               cb:renderCB, exp:renderExpPreview, gscfg:function(){renderGsCfgStatus();updateSnapInfo();},
+               impkh:updateImpKHHint, daukp:renderDaukp, baocaoHL:renderBaocaoHL,
+               users:renderUsers, audit:renderAudit };
   (fn[s] || function(){})();
 }
 
@@ -1647,6 +1670,22 @@ function calcSuggest() {
   });
 }
 
+// Normalize ngày: "Fri Dec 04 2026..." hoặc "2026-12-04" → "04/12/2026"
+function fmtDate(d) {
+  if(!d) return '—';
+  const s = String(d).trim();
+  if(!s || s==='—') return '—';
+  // Dạng YYYY-MM-DD
+  const m1 = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m1) return `${m1[3]}/${m1[2]}/${m1[1]}`;
+  // Dạng JS Date string "Fri Dec 04 2026..."
+  const dt = new Date(s);
+  if(!isNaN(dt.getTime())) {
+    return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
+  }
+  return s; // giữ nguyên nếu không parse được
+}
+
 function fmtSuggest(v) {
   if(v === null || isNaN(v)) return '—';
   const abs = Math.abs(v);
@@ -1745,6 +1784,7 @@ async function savePG() {
     ngayGiao: new Date().toLocaleDateString('vi-VN')
   };
   PG.push(newPG);
+  backupPGLocal();
   await gsSavePG(newPG);
   btn.disabled = false; btn.innerHTML = '✅ Xác nhận phân giao';
   updBadges();
@@ -1843,7 +1883,7 @@ function viewPG(id) {
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Kỳ</div>
         <div style="margin-top:3px">${p.ky||'—'}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Hạn / Ngày lập</div>
-        <div style="font-size:12px;margin-top:3px">${p.han||'—'} · ${p.ngayGiao||''}</div></div>
+        <div style="font-size:12px;margin-top:3px">${fmtDate(p.han)} · ${p.ngayGiao||''}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Tổng CT</div>
         <div style="font-size:22px;font-weight:800;color:#006B68;margin-top:2px">${p.ctCount}</div></div>
       <div><div style="font-size:9.5px;font-weight:700;text-transform:uppercase;color:#8096A7">Đã nhập KH</div>
@@ -1859,7 +1899,19 @@ function viewPG(id) {
         <th style="text-align:right;min-width:130px">Số KH ${canEdit?'<small style="color:#C09500">(nhập trực tiếp)</small>':''}</th>
         <th>Đơn vị</th><th style="min-width:100px">Ghi chú CT</th>
       </tr></thead>
-      <tbody>${(p.items||[]).map((v,i) => mkPGRow(v,i,canEdit)).join('')}
+      <tbody>${(p.items||[]).length > 0
+        ? (p.items||[]).map((v,i) => mkPGRow(v,i,canEdit)).join('')
+        : p.ctCount > 0
+          ? `<tr><td colspan="5" style="text-align:center;padding:20px">
+              <div style="color:#C09500;font-size:13px;margin-bottom:10px">
+                ⚠ Chưa tải được chi tiết chỉ tiêu (${p.ctCount} CT, ${p.khCount} đã nhập)
+              </div>
+              <button class="btn btn-blue btn-sm" onclick="reloadPGItems('${p.id}')">
+                🔄 Tải lại chi tiết từ GSheet
+              </button>
+            </td></tr>`
+          : '<tr><td colspan="5"><div class="empty">Chưa có chỉ tiêu</div></td></tr>'
+      }
       </tbody>
     </table></div>`;
   // Nút Lưu số KH — hiện khi có thể sửa
@@ -1880,6 +1932,7 @@ function viewPG(id) {
 
 function delPG(id) {
   PG = PG.filter(p => p.id !== id);
+  backupPGLocal();
   gsDeletePG(id);
   updBadges();
   if (document.getElementById('sec-ds').classList.contains('show')) renderDS();
@@ -2162,10 +2215,26 @@ function resetDef() {
   BSC=JSON.parse(JSON.stringify(D_BSC)); PB=JSON.parse(JSON.stringify(D_PB));
   updBadges(); renderDash(); syncBoCT();
 }
+// ── Backup / Restore PG local ────────────────────────────────
+function backupPGLocal() {
+  try {
+    const snap = { ts: Date.now(), pg: PG };
+    localStorage.setItem('pg_snap', JSON.stringify(snap));
+  } catch(e) { console.warn('backup failed', e); }
+}
+function restorePGFromBackup() {
+  try {
+    const raw = localStorage.getItem('pg_snap');
+    if(!raw) return null;
+    const snap = JSON.parse(raw);
+    return snap;
+  } catch(e) { return null; }
+}
+
 function clearAllPG() {
   if (!confirm('Xóa tất cả phân giao? Không thể hoàn tác.')) return;
   PG.forEach(p => gsDeletePG(p.id));
-  PG=[]; updBadges(); renderDash();
+  PG=[]; backupPGLocal(); updBadges(); renderDash();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2358,11 +2427,17 @@ async function confirmImportKH() {
       existing.ngayGiao = today;
       // Nếu đã duyệt → reset về chờ duyệt vì nội dung đã thay đổi
       if (existing.status === 'da_duyet') existing.status = '';
-      try {
-        await gsPost({action:'updatePGItems', id:existing.id,
-          items:existing.items, khCount:existing.khCount});
-        overwritten++;
-      } catch(e) { failed++; }
+      let _owOk = false;
+      for(let _a=0; _a<2; _a++){
+        try {
+          await gsPost({action:'updatePGItems', id:existing.id,
+            items:existing.items, khCount:existing.khCount});
+          overwritten++; _owOk=true; break;
+        } catch(e) {
+          if(_a===1){ failed++; }
+          else { await new Promise(r=>setTimeout(r,1000)); }
+        }
+      }
     } else {
       // CHƯA CÓ → tạo mới
       const khCount = g.items.filter(it=>it.soKH).length;
@@ -2378,6 +2453,7 @@ async function confirmImportKH() {
     }
   }
 
+  backupPGLocal();
   updBadges(); renderDash(); renderDS(); _impKHData=[];
   // Auto sync flat sheets sau import
   if(SHEET_URL && (saved>0||overwritten>0)) syncFlat().catch(()=>{});
@@ -3124,6 +3200,31 @@ function mkPGRow(v, i, editable) {
     +'</tr>';
 }
 
+// Tải lại items từ GSheet khi modal bị trống
+async function reloadPGItems(id) {
+  gsBar('load','<span class="spin"></span> Đang tải chi tiết từ GSheet...');
+  try {
+    const d = await gsGet({ action: 'getAll' });
+    if(Array.isArray(d.pg)) {
+      const fresh = d.pg.find(p=>p.id===id);
+      if(fresh && fresh.items && fresh.items.length > 0) {
+        const local = PG.find(p=>p.id===id);
+        if(local) {
+          local.items   = fresh.items;
+          local.khCount = fresh.khCount;
+          local.ctCount = fresh.ctCount;
+        }
+        gsBar('ok','✅ Đã tải xong chi tiết!');
+        viewPG(id); // re-render modal
+        return;
+      }
+    }
+    gsBar('warn','⚠ GSheet không có dữ liệu chi tiết cho PG này');
+  } catch(e) {
+    gsBar('err','❌ Lỗi: '+e.message);
+  }
+}
+
 function savePGInline() {
   const id = document.getElementById('ov-pg').dataset.pgId;
   const p  = PG.find(x=>x.id===id); if(!p) return;
@@ -3144,6 +3245,7 @@ function savePGInline() {
   p.khCount = (p.items||[]).filter(v=>v.soKH&&v.soKH.trim()).length;
   // Lưu lên GSheet
   gsPost({action:'updatePGItems', id, items:p.items, khCount:p.khCount}).catch(()=>{});
+  backupPGLocal();
   // Lưu localStorage backup
   const raw = localStorage.getItem('pg_backup')||'{}';
   try { const bk=JSON.parse(raw); bk[id]=p; localStorage.setItem('pg_backup',JSON.stringify(bk)); } catch(e){}
@@ -3278,11 +3380,20 @@ async function chotHangLoat() {
 document.getElementById('todayTxt').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
 if(CURRENT_USER) {
   showApp();
+  // Restore backup local trước khi load GSheet
+  const _snap = restorePGFromBackup();
+  if(_snap && _snap.pg && _snap.pg.length > 0) {
+    PG = _snap.pg;
+    const _ago = Math.round((Date.now()-_snap.ts)/60000);
+    console.info(`Restored ${PG.length} PG từ local backup (${_ago} phút trước)`);
+    gsBar('load', `⏳ Đã khôi phục ${PG.length} phân giao từ bộ nhớ cục bộ. Đang đồng bộ từ GSheet...`);
+  }
   updBadges();
   renderDash();
   updGsDot(false);
+  updateSnapInfo();
   if (SHEET_URL) { loadFromGSheet(); }
-  else { gsBar('warn','⚠ Chưa kết nối Google Sheets.'); }
+  else { gsBar('warn','⚠ Chưa kết nối Google Sheets — đang dùng dữ liệu cục bộ.'); }
 } else {
   showLogin();
 }
