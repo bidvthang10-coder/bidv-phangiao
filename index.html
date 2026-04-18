@@ -940,10 +940,13 @@ const D_PB  = {"CẨM BÌNH": "PGD", "CẨM PHÚ": "PGD", "CẨM THỦY": "PGD",
 // ═══════════════════════════════════════════════════════════════
 // GOOGLE SHEETS CONFIG
 // ═══════════════════════════════════════════════════════════════
-// URL Google Apps Script — nhúng sẵn để không cần dán trên máy mới
-// Admin vẫn có thể đổi URL trong mục Google Sheets nếu cần
-const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbz9x5AEvI8n4wFzOIDlWf8dMHleZ9dfUKziQypWnrjLDtYFzhKgU_r-hrjgw6PPy3-U/exec';
-let SHEET_URL = localStorage.getItem('pg4_sheetUrl') || SHEET_URL_DEFAULT;
+// URL Google Apps Script — thay REPLACE_WITH_YOUR_SCRIPT_ID bằng Script ID thực
+// Ví dụ: const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbxXXXXX/exec';
+const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyvrl2BrXY6V6TE5vpWLHC32ntn3Af59dvOcngY_224N7eIT65UG12n3JfTwGJk-a82/exec';
+const _savedUrl = localStorage.getItem('pg4_sheetUrl') || '';
+// Chỉ dùng DEFAULT nếu không phải placeholder
+const _isPlaceholder = s => !s || s.includes('REPLACE_WITH_YOUR_SCRIPT_ID');
+let SHEET_URL = _isPlaceholder(_savedUrl) ? (_isPlaceholder(SHEET_URL_DEFAULT) ? '' : SHEET_URL_DEFAULT) : _savedUrl;
 
 // Dữ liệu RAM — khởi tạo từ default, ghi đè khi sync từ GSheet
 let CB  = JSON.parse(JSON.stringify(D_CB));
@@ -1089,28 +1092,47 @@ function updGsDot(ok) {
 // ── GSheet Config UI ─────────────────────────────────────────────
 async function testGS() {
   const url = document.getElementById('gsUrlInp').value.trim();
-  if (!url) { document.getElementById('gsTestOut').innerHTML = '<span style="color:#c0392b">⚠ Nhập URL trước!</span>'; return; }
-  document.getElementById('gsTestOut').innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#006B68"></span> Đang kiểm tra...';
+  const out = document.getElementById('gsTestOut');
+  if (!url) { out.innerHTML = '<span style="color:#c0392b">⚠ Nhập URL trước!</span>'; return; }
+  if (!url.includes('script.google.com/macros/s/')) {
+    out.innerHTML = '<div class="alert a-err">❌ URL sai định dạng. Phải là URL dạng:<br><code>https://script.google.com/macros/s/AKfycb.../exec</code></div>'; return;
+  }
+  out.innerHTML = '<span class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#006B68"></span> Đang kiểm tra...';
   try {
     const r = await fetch(url + '?action=getAll', { redirect: 'follow' });
     const j = await r.json();
     if (j.ok) {
       const d = j.data;
-      document.getElementById('gsTestOut').innerHTML =
-        `<div class="alert a-ok">✅ Kết nối thành công!<br>CB: ${(d.cb||[]).length} · VT: ${Object.keys(d.vt||{}).length} · BSC: ${Object.keys(d.bsc||{}).length} · PG: ${(d.pg||[]).length}</div>`;
+      out.innerHTML = `<div class="alert a-ok">✅ Kết nối thành công!<br>
+        CB: ${(d.cb||[]).length} · PG: ${(d.pg||[]).length} · BSC mã: ${Object.keys(d.bsc||{}).length}<br>
+        <small style="color:#006B68">URL hợp lệ — nhấn 💾 Lưu & Kết nối để áp dụng</small></div>`;
     } else {
-      document.getElementById('gsTestOut').innerHTML = `<div class="alert a-err">❌ API lỗi: ${j.error}</div>`;
+      out.innerHTML = `<div class="alert a-err">❌ Apps Script lỗi: ${j.error}<br>
+        <small>Kiểm tra lại Code.gs đã được deploy đúng chưa</small></div>`;
     }
   } catch(e) {
-    document.getElementById('gsTestOut').innerHTML = `<div class="alert a-err">❌ Không kết nối được: ${e.message}<br><small>Kiểm tra URL và quyền deploy (Anyone)</small></div>`;
+    const isCors = e.message.includes('fetch') || e.message.includes('Failed');
+    out.innerHTML = `<div class="alert a-err">❌ ${isCors ? 'Lỗi CORS/mạng' : 'Không kết nối được'}: ${e.message}<br>
+      <small>• Kiểm tra URL có đúng không<br>
+      • Apps Script phải deploy: <b>Execute as: Me · Who has access: Anyone</b><br>
+      • Sau khi sửa Code.gs phải <b>Deploy → New version</b> (không phải Save thôi)</small></div>`;
   }
 }
 
 async function saveGSUrl() {
   const url = document.getElementById('gsUrlInp').value.trim();
   if (!url) { alert('Nhập URL Apps Script!'); return; }
+  if (!url.includes('script.google.com/macros/s/')) {
+    alert('❌ URL không hợp lệ!\nURL đúng dạng: https://script.google.com/macros/s/AKfycb.../exec');
+    return;
+  }
+  if (url.includes('REPLACE_WITH_YOUR_SCRIPT_ID')) {
+    alert('❌ Bạn chưa thay REPLACE_WITH_YOUR_SCRIPT_ID bằng Script ID thực!');
+    return;
+  }
   SHEET_URL = url;
   localStorage.setItem('pg4_sheetUrl', url);
+  gsBar('ok', '✅ Đã lưu URL. Đang tải dữ liệu từ GSheet...');
   renderGsCfgStatus();
   await loadFromGSheet();
 }
@@ -1127,13 +1149,17 @@ function clearGSUrl() {
 function renderGsCfgStatus() {
   const el = document.getElementById('gsCfgStatus');
   if (!el) return;
-  if (SHEET_URL) {
+  const isReal = SHEET_URL && !SHEET_URL.includes('REPLACE_WITH_YOUR_SCRIPT_ID');
+  if (isReal) {
     el.innerHTML = `<div class="alert a-ok">🟢 Đã kết nối: <span style="font-family:monospace;font-size:11px;word-break:break-all">${SHEET_URL}</span></div>`;
   } else {
-    el.innerHTML = `<div class="alert a-warn">⚪ Chưa kết nối Google Sheets. Nhập URL và nhấn <b>Lưu & Kết nối</b>.</div>`;
+    el.innerHTML = `<div class="alert a-err" style="line-height:1.7">
+      ⚪ <b>Chưa kết nối Google Sheets</b><br>
+      <span style="font-size:11.5px">Dán URL Web App vào ô bên dưới → nhấn <b>💾 Lưu & Kết nối</b></span>
+    </div>`;
   }
   const inp = document.getElementById('gsUrlInp');
-  if (inp && !inp.value) inp.value = SHEET_URL;
+  if (inp) inp.value = isReal ? SHEET_URL : '';
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2752,7 +2778,7 @@ function applyRoleUI() {
   document.querySelectorAll('.sb-a').forEach(el => {
     const s = el.dataset.s;
     let show = true;
-    if(r === 'truong') show = !['imp','gscfg','cb','exp'].includes(s);  // truong: impkh, daukp, baocaoHL, ds, dash, tao
+    if(r === 'truong') show = !['imp','cb','exp'].includes(s);  // truong: thấy gscfg để kết nối GSheet
     if(r === 'canbo')  show = ['ds','dash','baocaoHL'].includes(s);
     el.style.display = show ? '' : 'none';
   });
@@ -3392,8 +3418,11 @@ if(CURRENT_USER) {
   renderDash();
   updGsDot(false);
   updateSnapInfo();
-  if (SHEET_URL) { loadFromGSheet(); }
-  else { gsBar('warn','⚠ Chưa kết nối Google Sheets — đang dùng dữ liệu cục bộ.'); }
+  if (SHEET_URL && !SHEET_URL.includes('REPLACE_WITH_YOUR_SCRIPT_ID')) {
+    loadFromGSheet();
+  } else {
+    gsBar('warn', '⚠ Chưa cấu hình Google Sheets. Vào <b>Hệ thống → Google Sheets</b> để dán URL và kết nối.');
+  }
 } else {
   showLogin();
 }
